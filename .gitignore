@@ -1,0 +1,52 @@
+# Python bytecode and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Large Datasets & Archives (Do not commit to GitHub)
+merged_signature_dataset.zip
+merged_signature_dataset/
+data/
+*.zip
+*.tar.gz
+*.tar
+
+# Model Checkpoints & Weights
+*.pt
+*.pth
+*.onnx
+*.engine
+*.bin
+weights/
+checkpoints/
+runs/
+
+# Experiment Tracking Logs & Caches
+mlruns/
+.comet/
+wandb/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local Environment Variables & Secrets
+.env
+.env.local
+*.pem
+*.key
+aws_credentials
+
+# LocalStack Data
+localstack_data/
+
+# OS and Editor artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

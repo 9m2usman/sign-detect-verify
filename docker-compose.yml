@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # LocalStack mocks AWS S3 and SQS locally for development & testing
+  localstack:
+    container_name: localstack_aws
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,sqs
+      - AWS_DEFAULT_REGION=us-east-1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "./localstack_data:/var/lib/localstack"
+      - "./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"
+
+  # FastAPI Web Service
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "8000:8000"
+    environment:
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - S3_BUCKET_NAME=signature-verification-documents
+      - SQS_QUEUE_URL=http://localstack:4566/000000000000/signature-job-queue
+    depends_on:
+      - localstack
+
+  # Worker Service
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - S3_BUCKET_NAME=signature-verification-documents
+      - SQS_QUEUE_URL=http://localstack:4566/000000000000/signature-job-queue
+    depends_on:
+      - localstack
