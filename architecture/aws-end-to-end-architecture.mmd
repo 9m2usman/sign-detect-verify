@@ -1,0 +1,72 @@
+graph TB
+    subgraph ClientLayer [Client & Ingestion Layer]
+        User[Client / Web UI / Mobile App]
+        ThirdParty[Third-Party Core Banking / ERP]
+    end
+
+    subgraph EdgeLayer [Edge & Security Layer]
+        Route53[Amazon Route 53 DNS]
+        WAF[AWS WAF]
+        CF[Amazon CloudFront CDN]
+        ALB[Application Load Balancer]
+    end
+
+    subgraph ComputeLayer [ECS / Fargate Compute Cluster]
+        subgraph BackendService [FastAPI Backend Service]
+            API1[FastAPI Container 1]
+            API2[FastAPI Container 2]
+        end
+
+        subgraph WorkerService [Asynchronous Celery Workers]
+            Worker1[Celery Worker 1 - CPU/GPU]
+            Worker2[Celery Worker 2 - CPU/GPU]
+        end
+    end
+
+    subgraph MessagingLayer [Queue & Broker Layer]
+        RabbitMQ[Amazon MQ / Self-Hosted RabbitMQ]
+        RedisCache[Amazon ElastiCache Redis]
+    end
+
+    subgraph StorageLayer [Persistence & Data Layer]
+        RDS[(Amazon RDS PostgreSQL 16 Multi-AZ)]
+        S3Docs[(Amazon S3 - Document Storage)]
+        S3Models[(Amazon S3 - Model Artifacts & MLflow)]
+    end
+
+    subgraph MLOpsLayer [MLOps & Observability]
+        MLflow[MLflow Tracking Server on ECS]
+        CloudWatch[Amazon CloudWatch Metrics & Logs]
+        ECR[Amazon Elastic Container Registry]
+    end
+
+    User --> Route53
+    ThirdParty --> Route53
+    Route53 --> CF
+    CF --> WAF
+    WAF --> ALB
+    ALB --> API1
+    ALB --> API2
+
+    API1 --> RDS
+    API2 --> RDS
+    API1 --> RabbitMQ
+    API2 --> RabbitMQ
+    API1 --> S3Docs
+    API2 --> S3Docs
+
+    RabbitMQ --> Worker1
+    RabbitMQ --> Worker2
+    Worker1 --> S3Docs
+    Worker2 --> S3Docs
+    Worker1 --> S3Models
+    Worker2 --> S3Models
+    Worker1 --> RDS
+    Worker2 --> RDS
+
+    Worker1 --> MLflow
+    Worker2 --> MLflow
+    MLflow --> S3Models
+
+    ComputeLayer -.-> CloudWatch
+    ECR -.-> ComputeLayer

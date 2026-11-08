@@ -1,48 +1,102 @@
 version: '3.8'
 
 services:
-  # LocalStack mocks AWS S3 and SQS locally for development & testing
-  localstack:
-    container_name: localstack_aws
-    image: localstack/localstack:latest
-    ports:
-      - "4566:4566"
+  postgres:
+    image: postgres:16-alpine
+    container_name: sign_postgres
+    restart: unless-stopped
     environment:
-      - SERVICES=s3,sqs
-      - AWS_DEFAULT_REGION=us-east-1
-      - DOCKER_HOST=unix:///var/run/docker.sock
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres_password_placeholder}
+      POSTGRES_DB: ${POSTGRES_DB:-signature_verification_db}
+    ports:
+      - "5432:5432"
     volumes:
-      - "./localstack_data:/var/lib/localstack"
-      - "./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-signature_verification_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # FastAPI Web Service
-  api:
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: sign_rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"     # AMQP protocol
+      - "15672:15672"   # Management Web UI
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-guest}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.13.0
+    container_name: sign_mlflow
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - MLFLOW_TRACKING_URI=http://0.0.0.0:5000
+    command: >
+      mlflow server
+      --backend-store-uri sqlite:///mlflow.db
+      --default-artifact-root /mlruns
+      --host 0.0.0.0
+      --port 5000
+    volumes:
+      - mlflow_data:/mlruns
+
+  backend:
     build:
       context: .
-      dockerfile: Dockerfile.api
+      dockerfile: backend/Dockerfile
+    container_name: sign_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     ports:
       - "8000:8000"
     environment:
-      - AWS_REGION=us-east-1
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - AWS_ENDPOINT_URL=http://localstack:4566
-      - S3_BUCKET_NAME=signature-verification-documents
-      - SQS_QUEUE_URL=http://localstack:4566/000000000000/signature-job-queue
-    depends_on:
-      - localstack
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres_password_placeholder}@postgres:5432/${POSTGRES_DB:-signature_verification_db}
+      CELERY_BROKER_URL: amqp://${RABBITMQ_USER:-guest}:${RABBITMQ_PASSWORD:-guest}@rabbitmq:5672//
+      CELERY_RESULT_BACKEND: rpc://
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+    volumes:
+      - ./data:/app/data
+      - ./mlruns:/app/mlruns
 
-  # Worker Service
   worker:
     build:
       context: .
-      dockerfile: Dockerfile.worker
-    environment:
-      - AWS_REGION=us-east-1
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - AWS_ENDPOINT_URL=http://localstack:4566
-      - S3_BUCKET_NAME=signature-verification-documents
-      - SQS_QUEUE_URL=http://localstack:4566/000000000000/signature-job-queue
+      dockerfile: worker/Dockerfile
+    container_name: sign_worker
+    restart: unless-stopped
     depends_on:
-      - localstack
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres_password_placeholder}@postgres:5432/${POSTGRES_DB:-signature_verification_db}
+      CELERY_BROKER_URL: amqp://${RABBITMQ_USER:-guest}:${RABBITMQ_PASSWORD:-guest}@rabbitmq:5672//
+      CELERY_RESULT_BACKEND: rpc://
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+    volumes:
+      - ./data:/app/data
+      - ./mlruns:/app/mlruns
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+  mlflow_data:

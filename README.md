@@ -1,120 +1,102 @@
-# 🖋️ Production Signature Detection & Verification Platform
+# Document Signature Detection and Verification System
 
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com/)
-[![AWS Architecture](https://img.shields.io/badge/AWS-S3_%2B_SQS_%2B_ECS-orange.svg)](docs/architecture/AWS_ARCHITECTURE.md)
-[![License Compliance](https://img.shields.io/badge/Compliance-Strictly_Non--Ultralytics-success.svg)](docs/compliance/LICENSE_AUDIT.md)
-
-An end-to-end, commercial-grade platform for **Signature Object Detection**, **Signature Verification (1:1 Biometric Matching)**, and **Continuous MLOps Pipeline Automation**. 
-
-Designed strictly with **permissive commercial open-source licenses (Apache 2.0, MIT, BSD)**, completely avoiding AGPL-licensed frameworks (e.g., Ultralytics YOLO).
+Production-grade, permissively licensed (Apache 2.0 / MIT) document signature detection and offline verification pipeline.
 
 ---
 
-## 🚀 Key Highlights & Architectural Decisions
+## 1. System Overview
 
-* **Strict Commercial Licensing (Zero AGPL):** Built using **Hugging Face RT-DETR-R50** and **Megvii YOLOX-S** for detection, and **ResNet50 / ViT-B/16** for deep metric embeddings. See [`LICENSE_AUDIT.md`](docs/compliance/LICENSE_AUDIT.md).
-* **Evidence-Based Model Selection:** Complete comparative experimentation reports:
-  * [Stage A Detection Comparison (YOLOX-S vs. RT-DETR)](docs/model_selection/DETECTION_MODEL_COMPARISON.md)
-  * [Stage B Verification Comparison (ResNet50 vs. ViT-B/16)](docs/model_selection/VERIFICATION_MODEL_COMPARISON.md)
-  * [Final Production Decision Report](docs/model_selection/FINAL_MODEL_SELECTION.md)
-* **Asynchronous AWS Architecture:** FastAPI staging to **Amazon S3** + **Amazon SQS** with an asynchronous **Worker Consumer**, Dead Letter Queue (DLQ) retry policies, and zero binary bloat in queue payloads.
-* **Continuous MLOps Training Loop:** Hugging Face dataset webhook triggers $\rightarrow$ remote GPU training $\rightarrow$ **Comet ML / MLflow** experiment tracking $\rightarrow$ S3 model registry $\rightarrow$ worker zero-downtime hot-reload.
+This system provides enterprise-grade signature extraction from arbitrary document layouts (invoices, contracts, identity documents) and pairwise signature verification to detect skilled and unskilled forgeries.
+
+Key capabilities:
+- **Signature Detection**: Permissive object detection (Faster R-CNN / Torchvision ResNet-FPN) strictly avoiding AGPL/Ultralytics restrictions.
+- **Signature Verification**: Deep Siamese metric learning network (ResNet backbone with contrastive / triplet loss and cosine similarity distance).
+- **Asynchronous Architecture**: Scalable task processing using Celery backed by RabbitMQ message broker.
+- **Service Tier**: Modern asynchronous REST API built with FastAPI and Pydantic v2.
+- **MLOps & Tracking**: Experiment logging, model checkpoint tracking, and model registry via MLflow.
+- **Relational Persistence**: Job status, document metadata, and writer profiles managed in PostgreSQL 16.
 
 ---
 
-## 🏗️ System Architecture Flow
+## 2. Repository Layout
 
 ```
-                           [ HTTPS Client / Web UI ]
-                                       |
-                                       v
-                      [ Application Load Balancer (ALB) ]
-                                       |
-                                       v
-                   [ FastAPI Service (AWS ECS Fargate) ]
-                          /                         \
-        1. Upload Raw    /                           \ 2. Push Metadata Pointer
-           Images       /                             \   {job_id, s3_keys}
-                       v                               v
-          +-----------------------+         +-----------------------+
-          |   Amazon S3 Bucket    |         |   Amazon SQS Queue    |
-          |   - /raw-documents/   |         |   (Vis. Timeout: 120s)|
-          |   - /crops/           |         +-----------------------+
-          |   - /models/          |                     |
-          +-----------------------+                     | 3. Long Polling (20s)
-                    ^              ^                    v
-                    |              |        +-----------------------+
-                    |              +------- | Worker Service (ECS)  |
-                    |       Fetch Images    | - RT-DETR-R50         |
-                    |       & Write Results | - ResNet50 Embedding  |
-                    |                       +-----------------------+
-                    |                                   |
-                    |                                   | 4. Update Status
-                    |                                   v
-                    +---------------------- [ DynamoDB / S3 Results ]
+├── backend/                  # FastAPI REST API microservice
+│   ├── app/
+│   │   ├── api/              # Route handlers & API endpoints
+│   │   ├── core/             # Configuration & security settings
+│   │   ├── database/         # SQLAlchemy models and session lifecycle
+│   │   ├── schemas/          # Pydantic v2 request/response schemas
+│   │   ├── services/         # Business logic and dispatch services
+│   │   └── models/           # Domain entities
+│   ├── tests/                # Backend API tests
+│   └── Dockerfile
+├── worker/                   # Celery asynchronous inference worker
+│   ├── tasks/                # Celery background tasks (detect, verify)
+│   ├── services/             # Pipeline inference execution engines
+│   ├── celery_app.py         # Celery instance configuration
+│   └── Dockerfile
+├── detection/                # Signature detection module (Faster R-CNN)
+│   ├── configs/              # Hyperparameter and model configuration
+│   ├── preprocessing/        # Document resizing, normalization, tiling
+│   ├── training/             # PyTorch training loops & loss functions
+│   ├── evaluation/           # Evaluation metrics (mAP@0.5, mAP@0.5:0.95)
+│   ├── experiments/          # Model comparison experiments
+│   └── selected_model/       # Selected production checkpoint reference
+├── verification/             # Signature verification module (Siamese ResNet)
+│   ├── preprocessing/        # Signature crop normalization & alignment
+│   ├── models/               # Siamese network architectures
+│   ├── training/             # Contrastive/triplet training pipelines
+│   ├── evaluation/           # ROC-AUC, EER, and accuracy evaluation
+│   ├── experiments/          # Benchmark experiments (CEDAR, BHSig)
+│   └── selected_model/       # Selected production verification model
+├── notebooks/                # Exploratory and experimental notebooks
+├── mlops/                    # Tracking, registry, and pipeline automation
+├── infrastructure/           # Docker, AWS ECS/CloudFormation, GitHub Actions
+├── tests/                    # Global unit, integration, and E2E test suites
+├── data/                     # Data documentation & local processing paths
+├── docs/                     # Comprehensive engineering & research documentation
+├── architecture/             # Architecture diagrams (Mermaid format)
+├── docker-compose.yml        # Multi-container local orchestration
+├── requirements.txt          # Permissively licensed dependencies
+└── LICENSES.md               # Legal compliance & open-source license audit
 ```
 
 ---
 
-## 🛠️ Quickstart & Local Execution
+## 3. Strict License Compliance
 
-### 1. Installation
-Clone the repository and install the verified permissive dependencies:
+All models, frameworks, and third-party libraries incorporated into this project have been audited under permissive terms (**MIT**, **Apache 2.0**, **BSD-3-Clause**). 
+Ultralytics (GPL / AGPL-3.0) and other copyleft licenses are **strictly excluded**. See [`LICENSES.md`](file:///e:/sign_detect-verify/LICENSES.md) and [`docs/model_licensing.md`](file:///e:/sign_detect-verify/docs/model_licensing.md) for full compliance audits and citations.
+
+---
+
+## 4. Getting Started
+
+### Local Setup with Python Virtual Environment
+
 ```bash
-git clone https://github.com/9m2usman/sign-detect-verify.git
-cd sign-detect-verify
+# Clone the repository
+git clone https://github.com/example/sign_detect-verify.git
+cd sign_detect-verify
+
+# Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install permissive dependencies
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 2. Run Local Cloud Infrastructure (LocalStack Mock)
-Spins up simulated Amazon S3 and SQS locally:
+### Running with Docker Compose
+
+To spin up the complete local stack (PostgreSQL, RabbitMQ, MLflow, FastAPI backend, Celery worker):
+
 ```bash
-docker-compose up -d localstack
+docker-compose up -d
 ```
 
-### 3. Launch FastAPI Ingestion Backend
-```bash
-uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
-```
-Interactive OpenAPI documentation available at: `http://localhost:8000/docs`
-
-### 4. Launch Asynchronous Worker Service
-```bash
-python -m worker.consumer
-```
-
-### 5. Run the Automated Test Suite
-```bash
-pytest tests/
-```
-
----
-
-## 📁 Repository Layout
-
-```
-├── api/                           # FastAPI ingestion endpoints & Pydantic schemas
-├── ml/                            # Detection (RT-DETR/YOLOX) & Verification (ResNet/ViT)
-├── worker/                        # SQS consumer worker service
-├── training/                      # GPU training scripts & Colab notebooks
-│   ├── detection/                 # YOLOX & RT-DETR training scripts
-│   ├── verification/              # ResNet50 & ViT metric learning scripts
-│   └── remote_gpu_training.ipynb  # Interactive Colab GPU training notebook
-├── tests/                         # Automated unit and integration test suite
-├── docs/                          # Comprehensive technical documentation
-│   ├── architecture/              # AWS architecture & infrastructure specs
-│   ├── model_selection/           # Comparative evaluation reports & final decisions
-│   ├── dataset/                   # Dataset forensic audits & split analyses
-│   └── compliance/                # License audits & commercial permission records
-├── docker-compose.yml             # LocalStack S3 + SQS simulation
-├── requirements.txt               # Strict Apache 2.0 / MIT dependency manifest
-└── README.md
-```
-
----
-
-## ⚖️ Open-Source License
-Distributed under the **Apache License, Version 2.0**. See [`LICENSE`](LICENSE) for details.  
-Full third-party compliance verified in [`docs/compliance/LICENSE_AUDIT.md`](docs/compliance/LICENSE_AUDIT.md).
+- **FastAPI Documentation**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **MLflow Tracking Dashboard**: [http://localhost:5000](http://localhost:5000)
+- **RabbitMQ Management Console**: [http://localhost:15672](http://localhost:15672) (guest / guest)
