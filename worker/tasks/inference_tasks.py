@@ -23,13 +23,17 @@ def get_pipeline():
 
 
 @celery_app.task(bind=True, name="worker.tasks.inference_tasks.process_verification_job", max_retries=3)
-def process_verification_job(self, job_id: str):
+def process_verification_job(self, job_id: str = None):
     """
     Asynchronous task:
     1. Fetches job from DB.
     2. Runs UnifiedSignaturePipeline on document and reference signatures.
     3. Persists results and updates job state to COMPLETED.
     """
+    # Handle direct function call without Celery worker
+    if job_id is None and isinstance(self, str):
+        job_id = self
+
     db = SessionLocal()
     try:
         job = db.query(Job).filter(Job.id == job_id).first()

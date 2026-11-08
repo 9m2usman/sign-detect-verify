@@ -600,11 +600,12 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
       const formData = new FormData();
       formData.append('document', selectedDocFile);
       selectedRefFiles.forEach(file => {
+        formData.append('references', file);
         formData.append('reference_signatures', file);
       });
 
       try {
-        const res = await fetch('/api/v1/signatures/verify', {
+        const res = await fetch('/api/v1/signatures/verify?sync=true', {
           method: 'POST',
           body: formData
         });
@@ -614,7 +615,17 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
           throw new Error(err.detail || 'Verification failed');
         }
 
-        const data = await res.json();
+        let data = await res.json();
+        // If asynchronous job returned, poll until COMPLETED
+        if (data.status === 'PENDING' && data.poll_url) {
+          while (data.status === 'PENDING' || data.status === 'PROCESSING') {
+            await new Promise(r => setTimeout(r, 500));
+            const pollRes = await fetch(data.poll_url);
+            if (pollRes.ok) {
+              data = await pollRes.json();
+            }
+          }
+        }
         renderResults(data);
       } catch (err) {
         alert('Error: ' + err.message);
@@ -631,10 +642,11 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
 
       const results = data.results || [];
       const first = results[0] || {};
-      const score = first.similarity_score || 0;
+      const score = first.similarity_score !== undefined ? first.similarity_score : 0;
       const decision = first.decision || 'UNKNOWN';
       const bbox = first.bbox || [0, 0, 0, 0];
-      const conf = first.confidence_detection || 0;
+      const conf = first.confidence_detection !== undefined ? first.confidence_detection : 0;
+      const cropUrl = first.crop_url || first.crop_path || '';
 
       // Update Decision Badge
       const decisionCard = document.getElementById('decision-card');
@@ -666,8 +678,8 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
       document.getElementById('meta-conf').innerText = `${(conf * 100).toFixed(1)}%`;
 
       // Set Crop & Reference Previews
-      if (first.crop_path) {
-        document.getElementById('crop-preview').src = '/' + first.crop_path.replace(/\\/g, '/');
+      if (cropUrl) {
+        document.getElementById('crop-preview').src = '/' + cropUrl.replace(/\\/g, '/').replace(/^\/+/, '');
       }
       if (selectedRefFiles.length > 0) {
         const reader = new FileReader();
