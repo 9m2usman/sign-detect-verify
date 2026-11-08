@@ -49,6 +49,11 @@ data/processed/
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
 # MLflow tracking and artifacts
 mlruns/
 mlartifacts/

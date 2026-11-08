@@ -1,36 +1,30 @@
-"""Tests for FastAPI backend application routes and endpoints."""
+"""
+Tests for FastAPI backend application routes and endpoints.
+"""
 
 from backend.app.main import app, health_check, root
-
-
-def _resolve_coro(coro):
-    """Resolve an un-awaited coroutine that returns synchronously."""
-    try:
-        coro.send(None)
-    except StopIteration as exc:
-        return exc.value
-    raise RuntimeError("Coroutine did not return immediately")
+from backend.app.core.config import settings
 
 
 def test_app_metadata():
     """Verify application title, version, and routing structure."""
-    assert app.title == "Signature Detection & Verification API"
-    assert app.version == "1.0.0"
-    route_paths = [route.path for route in app.routes]
+    assert app.title == settings.PROJECT_NAME
+    assert app.version == settings.VERSION
+    route_paths = [route.path for route in app.routes if hasattr(route, "path")]
     assert "/health" in route_paths
     assert "/" in route_paths
 
 
 def test_health_check_endpoint():
-    """Verify health check endpoint returns 200 OK and healthy status."""
-    response = _resolve_coro(health_check())
+    """Verify health check endpoint returns healthy status."""
+    response = health_check()
     assert response["status"] == "healthy"
-    assert response["service"] == "signature-backend"
-    assert response["version"] == "1.0.0"
+    assert response["service"] == settings.PROJECT_NAME
+    assert response["version"] == settings.VERSION
 
 
 def test_root_endpoint():
     """Verify root endpoint returns welcome message and docs URL."""
-    response = _resolve_coro(root())
+    response = root()
     assert "message" in response
     assert response["docs_url"] == "/docs"

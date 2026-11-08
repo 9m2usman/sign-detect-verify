@@ -170,7 +170,7 @@ def test_fastapi_app_structure():
     from backend.app.main import app
 
     assert app.title == "Signature Detection & Verification API"
-    routes = [route.path for route in app.routes]
+    routes = [route.path for route in app.routes if hasattr(route, "path")]
     assert "/health" in routes
     assert "/" in routes
 

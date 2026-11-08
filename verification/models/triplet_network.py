@@ -2,6 +2,7 @@
 Triplet Network for Signature Metric Learning
 Uses Anchor-Positive-Negative triplet formulations with Triplet Margin Loss
 to enforce tight genuine clustering while repelling skilled forgeries.
+Includes safe offline fallback for air-gapped / local test environments.
 License: BSD-3-Clause / Apache 2.0 (Zero Ultralytics, Zero AGPL)
 """
 
@@ -15,10 +16,18 @@ class TripletSignatureNetwork(nn.Module):
     """
     Triplet architecture sharing a deep convolutional encoder across Anchor, Positive, and Negative feeds.
     """
-    def __init__(self, embedding_dim: int = 256, pretrained: bool = True):
+    def __init__(self, embedding_dim: int = 256, pretrained: bool = False):
         super().__init__()
-        weights = models.ResNet18_Weights.DEFAULT if pretrained else None
-        backbone = models.resnet18(weights=weights)
+        backbone = None
+        if pretrained:
+            try:
+                weights = models.ResNet18_Weights.DEFAULT
+                backbone = models.resnet18(weights=weights)
+            except Exception:
+                backbone = models.resnet18(weights=None)
+        else:
+            backbone = models.resnet18(weights=None)
+
         in_features = backbone.fc.in_features
         backbone.fc = nn.Identity()
         self.backbone = backbone

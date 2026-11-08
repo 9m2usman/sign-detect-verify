@@ -1,14 +1,15 @@
 """
 Application Configuration Settings
-Uses Pydantic BaseSettings to parse environment variables with safe defaults for local and cloud environments.
+Uses Pydantic v2 BaseSettings and ConfigDict to parse environment variables with safe defaults.
 """
 
 from typing import List, Optional
 from pydantic_settings import BaseSettings
+from pydantic import ConfigDict
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Signature Detection & Verification Platform"
+    PROJECT_NAME: str = "Signature Detection & Verification API"
     API_V1_STR: str = "/api/v1"
     VERSION: str = "1.0.0"
     
@@ -45,10 +46,11 @@ class Settings(BaseSettings):
     THRESHOLD_FORGED: float = 0.65
     MAX_SIGNATURES_PER_DOC: int = 10
 
-    class Config:
-        case_sensitive = True
-        env_file = ".env"
-        extra = "allow"
+    model_config = ConfigDict(
+        case_sensitive=True,
+        env_file=".env",
+        extra="allow"
+    )
 
 
 settings = Settings()

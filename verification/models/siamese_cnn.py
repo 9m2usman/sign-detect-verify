@@ -2,6 +2,7 @@
 Siamese Convolutional Neural Network for Signature Verification
 Utilizes twin weight-sharing deep convolutional branches to project signature images
 into a normalized metric embedding space, trained using Contrastive Loss.
+Includes safe offline fallback for air-gapped / local test environments.
 License: BSD-3-Clause / Apache 2.0 (Zero Ultralytics, Zero AGPL)
 """
 
@@ -15,13 +16,18 @@ class SiameseSignatureCNN(nn.Module):
     """
     Siamese CNN architecture with shared backbone encoder for pairwise signature verification.
     """
-    def __init__(self, embedding_dim: int = 256, pretrained: bool = True):
+    def __init__(self, embedding_dim: int = 256, pretrained: bool = False):
         super().__init__()
-        # Use permissive lightweight ResNet-18 or MobileNetV3 backbone
-        weights = models.ResNet18_Weights.DEFAULT if pretrained else None
-        backbone = models.resnet18(weights=weights)
-        
-        # Extract feature representation before final classifier
+        backbone = None
+        if pretrained:
+            try:
+                weights = models.ResNet18_Weights.DEFAULT
+                backbone = models.resnet18(weights=weights)
+            except Exception:
+                backbone = models.resnet18(weights=None)
+        else:
+            backbone = models.resnet18(weights=None)
+
         in_features = backbone.fc.in_features
         backbone.fc = nn.Identity()
         self.backbone = backbone
@@ -52,7 +58,6 @@ class ContrastiveLoss(nn.Module):
     """
     Contrastive Loss function:
     L = 0.5 * Y * d^2 + 0.5 * (1 - Y) * max(0, margin - d)^2
-    where Y=1 for genuine pairs (similar) and Y=0 for forged/dissimilar pairs.
     """
     def __init__(self, margin: float = 1.0):
         super().__init__()

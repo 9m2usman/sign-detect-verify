@@ -1,72 +1,114 @@
-graph TB
-    subgraph ClientLayer [Client & Ingestion Layer]
-        User[Client / Web UI / Mobile App]
-        ThirdParty[Third-Party Core Banking / ERP]
+flowchart TD
+    %% AWS End-to-End Signature Detection, Verification & MLOps Architecture
+
+    subgraph CLIENT_TIER ["1. Client & Ingestion Tier"]
+        User["Client Web / Mobile Application"]
+        HFHub["Hugging Face Dataset Hub<br/>(New Signature Revisions)"]
     end
 
-    subgraph EdgeLayer [Edge & Security Layer]
-        Route53[Amazon Route 53 DNS]
-        WAF[AWS WAF]
-        CF[Amazon CloudFront CDN]
-        ALB[Application Load Balancer]
+    subgraph SECURITY_EDGE ["2. Edge & Security Boundary"]
+        CF["Amazon CloudFront CDN"]
+        WAF["AWS WAF (Web App Firewall)"]
+        ALB["Application Load Balancer (ALB)"]
     end
 
-    subgraph ComputeLayer [ECS / Fargate Compute Cluster]
-        subgraph BackendService [FastAPI Backend Service]
-            API1[FastAPI Container 1]
-            API2[FastAPI Container 2]
+    subgraph INFERENCE_PIPELINE ["3. Production Asynchronous Inference Pipeline (VPC)"]
+        subgraph ECS_API_CLUSTER ["Amazon ECS Fargate (API Service)"]
+            FastAPI["FastAPI REST Container<br/>(POST /verify, GET /jobs, Webhook)"]
         end
 
-        subgraph WorkerService [Asynchronous Celery Workers]
-            Worker1[Celery Worker 1 - CPU/GPU]
-            Worker2[Celery Worker 2 - CPU/GPU]
+        subgraph MESSAGE_BROKER ["Message Broker & Decoupling Tier"]
+            RabbitMQ["Amazon MQ / RabbitMQ Cluster<br/>(Durable Queues: inference_queue)"]
+        end
+
+        subgraph ECS_WORKER_CLUSTER ["Amazon ECS Fargate (Worker Service)"]
+            CeleryWorker["Celery Inference Worker<br/>(Two-Stage Inference Engine)"]
+            Detector["Stage 1: RTMDet-Tiny Detector<br/>(Apache 2.0 Bounding Box Localization)"]
+            Cropper["Stage 1.5: Adaptive Signature Cropper<br/>(5% Margin + Aspect-Ratio Letterbox)"]
+            Verifier["Stage 2: Siamese CNN Verifier<br/>(256-dim Metric Cosine Similarity)"]
         end
     end
 
-    subgraph MessagingLayer [Queue & Broker Layer]
-        RabbitMQ[Amazon MQ / Self-Hosted RabbitMQ]
-        RedisCache[Amazon ElastiCache Redis]
+    subgraph PERSISTENCE_STORAGE ["4. Storage & Persistence Tier"]
+        RDS[("Amazon RDS PostgreSQL<br/>(Jobs, Bounding Boxes, Similarity Scores)")]
+        S3Docs[("Amazon S3 Bucket: Documents & Crops<br/>(Encrypted at Rest with KMS)")]
+        S3Models[("Amazon S3 Bucket: Model Registry<br/>(Champion & Candidate Checkpoints)")]
     end
 
-    subgraph StorageLayer [Persistence & Data Layer]
-        RDS[(Amazon RDS PostgreSQL 16 Multi-AZ)]
-        S3Docs[(Amazon S3 - Document Storage)]
-        S3Models[(Amazon S3 - Model Artifacts & MLflow)]
+    subgraph MLOPS_TRAINING_PIPELINE ["5. Automated Continuous Training Pipeline (AWS Batch GPU)"]
+        HFWebhookReceiver["FastAPI Webhook Handler<br/>(HMAC-SHA256 Token Validation)"]
+        RetrainQueue["Amazon MQ: training_queue"]
+        AWSBatch["AWS Batch GPU Job (EC2 G4dn/G5)<br/>(Isolated Remote GPU Container)"]
+        DatasetIngest["Dataset Downloader & YOLO/COCO Validator"]
+        ColabDev["Google Colab T4 GPU<br/>(Initial Development & Prototyping)"]
+        ModelTrainer["Candidate Model Training<br/>(RTMDet vs YOLOX | Siamese vs Triplet)"]
+        ModelEvaluator["Automated Model Evaluator<br/>(mAP@50, mAP@50:95, EER, FAR, FRR)"]
+        PromotionGate{"Model Registry Gate<br/>Candidate > Champion?"}
     end
 
-    subgraph MLOpsLayer [MLOps & Observability]
-        MLflow[MLflow Tracking Server on ECS]
-        CloudWatch[Amazon CloudWatch Metrics & Logs]
-        ECR[Amazon Elastic Container Registry]
+    subgraph OBSERVABILITY_REGISTRY ["6. Observability, Registry & Management"]
+        MLflow["MLflow Tracking Server<br/>(Metrics, Hyperparameters, Loss Curves)"]
+        CloudWatch["Amazon CloudWatch<br/>(Container Logs, Latency, Alarms)"]
+        SecretsMgr["AWS Secrets Manager<br/>(DB Credentials, Webhook Secrets)"]
+        IAM["AWS IAM & OIDC Federation"]
     end
 
-    User --> Route53
-    ThirdParty --> Route53
-    Route53 --> CF
+    subgraph DEVOPS_CICD ["7. DevOps & CI/CD Pipeline"]
+        GitHub["GitHub Repository<br/>(9m2usman/sign-detect-verify)"]
+        GHActions["GitHub Actions CI/CD Workflow<br/>(Lint, Permissive License Check, PyTest)"]
+        ECR["Amazon Elastic Container Registry (ECR)<br/>(Docker Images: API & Worker)"]
+    end
+
+    %% Client Interactions
+    User -->|HTTPS POST /verify| CF
     CF --> WAF
     WAF --> ALB
-    ALB --> API1
-    ALB --> API2
+    ALB --> FastAPI
 
-    API1 --> RDS
-    API2 --> RDS
-    API1 --> RabbitMQ
-    API2 --> RabbitMQ
-    API1 --> S3Docs
-    API2 --> S3Docs
+    %% Asynchronous Inference Flow
+    FastAPI -->|1. Store Uploaded Document| S3Docs
+    FastAPI -->|2. Create Job PENDING| RDS
+    FastAPI -->|3. Publish Job ID| RabbitMQ
+    RabbitMQ -->|4. Pull Task| CeleryWorker
 
-    RabbitMQ --> Worker1
-    RabbitMQ --> Worker2
-    Worker1 --> S3Docs
-    Worker2 --> S3Docs
-    Worker1 --> S3Models
-    Worker2 --> S3Models
-    Worker1 --> RDS
-    Worker2 --> RDS
+    CeleryWorker -->|5. Fetch Image| S3Docs
+    CeleryWorker --> Detector
+    Detector --> Cropper
+    Cropper --> Verifier
+    Verifier -->|6. Save Signature Crops| S3Docs
+    Verifier -->|7. Write Final Scores & Decision| RDS
 
-    Worker1 --> MLflow
-    Worker2 --> MLflow
-    MLflow --> S3Models
+    User -.->|8. Poll GET /jobs/{id}| ALB
+    ALB -.-> FastAPI
+    FastAPI -.->|Read Completed State| RDS
 
-    ComputeLayer -.-> CloudWatch
-    ECR -.-> ComputeLayer
+    %% Automated Retraining Pipeline Flow
+    HFHub -->|POST Webhook Event| CF
+    CF --> ALB
+    ALB --> HFWebhookReceiver
+    HFWebhookReceiver -->|Authenticate Secret| SecretsMgr
+    HFWebhookReceiver -->|Publish Retraining Event| RetrainQueue
+    RetrainQueue --> AWSBatch
+
+    ColabDev -.->|Prototyped Scripts| GitHub
+    AWSBatch --> DatasetIngest
+    DatasetIngest --> ModelTrainer
+    ModelTrainer --> ModelEvaluator
+    ModelTrainer -.->|Log Metrics & Curves| MLflow
+    ModelEvaluator --> PromotionGate
+
+    PromotionGate -- Yes -->|Promote to Production| S3Models
+    PromotionGate -- No -->|Reject & Rollback| CloudWatch
+    S3Models -.->|Pull Active Weights| CeleryWorker
+
+    %% CI/CD Deployments
+    GitHub --> GHActions
+    GHActions -->|Build & Scan Containers| ECR
+    ECR -->|Deploy Task Definition| ECS_API_CLUSTER
+    ECR -->|Deploy Task Definition| ECS_WORKER_CLUSTER
+    GHActions -->|Assume Role via OIDC| IAM
+
+    %% Observability
+    FastAPI --> CloudWatch
+    CeleryWorker --> CloudWatch
+    FastAPI --> SecretsMgr
