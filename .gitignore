@@ -46,6 +46,7 @@ merged_signature_dataset.zip
 merged_signature_dataset/
 data/raw/
 data/processed/
+sample_test_run/extracted_crops/
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
