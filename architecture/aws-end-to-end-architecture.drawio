@@ -1,0 +1,130 @@
+<mxfile host="app.diagrams.net" modified="2026-11-08T19:40:00.000Z" agent="Antigravity Architecture Generator" version="24.0.0" type="device">
+  <diagram id="aws-sign-verify" name="AWS End-to-End Signature Detection, Verification and MLOps Architecture">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- CLIENT TIER -->
+        <mxCell id="group_client" value="1. Client &amp; Data Source Tier" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=14;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="300" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="node_client_app" value="Client Application&#xa;(Web / Mobile / Partner API)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="group_client">
+          <mxGeometry x="30" y="40" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="node_hf_hub" value="Hugging Face Dataset Hub&#xa;(Trigger on New Dataset Commit)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;" vertex="1" parent="group_client">
+          <mxGeometry x="30" y="130" width="240" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- EDGE & SECURITY BOUNDARY -->
+        <mxCell id="group_edge" value="2. AWS Edge &amp; Security Boundary" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=14;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="380" y="40" width="280" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="node_r53" value="Amazon Route 53 (DNS)&#xa;&amp; CloudFront CDN" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="group_edge">
+          <mxGeometry x="20" y="40" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="node_waf" value="AWS WAF (Web Application Firewall)&#xa;Rate Limit, IP Rep, OWASP Top 10" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="group_edge">
+          <mxGeometry x="20" y="100" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="node_alb" value="Application Load Balancer (ALB)&#xa;Multi-AZ SSL Termination (:443)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="group_edge">
+          <mxGeometry x="20" y="160" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- VPC PRODUCTION INFERENCE -->
+        <mxCell id="group_vpc" value="3. Production Inference Pipeline (Amazon VPC Private Subnets)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=14;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="700" y="40" width="850" height="340" as="geometry" />
+        </mxCell>
+        <mxCell id="node_ecs_api" value="Amazon ECS Fargate (API Service)&#xa;FastAPI Asynchronous Microservice&#xa;• POST /api/v1/signatures/verify&#xa;• GET /api/v1/jobs/{job_id}&#xa;• POST /api/v1/webhooks/huggingface" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;align=left;spacingLeft=10;" vertex="1" parent="group_vpc">
+          <mxGeometry x="30" y="40" width="280" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="node_rabbit" value="Amazon MQ (RabbitMQ 3.13)&#xa;• Durable Queue: inference_queue&#xa;• Durable Queue: training_queue&#xa;• Message ACK &amp; Dead-Letter Routing" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="group_vpc">
+          <mxGeometry x="360" y="40" width="200" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="node_ecs_worker" value="Amazon ECS Fargate (Worker Service)&#xa;Celery Distributed Inference Worker&#xa;• Stage 1: RTMDet-Tiny (Bounding Box)&#xa;• Stage 1.5: Adaptive Signature Cropper&#xa;• Stage 2: Siamese ResNet-50 Verifier&#xa;  (256-D Embedding + Cosine Distance)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;align=left;spacingLeft=10;" vertex="1" parent="group_vpc">
+          <mxGeometry x="600" y="40" width="230" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="node_rds" value="Amazon RDS PostgreSQL 16&#xa;Multi-AZ Enterprise Database&#xa;• Jobs, Candidates, Results&#xa;• Storage of Calibrated Decisions" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="group_vpc">
+          <mxGeometry x="180" y="200" width="220" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="node_s3" value="Amazon S3 Buckets&#xa;• sign-verify-documents-prod&#xa;• sign-verify-crops-vault&#xa;• sign-verify-model-registry" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="group_vpc">
+          <mxGeometry x="500" y="200" width="240" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- MLOPS & AUTOMATED RETRAINING -->
+        <mxCell id="group_mlops" value="4. Automated Continuous Retraining &amp; Model Registry Pipeline" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=14;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="420" width="940" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="node_webhook_val" value="FastAPI Webhook Validator&#xa;HMAC SHA256 Secret Verification&#xa;&amp; Event Idempotency Guard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;" vertex="1" parent="group_mlops">
+          <mxGeometry x="30" y="50" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="node_gpu_batch" value="AWS Batch / GPU Container (EC2 G4dn)&#xa;Remote Training Engine&#xa;• Download HF Dataset Commit&#xa;• Train RTMDet-Tiny / Siamese CNN&#xa;• Zero AGPL / Apache 2.0" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="group_mlops">
+          <mxGeometry x="300" y="50" width="270" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="node_eval_gate" value="Automated Model Evaluation&#xa;&amp; Registry Promotion Gate&#xa;• Threshold: mAP@50 &gt; Champion&#xa;• Threshold: EER &lt; 8.0%&#xa;• Auto-Rollback if Degraded" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" vertex="1" parent="group_mlops">
+          <mxGeometry x="630" y="40" width="270" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="node_colab" value="Google Colab GPU (Tesla T4)&#xa;Interactive Prototyping &amp; Experiments&#xa;(Linked via GitHub Repo &amp; G4)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="group_mlops">
+          <mxGeometry x="30" y="180" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="node_mlflow" value="MLflow Tracking Server&#xa;Parameters, Loss Curves, Weights,&#xa;Artifacts &amp; Model Versioning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="group_mlops">
+          <mxGeometry x="340" y="180" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- SECURITY & OBSERVABILITY -->
+        <mxCell id="group_ops" value="5. Security, DevOps &amp; Observability" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=14;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="420" width="540" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="node_github_ci" value="GitHub Actions CI/CD&#xa;• Permissive License Audit (Zero AGPL)&#xa;• PyTest Test Suite (Unit + Integration)&#xa;• Multi-stage Docker Build to Amazon ECR" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="group_ops">
+          <mxGeometry x="30" y="50" width="230" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="node_ecr" value="Amazon ECR (Registry)&#xa;Private Container Registry&#xa;• sign-verify/backend&#xa;• sign-verify/worker" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;" vertex="1" parent="group_ops">
+          <mxGeometry x="290" y="50" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="node_secrets" value="AWS Secrets Manager&#xa;&amp; IAM OIDC Federation&#xa;Credentials &amp; Webhook Keys" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" vertex="1" parent="group_ops">
+          <mxGeometry x="30" y="180" width="230" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="node_cloudwatch" value="Amazon CloudWatch&#xa;Container Insights, Alarms,&#xa;Structured Logs &amp; Metrics" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="group_ops">
+          <mxGeometry x="290" y="180" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- CONNECTORS / ARROWS -->
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="node_client_app" target="node_r53">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="node_r53" target="node_waf">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="node_waf" target="node_alb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="node_alb" target="node_ecs_api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="node_ecs_api" target="node_rabbit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="node_rabbit" target="node_ecs_worker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="node_ecs_worker" target="node_rds">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="node_ecs_worker" target="node_s3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="node_hf_hub" target="node_webhook_val">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="node_webhook_val" target="node_gpu_batch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="node_gpu_batch" target="node_eval_gate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="node_github_ci" target="node_ecr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
