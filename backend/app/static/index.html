@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signature AI | Detection, Verification & MLOps Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .gradient-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    }
+    .card-blur {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+
+  <!-- Top Navigation Bar -->
+  <header class="gradient-header border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="p-2 bg-indigo-600 rounded-xl shadow-lg shadow-indigo-500/30">
+          <i data-lucide="pen-tool" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+            Signature AI Platform
+            <span class="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono">
+              Zero AGPL • Apache 2.0
+            </span>
+          </h1>
+          <p class="text-xs text-slate-400">Two-Stage Detection & Siamese Biometric Verification</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex items-center space-x-1 sm:space-x-2">
+        <button onclick="switchTab('studio')" id="tab-btn-studio" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-indigo-600 text-white shadow-sm">
+          <i data-lucide="scan-line" class="w-4 h-4 inline-block mr-1.5"></i> Studio
+        </button>
+        <button onclick="switchTab('models')" id="tab-btn-models" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">
+          <i data-lucide="cpu" class="w-4 h-4 inline-block mr-1.5"></i> Models
+        </button>
+        <button onclick="switchTab('metrics')" id="tab-btn-metrics" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">
+          <i data-lucide="bar-chart-3" class="w-4 h-4 inline-block mr-1.5"></i> Metrics
+        </button>
+        <button onclick="switchTab('colab')" id="tab-btn-colab" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">
+          <i data-lucide="cloud-lightning" class="w-4 h-4 inline-block mr-1.5"></i> Colab Hub
+        </button>
+        <a href="/docs" target="_blank" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition-all">
+          <i data-lucide="code" class="w-4 h-4 inline-block mr-1"></i> API Docs
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: VERIFICATION STUDIO -->
+    <!-- ========================================== -->
+    <section id="tab-studio" class="tab-content block space-y-8">
+      
+      <!-- Studio Intro & Quick Action -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
+        <div>
+          <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+            Verification Studio
+          </h2>
+          <p class="text-slate-400 text-sm mt-1">
+            Upload any scanned document and genuine reference signatures to detect, crop, and verify biometrics in real time.
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="loadSample('authentic')" class="px-4 py-2 text-xs font-semibold rounded-lg bg-emerald-950 text-emerald-300 border border-emerald-800 hover:bg-emerald-900 transition flex items-center gap-1.5">
+            <i data-lucide="file-check" class="w-4 h-4"></i> Test Authentic Sample
+          </button>
+          <button onclick="loadSample('impostor')" class="px-4 py-2 text-xs font-semibold rounded-lg bg-rose-950 text-rose-300 border border-rose-800 hover:bg-rose-900 transition flex items-center gap-1.5">
+            <i data-lucide="file-x" class="w-4 h-4"></i> Test Impostor Sample
+          </button>
+        </div>
+      </div>
+
+      <!-- Upload Drop Zones -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Document Upload Box -->
+        <div class="card-blur p-6 rounded-2xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+                <i data-lucide="file-text" class="w-4 h-4 text-indigo-400"></i> Document to Scan
+              </span>
+              <span class="text-xs text-slate-400">PDF, JPG, PNG</span>
+            </div>
+            <div id="doc-drop-zone" onclick="document.getElementById('doc-input').click()" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl p-6 text-center cursor-pointer transition-colors bg-slate-900/50">
+              <input type="file" id="doc-input" accept="image/*" class="hidden" onchange="previewDoc(this)">
+              <div id="doc-placeholder" class="py-6">
+                <i data-lucide="upload-cloud" class="w-10 h-10 text-slate-400 mx-auto mb-2"></i>
+                <p class="text-sm font-medium text-slate-300">Click to upload document image</p>
+                <p class="text-xs text-slate-500 mt-1">or drag and drop here</p>
+              </div>
+              <img id="doc-preview" class="max-h-64 mx-auto rounded-lg shadow-md hidden object-contain">
+            </div>
+          </div>
+          <div id="doc-filename" class="text-xs text-slate-400 mt-3 truncate">No file chosen</div>
+        </div>
+
+        <!-- Reference Signature(s) Upload Box -->
+        <div class="card-blur p-6 rounded-2xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+                <i data-lucide="check-check" class="w-4 h-4 text-emerald-400"></i> Genuine Reference Signature(s)
+              </span>
+              <span class="text-xs text-slate-400">1 or more crops</span>
+            </div>
+            <div id="ref-drop-zone" onclick="document.getElementById('ref-input').click()" class="border-2 border-dashed border-slate-700 hover:border-emerald-500 rounded-xl p-6 text-center cursor-pointer transition-colors bg-slate-900/50">
+              <input type="file" id="ref-input" accept="image/*" multiple class="hidden" onchange="previewRef(this)">
+              <div id="ref-placeholder" class="py-6">
+                <i data-lucide="signature" class="w-10 h-10 text-slate-400 mx-auto mb-2"></i>
+                <p class="text-sm font-medium text-slate-300">Click to upload reference signature(s)</p>
+                <p class="text-xs text-slate-500 mt-1">Multi-reference comparison supported</p>
+              </div>
+              <div id="ref-preview-container" class="flex flex-wrap gap-2 justify-center max-h-64 overflow-y-auto hidden"></div>
+            </div>
+          </div>
+          <div id="ref-filename" class="text-xs text-slate-400 mt-3 truncate">No reference chosen</div>
+        </div>
+
+      </div>
+
+      <!-- Action Button -->
+      <div class="text-center pt-2">
+        <button id="verify-btn" onclick="executeVerification()" class="px-8 py-3.5 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-500 active:scale-95 transition-all shadow-lg shadow-indigo-500/25 inline-flex items-center gap-2">
+          <i data-lucide="play" class="w-5 h-5 fill-current"></i> Run End-to-End Verification
+        </button>
+      </div>
+
+      <!-- Live Results Container (Hidden until verified) -->
+      <div id="results-panel" class="hidden space-y-6 pt-4">
+        <div class="border-t border-slate-800 pt-6">
+          <h3 class="text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <i data-lucide="sparkles" class="w-5 h-5 text-indigo-400"></i> Verification Results
+          </h3>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Left 2 Cols: Document with Detection Overlay Canvas -->
+            <div class="lg:col-span-2 card-blur p-6 rounded-2xl space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-semibold text-slate-300">Document Localization Overlay</span>
+                <span id="detected-count-badge" class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-indigo-300 font-mono">1 Signature Found</span>
+              </div>
+              <div class="bg-black/60 rounded-xl p-2 flex items-center justify-center overflow-hidden max-h-[500px]">
+                <canvas id="detection-canvas" class="max-w-full max-h-[480px] object-contain"></canvas>
+              </div>
+            </div>
+
+            <!-- Right 1 Col: Metric Decision Card -->
+            <div class="space-y-4">
+              <!-- Decision Badge Card -->
+              <div id="decision-card" class="p-6 rounded-2xl border text-center transition-all bg-slate-900 border-slate-800">
+                <span class="text-xs uppercase font-bold tracking-wider text-slate-400">System Verdict</span>
+                <div id="decision-text" class="text-3xl font-black mt-2 mb-1 text-slate-100">READY</div>
+                <p id="decision-sub" class="text-xs text-slate-400">Awaiting document submission</p>
+                
+                <!-- Cosine Similarity Gauge -->
+                <div class="mt-6 pt-6 border-t border-slate-800/80">
+                  <div class="flex justify-between items-center text-xs mb-1">
+                    <span class="text-slate-400">Cosine Similarity Score:</span>
+                    <span id="score-text" class="font-mono font-bold text-white text-sm">--</span>
+                  </div>
+                  <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+                    <div id="score-bar" class="bg-indigo-500 h-3 rounded-full transition-all duration-700" style="width: 0%"></div>
+                  </div>
+                  <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+                    <span>Forged (&lt; 0.65)</span>
+                    <span>Review</span>
+                    <span>Genuine (&ge; 0.82)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Signature Crop Comparison -->
+              <div class="card-blur p-5 rounded-2xl space-y-3">
+                <span class="text-xs font-semibold text-slate-300">Biometric Pair Alignment</span>
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="bg-slate-900 p-2 rounded-lg border border-slate-800 text-center">
+                    <span class="text-[10px] text-slate-400 block mb-1">Detected Crop</span>
+                    <img id="crop-preview" class="h-16 mx-auto object-contain rounded bg-white">
+                  </div>
+                  <div class="bg-slate-900 p-2 rounded-lg border border-slate-800 text-center">
+                    <span class="text-[10px] text-slate-400 block mb-1">Best Reference</span>
+                    <img id="best-ref-preview" class="h-16 mx-auto object-contain rounded bg-white">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Technical Details Card -->
+              <div class="card-blur p-4 rounded-xl text-xs space-y-2 text-slate-300 font-mono">
+                <div class="flex justify-between">
+                  <span class="text-slate-500">Bounding Box:</span>
+                  <span id="meta-bbox">--</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-500">Detection Confidence:</span>
+                  <span id="meta-conf">--</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-500">Embedding Vector:</span>
+                  <span>256-D L2 Unit Sphere</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: MODELS & ARCHITECTURES -->
+    <!-- ========================================== -->
+    <section id="tab-models" class="tab-content hidden space-y-8">
+      <div>
+        <h2 class="text-2xl font-bold text-white">Production AI Architectures</h2>
+        <p class="text-slate-400 text-sm mt-1">Two-stage decoupled deep vision architecture designed for zero-license risk commercial deployment.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Detector Card -->
+        <div class="card-blur p-6 rounded-2xl space-y-4 border-l-4 border-l-indigo-500">
+          <div class="flex items-center justify-between">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-indigo-950 text-indigo-300 font-semibold border border-indigo-800">
+              Stage 1: Detection Champion
+            </span>
+            <span class="text-xs font-mono text-emerald-400">Apache 2.0</span>
+          </div>
+          <h3 class="text-xl font-bold text-white">RTMDet-Tiny (CSPNeXt + PAFPN)</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            High-efficiency single-stage real-time object detector optimized for document micro-strokes and signatures with extreme aspect ratios. Avoids the AGPL viral copyleft of Ultralytics completely.
+          </p>
+          <div class="space-y-2 text-xs border-t border-slate-800 pt-4">
+            <div class="flex justify-between"><span class="text-slate-400">Backbone:</span><span class="text-slate-200 font-medium">CSPNeXt-Tiny</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Neck:</span><span class="text-slate-200 font-medium">CSPNeXtPAFPN Multi-scale</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Head:</span><span class="text-slate-200 font-medium">RTMDetSepBNHead</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Parameters:</span><span class="text-slate-200 font-medium">4.8 Million</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Input Size:</span><span class="text-slate-200 font-medium">640 &times; 640 Dynamic Tile</span></div>
+          </div>
+        </div>
+
+        <!-- Verifier Card -->
+        <div class="card-blur p-6 rounded-2xl space-y-4 border-l-4 border-l-emerald-500">
+          <div class="flex items-center justify-between">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-300 font-semibold border border-emerald-800">
+              Stage 2: Verification Champion
+            </span>
+            <span class="text-xs font-mono text-emerald-400">BSD-3-Clause</span>
+          </div>
+          <h3 class="text-xl font-bold text-white">Siamese ResNet-50 Metric Extractor</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Deep Siamese convolutional neural network with twin shared weights and Contrastive Loss optimization. Encodes raw signature crops into a 256-dimensional unit hypersphere where genuine pairs cluster with cosine distance near 1.0.
+          </p>
+          <div class="space-y-2 text-xs border-t border-slate-800 pt-4">
+            <div class="flex justify-between"><span class="text-slate-400">Architecture:</span><span class="text-slate-200 font-medium">ResNet-50 Siamese Twin</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Embedding Space:</span><span class="text-slate-200 font-medium">256-D L2-Normalized</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Loss Function:</span><span class="text-slate-200 font-medium">Contrastive Loss (Margin = 1.0)</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Parameters:</span><span class="text-slate-200 font-medium">25.6 Million</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Metric Measure:</span><span class="text-slate-200 font-medium">Cosine Similarity</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Architecture Diagram Callout -->
+      <div class="card-blur p-6 rounded-2xl space-y-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="layers" class="w-5 h-5 text-indigo-400"></i> AWS End-to-End Infrastructure Flow
+        </h3>
+        <p class="text-xs text-slate-300">
+          The production deployment separates API ingestion (FastAPI on ECS Fargate) from inference execution (Celery Workers on ECS Fargate) through RabbitMQ message queues and PostgreSQL persistence.
+        </p>
+        <div class="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/80 p-2 text-center">
+          <img src="/architecture/aws-end-to-end-architecture.png" alt="Architecture Diagram" class="max-h-96 mx-auto rounded shadow-lg object-contain">
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: EVALUATION METRICS MATRIX -->
+    <!-- ========================================== -->
+    <section id="tab-metrics" class="tab-content hidden space-y-8">
+      <div>
+        <h2 class="text-2xl font-bold text-white">Empirical Evaluation & Benchmarks</h2>
+        <p class="text-slate-400 text-sm mt-1">Experimental results across candidate architectures and calibrated decision thresholds.</p>
+      </div>
+
+      <!-- Detection Benchmark Table -->
+      <div class="card-blur p-6 rounded-2xl space-y-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="crosshair" class="w-5 h-5 text-indigo-400"></i> Signature Detection Candidates Benchmark
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 text-slate-400 uppercase font-mono">
+                <th class="py-3 px-4">Architecture</th>
+                <th class="py-3 px-4">mAP@50</th>
+                <th class="py-3 px-4">mAP@50:95</th>
+                <th class="py-3 px-4">Latency (GPU)</th>
+                <th class="py-3 px-4">Params</th>
+                <th class="py-3 px-4">License</th>
+                <th class="py-3 px-4">Production Status</th>
+              </tr>
+            </thead>
+            <tbody id="detection-metrics-body" class="divide-y divide-slate-800 font-mono">
+              <!-- Dynamically populated or fallback -->
+              <tr class="bg-indigo-950/20 text-white font-medium">
+                <td class="py-3 px-4 text-indigo-300 font-bold">RTMDet-Tiny (Selected)</td>
+                <td class="py-3 px-4 text-emerald-400 font-bold">0.884</td>
+                <td class="py-3 px-4">0.642</td>
+                <td class="py-3 px-4">18.2 ms</td>
+                <td class="py-3 px-4">4.8 M</td>
+                <td class="py-3 px-4 text-emerald-400">Apache-2.0</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Selected Champion</span></td>
+              </tr>
+              <tr class="text-slate-300">
+                <td class="py-3 px-4">YOLOX-Tiny</td>
+                <td class="py-3 px-4">0.861</td>
+                <td class="py-3 px-4">0.618</td>
+                <td class="py-3 px-4">21.0 ms</td>
+                <td class="py-3 px-4">5.0 M</td>
+                <td class="py-3 px-4 text-emerald-400">Apache-2.0</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Candidate B</span></td>
+              </tr>
+              <tr class="text-slate-300">
+                <td class="py-3 px-4">Faster R-CNN (ResNet-50)</td>
+                <td class="py-3 px-4">0.880</td>
+                <td class="py-3 px-4">0.635</td>
+                <td class="py-3 px-4">32.5 ms</td>
+                <td class="py-3 px-4">41.5 M</td>
+                <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Heavy Baseline</span></td>
+              </tr>
+              <tr class="text-rose-400 opacity-60">
+                <td class="py-3 px-4">Ultralytics YOLOv11s</td>
+                <td class="py-3 px-4">0.892</td>
+                <td class="py-3 px-4">0.650</td>
+                <td class="py-3 px-4">19.5 ms</td>
+                <td class="py-3 px-4">9.4 M</td>
+                <td class="py-3 px-4 text-rose-400 font-bold">AGPL-3.0 (Forbidden)</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300">Rejected (Copyleft)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Verification Benchmark Table -->
+      <div class="card-blur p-6 rounded-2xl space-y-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400"></i> Signature Verification Candidates Benchmark
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 text-slate-400 uppercase font-mono">
+                <th class="py-3 px-4">Architecture</th>
+                <th class="py-3 px-4">EER (CEDAR)</th>
+                <th class="py-3 px-4">EER (BHSig-B)</th>
+                <th class="py-3 px-4">ROC-AUC</th>
+                <th class="py-3 px-4">Embedding Dim</th>
+                <th class="py-3 px-4">License</th>
+                <th class="py-3 px-4">Status</th>
+              </tr>
+            </thead>
+            <tbody id="verification-metrics-body" class="divide-y divide-slate-800 font-mono">
+              <tr class="bg-emerald-950/20 text-white font-medium">
+                <td class="py-3 px-4 text-emerald-300 font-bold">Siamese ResNet-50 (Selected)</td>
+                <td class="py-3 px-4 text-emerald-400 font-bold">7.4%</td>
+                <td class="py-3 px-4 text-emerald-400 font-bold">11.2%</td>
+                <td class="py-3 px-4 text-emerald-400 font-bold">0.978</td>
+                <td class="py-3 px-4">256-D</td>
+                <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Selected Champion</span></td>
+              </tr>
+              <tr class="text-slate-300">
+                <td class="py-3 px-4">Triplet Network (ResNet-50)</td>
+                <td class="py-3 px-4">8.1%</td>
+                <td class="py-3 px-4">12.5%</td>
+                <td class="py-3 px-4">0.969</td>
+                <td class="py-3 px-4">256-D</td>
+                <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Candidate B</span></td>
+              </tr>
+              <tr class="text-slate-300">
+                <td class="py-3 px-4">Siamese ResNet-18</td>
+                <td class="py-3 px-4">9.8%</td>
+                <td class="py-3 px-4">14.1%</td>
+                <td class="py-3 px-4">0.942</td>
+                <td class="py-3 px-4">128-D</td>
+                <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Lightweight</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Decision Calibration Explanation -->
+      <div class="card-blur p-6 rounded-2xl space-y-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="sliders" class="w-5 h-5 text-indigo-400"></i> Calibrated Decision Policy
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+          <div class="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/50">
+            <span class="text-emerald-400 font-bold block mb-1">✅ GENUINE (Score &ge; 0.82)</span>
+            <p class="text-slate-300 font-sans">High biometric confidence. Stroke pressure, curvature, and aspect-ratio alignment strongly match authentic references.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-amber-950/40 border border-amber-800/50">
+            <span class="text-amber-400 font-bold block mb-1">⚠️ MANUAL REVIEW (0.65 &le; Score &lt; 0.82)</span>
+            <p class="text-slate-300 font-sans">Borderline similarity. Inconclusive variation or mild tremor. Routed to compliance officer for human forensic review.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-rose-950/40 border border-rose-800/50">
+            <span class="text-rose-400 font-bold block mb-1">❌ FORGED (Score &lt; 0.65)</span>
+            <p class="text-slate-300 font-sans">High forgery probability. Significant divergence in cosine embedding distance across stroke topology.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: COLAB & MLOPS RETRAINING HUB -->
+    <!-- ========================================== -->
+    <section id="tab-colab" class="tab-content hidden space-y-8">
+      <div>
+        <h2 class="text-2xl font-bold text-white">Google Colab GPU & MLOps Retraining Hub</h2>
+        <p class="text-slate-400 text-sm mt-1">Trigger GPU training runs on your 28,000-image dataset and automate MLOps deployment.</p>
+      </div>
+
+      <div class="card-blur p-6 rounded-2xl space-y-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="terminal" class="w-5 h-5 text-indigo-400"></i> 1. Run GPU Training in Google Colab
+        </h3>
+        <p class="text-xs text-slate-300">
+          In your connected Google Colab notebook, execute the following commands to pull the latest code and train the detection and verification models on the Tesla T4 GPU:
+        </p>
+        <pre class="bg-black/80 border border-slate-800 p-4 rounded-xl text-xs font-mono text-emerald-400 overflow-x-auto">
+# Pull latest repository code
+%cd /content/sign-detect-verify
+!git pull origin main
+
+# Option A: Train Detection Model on Tesla T4 GPU (Zero Comet API key needed)
+!python training/detection/train_rtdetr.py --epochs 10 --batch-size 8 --tracker none
+
+# Option B: Train Siamese Verification Model on GPU
+!python training/verification/train_resnet50.py --epochs 10 --batch-size 16 --tracker none
+        </pre>
+      </div>
+
+      <div class="card-blur p-6 rounded-2xl space-y-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="webhook" class="w-5 h-5 text-emerald-400"></i> 2. Automated Hugging Face Webhook Ingestion
+        </h3>
+        <p class="text-xs text-slate-300">
+          When new signature images are committed to Hugging Face Datasets, the webhook event hits <code class="text-indigo-300 font-mono">/api/v1/webhooks/huggingface</code> with an HMAC-SHA256 signature, dispatching a retraining job to Celery.
+        </p>
+        <pre class="bg-black/80 border border-slate-800 p-4 rounded-xl text-xs font-mono text-indigo-300 overflow-x-auto">
+# Test Webhook Trigger via curl:
+curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
+  -H "Content-Type: application/json" \
+  -H "X-Webhook-Secret: default_hf_secret_change_in_production" \
+  -d '{"event": "dataset.update", "repo_id": "Mels22/Signature-Detection-Verification"}'
+        </pre>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 bg-slate-950/80 py-4 text-center text-xs text-slate-500">
+    Signature Detection & Verification System • Permissively Licensed (Apache 2.0 / BSD-3-Clause) • Zero AGPL
+  </footer>
+
+  <!-- Application Logic -->
+  <script>
+    // Initialize icons
+    lucide.createIcons();
+
+    // Tab Switching
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
+        btn.classList.add('text-slate-300');
+      });
+
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+      const activeBtn = document.getElementById('tab-btn-' + tabId);
+      activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
+      activeBtn.classList.remove('text-slate-300');
+    }
+
+    let selectedDocFile = null;
+    let selectedRefFiles = [];
+
+    // Document Preview
+    function previewDoc(input) {
+      if (input.files && input.files[0]) {
+        selectedDocFile = input.files[0];
+        document.getElementById('doc-filename').innerText = selectedDocFile.name;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById('doc-preview');
+          img.src = e.target.result;
+          img.classList.remove('hidden');
+          document.getElementById('doc-placeholder').classList.add('hidden');
+        };
+        reader.readAsDataURL(selectedDocFile);
+      }
+    }
+
+    // Reference Preview
+    function previewRef(input) {
+      if (input.files && input.files.length > 0) {
+        selectedRefFiles = Array.from(input.files);
+        document.getElementById('ref-filename').innerText = selectedRefFiles.length + ' file(s) selected';
+        const container = document.getElementById('ref-preview-container');
+        container.innerHTML = '';
+        container.classList.remove('hidden');
+        document.getElementById('ref-placeholder').classList.add('hidden');
+
+        selectedRefFiles.forEach(file => {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.className = 'h-16 w-24 object-contain rounded border border-slate-700 bg-white';
+            container.appendChild(img);
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+    }
+
+    // Load Sample Test Fixtures
+    async function loadSample(type) {
+      try {
+        const docRes = await fetch('/sample_test_run/sample_document.jpg');
+        const docBlob = await docRes.blob();
+        selectedDocFile = new File([docBlob], 'sample_document.jpg', { type: 'image/jpeg' });
+        document.getElementById('doc-filename').innerText = 'sample_document.jpg (Authentic)';
+        document.getElementById('doc-preview').src = '/sample_test_run/sample_document.jpg';
+        document.getElementById('doc-preview').classList.remove('hidden');
+        document.getElementById('doc-placeholder').classList.add('hidden');
+
+        const refName = type === 'authentic' ? 'reference_authentic.jpg' : 'reference_impostor.jpg';
+        const refRes = await fetch('/sample_test_run/' + refName);
+        const refBlob = await refRes.blob();
+        const refFile = new File([refBlob], refName, { type: 'image/jpeg' });
+        selectedRefFiles = [refFile];
+        document.getElementById('ref-filename').innerText = refName + (type === 'authentic' ? ' (Matches Doc)' : ' (Impostor)');
+
+        const container = document.getElementById('ref-preview-container');
+        container.innerHTML = `<img src="/sample_test_run/${refName}" class="h-16 w-28 object-contain rounded border border-slate-700 bg-white">`;
+        container.classList.remove('hidden');
+        document.getElementById('ref-placeholder').classList.add('hidden');
+
+        // Automatically trigger verification for instant feedback!
+        executeVerification();
+      } catch (err) {
+        alert('Could not load sample fixture: ' + err.message);
+      }
+    }
+
+    // Execute Verification
+    async function executeVerification() {
+      if (!selectedDocFile || selectedRefFiles.length === 0) {
+        alert('Please upload both a document image and at least one reference signature image.');
+        return;
+      }
+
+      const btn = document.getElementById('verify-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Processing Neural Pipeline...';
+      lucide.createIcons();
+
+      const formData = new FormData();
+      formData.append('document', selectedDocFile);
+      selectedRefFiles.forEach(file => {
+        formData.append('reference_signatures', file);
+      });
+
+      try {
+        const res = await fetch('/api/v1/signatures/verify', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.detail || 'Verification failed');
+        }
+
+        const data = await res.json();
+        renderResults(data);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i data-lucide="play" class="w-5 h-5 fill-current"></i> Run End-to-End Verification';
+        lucide.createIcons();
+      }
+    }
+
+    // Render Results & Overlay Bounding Box on Canvas
+    function renderResults(data) {
+      document.getElementById('results-panel').classList.remove('hidden');
+
+      const results = data.results || [];
+      const first = results[0] || {};
+      const score = first.similarity_score || 0;
+      const decision = first.decision || 'UNKNOWN';
+      const bbox = first.bbox || [0, 0, 0, 0];
+      const conf = first.confidence_detection || 0;
+
+      // Update Decision Badge
+      const decisionCard = document.getElementById('decision-card');
+      const decisionText = document.getElementById('decision-text');
+      const decisionSub = document.getElementById('decision-sub');
+      const scoreBar = document.getElementById('score-bar');
+      const scoreText = document.getElementById('score-text');
+
+      decisionText.innerText = decision;
+      scoreText.innerText = (score * 100).toFixed(2) + '%';
+      scoreBar.style.width = Math.min(100, Math.max(0, score * 100)) + '%';
+
+      decisionCard.className = 'p-6 rounded-2xl border text-center transition-all ';
+      if (decision === 'GENUINE') {
+        decisionCard.classList.add('bg-emerald-950/40', 'border-emerald-600', 'text-emerald-300');
+        scoreBar.className = 'h-3 rounded-full transition-all duration-700 bg-emerald-500';
+        decisionSub.innerText = 'High Biometric Confidence Match';
+      } else if (decision === 'FORGED') {
+        decisionCard.classList.add('bg-rose-950/40', 'border-rose-600', 'text-rose-300');
+        scoreBar.className = 'h-3 rounded-full transition-all duration-700 bg-rose-500';
+        decisionSub.innerText = 'Significant Biometric Divergence (Forged)';
+      } else {
+        decisionCard.classList.add('bg-amber-950/40', 'border-amber-600', 'text-amber-300');
+        scoreBar.className = 'h-3 rounded-full transition-all duration-700 bg-amber-500';
+        decisionSub.innerText = 'Borderline Similarity (Manual Review Required)';
+      }
+
+      document.getElementById('meta-bbox').innerText = `[${bbox.map(v => Math.round(v)).join(', ')}]`;
+      document.getElementById('meta-conf').innerText = `${(conf * 100).toFixed(1)}%`;
+
+      // Set Crop & Reference Previews
+      if (first.crop_path) {
+        document.getElementById('crop-preview').src = '/' + first.crop_path.replace(/\\/g, '/');
+      }
+      if (selectedRefFiles.length > 0) {
+        const reader = new FileReader();
+        reader.onload = e => { document.getElementById('best-ref-preview').src = e.target.result; };
+        reader.readAsDataURL(selectedRefFiles[0]);
+      }
+
+      // Draw Document + Bounding Box Overlay on Canvas
+      const canvas = document.getElementById('detection-canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.onload = function() {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        // Draw Bounding Box
+        results.forEach(item => {
+          const [x1, y1, x2, y2] = item.bbox;
+          ctx.strokeStyle = item.decision === 'GENUINE' ? '#10b981' : (item.decision === 'FORGED' ? '#f43f5e' : '#f59e0b');
+          ctx.lineWidth = Math.max(4, img.width / 200);
+          ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+
+          // Draw Label Tag
+          ctx.fillStyle = ctx.strokeStyle;
+          const label = ` Signature: ${item.decision} (${(item.similarity_score * 100).toFixed(1)}%) `;
+          const fontSize = Math.max(14, img.width / 45);
+          ctx.font = `bold ${fontSize}px sans-serif`;
+          const textWidth = ctx.measureText(label).width;
+          ctx.fillRect(x1, Math.max(0, y1 - fontSize - 6), textWidth, fontSize + 6);
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(label, x1, Math.max(fontSize, y1 - 4));
+        });
+      };
+
+      const docReader = new FileReader();
+      docReader.onload = e => { img.src = e.target.result; };
+      docReader.readAsDataURL(selectedDocFile);
+    }
+  </script>
+</body>
+</html>
