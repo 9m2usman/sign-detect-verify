@@ -107,3 +107,14 @@ async def get_ui():
             return HTMLResponse(content=f.read())
     return HTMLResponse(content="<h1>UI dashboard not found</h1>", status_code=404)
 
+
+@app.get("/jira", tags=["UI"])
+async def get_jira_board():
+    """Jira Software Scrum Board view with Epics, Stories, and Checkpoint Milestones."""
+    jira_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "docs", "jira_board.html"))
+    if os.path.exists(jira_file):
+        with open(jira_file, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>Jira board documentation not found</h1>", status_code=404)
+
+

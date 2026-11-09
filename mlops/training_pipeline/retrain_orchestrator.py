@@ -153,7 +153,17 @@ class RetrainingOrchestrator:
             finally:
                 db.close()
 
-        # 5. Log training and evaluation to MLflow Tracker
+        # 5. Log training, dataset manifest, and evaluation to MLflow Tracker
+        dataset_info = {
+            "dataset_source": "Hugging Face Datasets",
+            "repo_name": repo_name,
+            "commit_hash": commit_hash,
+            "event_type": event_type,
+            "target_model_type": model_type,
+            "license": "Permissive (Apache-2.0 / BSD-3)",
+            "zero_agpl": True
+        }
+
         run_id = self.tracker.log_training_run(
             run_name=f"retrain_{model_type}_{version_tag}",
             parameters={
@@ -169,7 +179,9 @@ class RetrainingOrchestrator:
                 "trigger": "huggingface_webhook",
                 "status": "PROMOTED" if promoted else "REJECTED"
             },
-            artifact_path=published_info["weights_path"] if published_info else None
+            artifact_path=published_info["weights_path"] if published_info else None,
+            dataset_info=dataset_info,
+            registered_model_name=f"Signature-{model_name}" if promoted else None
         )
 
         return {

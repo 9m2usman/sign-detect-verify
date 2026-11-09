@@ -73,3 +73,8 @@ htmlcov/
 # OS files
 .DS_Store
 Thumbs.db
+
+# User uploads & runtime storage
+uploads/
+uploads_tmp/
+storage/

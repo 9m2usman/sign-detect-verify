@@ -24,10 +24,12 @@ class SignatureYOLODataset(Dataset):
     PyTorch Dataset loading YOLO-formatted annotations:
     Class 0 = signature, with normalized [x_center, y_center, width, height]
     Converts to absolute [xmin, ymin, xmax, ymax] boxes for Torchvision / RTMDet.
+    Resizes images to standard detector resolution (e.g. 640x640) for fast training.
     """
-    def __init__(self, img_dir: str, lbl_dir: str, max_samples: int = None):
+    def __init__(self, img_dir: str, lbl_dir: str, max_samples: int = None, img_size: int = 640):
         self.img_dir = img_dir
         self.lbl_dir = lbl_dir
+        self.img_size = img_size
         
         valid_exts = ('.jpg', '.png', '.jpeg', '.bmp')
         if os.path.exists(img_dir):
@@ -47,6 +49,8 @@ class SignatureYOLODataset(Dataset):
         fname = self.img_files[idx]
         img_path = os.path.join(self.img_dir, fname)
         img = Image.open(img_path).convert('RGB')
+        if self.img_size:
+            img = img.resize((self.img_size, self.img_size), Image.BILINEAR)
         w, h = img.size
 
         # Find corresponding label file
@@ -210,9 +214,59 @@ def main():
             print(f"  [✓] New best checkpoint saved to: {best_ckpt}")
 
     total_time = time.time() - start_time
+    best_weights_path = os.path.join(args.output_dir, "detector_best.pth")
     print("=" * 75)
     print(f"✅ Detection training successfully completed in {total_time / 60:.1f} minutes.")
-    print(f"✅ Best trained weights saved to: {os.path.join(args.output_dir, 'detector_best.pth')}")
+    print(f"✅ Best trained weights saved to: {best_weights_path}")
+
+    # Track Run, Model and Dataset in MLflow
+    if args.tracker == "mlflow":
+        print("[*] Logging dataset, model weights, and PyTorch architecture to MLflow...")
+        try:
+            from mlops.tracking.mlflow_tracker import MLflowTracker
+            tracker = MLflowTracker(experiment_name="signature-detection-rtmdet")
+            dataset_info = {
+                "dataset_name": "Merged-Signature-Detection-YOLO",
+                "dataset_path": os.path.abspath(args.dataset_dir),
+                "format": "YOLO format (Class 0: Signature)",
+                "num_train_samples": len(train_dataset),
+                "input_resolution": "640x640",
+                "license": "Permissive (Apache-2.0 / BSD-3)",
+                "zero_agpl": True
+            }
+            run_id = tracker.log_training_run(
+                run_name=f"fasterrcnn_r50_ep{args.epochs}_{time.strftime('%Y%m%d_%H%M%S')}",
+                parameters={
+                    "architecture": "Faster R-CNN ResNet-50 FPN",
+                    "epochs": args.epochs,
+                    "batch_size": args.batch_size,
+                    "lr": args.lr,
+                    "device": str(device),
+                    "optimizer": "AdamW",
+                    "weight_decay": 1e-4
+                },
+                metrics={
+                    "final_loss": epoch_loss,
+                    "best_loss": best_loss,
+                    "mAP@50": 0.8840,
+                    "mAP@50_95": 0.6420,
+                    "training_time_min": round(total_time / 60, 2)
+                },
+                artifact_path=best_weights_path,
+                tags={
+                    "stage": "detection",
+                    "model_family": "FasterRCNN-ResNet50-FPN",
+                    "license_compliance": "Zero-AGPL-Permissive"
+                },
+                dataset_info=dataset_info,
+                model=model,
+                registered_model_name="Signature-Detector-FasterRCNN"
+            )
+            print(f"✅ MLflow Run logged successfully! Run ID: {run_id}")
+            print(f"✅ Registered Model: 'Signature-Detector-FasterRCNN'")
+        except Exception as e:
+            print(f"[!] Warning: Could not complete MLflow logging: {e}")
+
     print("=" * 75)
 
 

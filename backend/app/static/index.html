@@ -9,38 +9,38 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
     
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #070b14;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f8fafc;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(241, 245, 249, 0.95), transparent 40%),
+        radial-gradient(circle at 90% 15%, rgba(238, 242, 255, 0.75), transparent 35%),
+        radial-gradient(circle at 50% 90%, rgba(240, 253, 250, 0.7), transparent 45%);
+      background-attachment: fixed;
+      color: #0f172a;
     }
     .font-mono {
       font-family: 'JetBrains Mono', monospace;
     }
-    .gradient-header {
-      background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(37, 99, 235, 0.25), rgba(7, 11, 20, 0));
-    }
     .card-glass {
-      background: rgba(15, 23, 42, 0.7);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.04), 0 4px 6px -2px rgba(15, 23, 42, 0.02);
+      transition: all 0.25s ease;
     }
     .card-glass:hover {
-      border-color: rgba(59, 130, 246, 0.3);
+      border-color: rgba(99, 102, 241, 0.25);
+      box-shadow: 0 14px 34px -4px rgba(15, 23, 42, 0.07), 0 6px 12px -2px rgba(15, 23, 42, 0.03);
     }
-    .glow-cyan {
-      box-shadow: 0 0 20px -3px rgba(6, 182, 212, 0.25);
-    }
-    .glow-blue {
-      box-shadow: 0 0 25px -3px rgba(59, 130, 246, 0.3);
-    }
-    .glow-emerald {
-      box-shadow: 0 0 20px -3px rgba(16, 185, 129, 0.3);
-    }
-    .glow-rose {
-      box-shadow: 0 0 20px -3px rgba(244, 63, 94, 0.3);
+    .card-glass-subtle {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(226, 232, 240, 0.7);
     }
     /* Custom scrollbar */
     ::-webkit-scrollbar {
@@ -48,41 +48,41 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #0b0f19;
+      background: #f1f5f9;
     }
     ::-webkit-scrollbar-thumb {
-      background: #1e293b;
+      background: #cbd5e1;
       border-radius: 3px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #334155;
+      background: #94a3b8;
     }
   </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-white">
+<body class="min-h-screen flex flex-col antialiased selection:bg-slate-900 selection:text-white">
 
-  <!-- Top Sticky Navigation Bar -->
-  <header class="sticky top-0 z-50 bg-[#070b14]/90 backdrop-blur-md border-b border-slate-800/80">
+  <!-- Top Sticky Navigation Bar (Simple White Glass) -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/80">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
       
       <!-- Brand & Badges -->
       <div class="flex items-center space-x-3.5">
-        <div class="p-2.5 bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-xl shadow-lg shadow-blue-500/20 flex items-center justify-center">
+        <div class="p-2.5 bg-slate-900 text-white rounded-xl shadow-md flex items-center justify-center">
           <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-1.5">
-              Signature AI <span class="text-cyan-400 font-medium">Platform</span>
+            <h1 class="text-lg font-extrabold tracking-tight text-slate-900 flex items-center gap-1.5">
+              Signature AI <span class="text-indigo-600 font-semibold">Platform</span>
             </h1>
-            <span class="text-[10px] uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono font-semibold">
-              Zero AGPL • BSD-3 / Apache 2.0
+            <span class="text-[10px] uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-mono font-semibold">
+              Zero AGPL • Apache 2.0 / BSD-3
             </span>
           </div>
-          <p class="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
-            <span>Two-Stage Object Detection & Siamese Metric Verification</span>
-            <span class="inline-block w-1 h-1 rounded-full bg-slate-600"></span>
-            <span class="text-emerald-400 flex items-center gap-1 font-mono text-[11px]">
+          <p class="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+            <span>Two-Stage Object Detection & Metric Siamese Verification</span>
+            <span class="inline-block w-1 h-1 rounded-full bg-slate-400"></span>
+            <span class="text-emerald-600 flex items-center gap-1 font-mono text-[11px] font-medium">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Systems Online
             </span>
           </p>
@@ -90,26 +90,29 @@
       </div>
 
       <!-- Main Navigation Tabs -->
-      <nav class="flex items-center space-x-1 sm:space-x-1.5 bg-slate-900/80 p-1 rounded-xl border border-slate-800/80">
-        <button onclick="switchTab('studio')" id="tab-btn-studio" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm flex items-center gap-1.5">
+      <nav class="flex items-center space-x-1 sm:space-x-1.5 bg-slate-100/90 p-1 rounded-xl border border-slate-200/80">
+        <button onclick="switchTab('studio')" id="tab-btn-studio" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white text-slate-900 shadow-sm border border-slate-200/80 flex items-center gap-1.5">
           <i data-lucide="scan-line" class="w-3.5 h-3.5"></i> Studio
         </button>
-        <button onclick="switchTab('jobs')" id="tab-btn-jobs" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all flex items-center gap-1.5">
-          <i data-lucide="list-checks" class="w-3.5 h-3.5"></i> Jobs <span id="jobs-count-pill" class="ml-1 px-1.5 py-0.2 bg-slate-800 text-slate-300 rounded-full font-mono text-[10px]">0</span>
+        <button onclick="switchTab('jobs')" id="tab-btn-jobs" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 transition-all flex items-center gap-1.5">
+          <i data-lucide="list-checks" class="w-3.5 h-3.5"></i> Jobs <span id="jobs-count-pill" class="ml-1 px-1.5 py-0.2 bg-slate-200/80 text-slate-700 rounded-full font-mono text-[10px]">0</span>
         </button>
-        <button onclick="switchTab('metrics')" id="tab-btn-metrics" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all flex items-center gap-1.5">
+        <button onclick="switchTab('metrics')" id="tab-btn-metrics" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 transition-all flex items-center gap-1.5">
           <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i> Matrices & Telemetry
         </button>
-        <button onclick="switchTab('models')" id="tab-btn-models" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all flex items-center gap-1.5">
-          <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Models
+        <button onclick="switchTab('models')" id="tab-btn-models" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 transition-all flex items-center gap-1.5">
+          <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Models & MLOps
         </button>
-        <button onclick="switchTab('architecture')" id="tab-btn-architecture" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all flex items-center gap-1.5">
+        <button onclick="switchTab('architecture')" id="tab-btn-architecture" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 transition-all flex items-center gap-1.5">
           <i data-lucide="cloud" class="w-3.5 h-3.5"></i> AWS Cloud
         </button>
-        <button onclick="switchTab('colab')" id="tab-btn-colab" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all flex items-center gap-1.5">
+        <button onclick="switchTab('jira')" id="tab-btn-jira" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 transition-all flex items-center gap-1.5">
+          <i data-lucide="kanban-square" class="w-3.5 h-3.5 text-blue-600"></i> Jira Board
+        </button>
+        <button onclick="switchTab('colab')" id="tab-btn-colab" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 transition-all flex items-center gap-1.5">
           <i data-lucide="cloud-lightning" class="w-3.5 h-3.5"></i> Colab Hub
         </button>
-        <a href="/docs" target="_blank" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-cyan-400 hover:bg-slate-800/60 transition-all flex items-center gap-1">
+        <a href="/docs" target="_blank" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-indigo-600 hover:bg-white/70 transition-all flex items-center gap-1">
           <i data-lucide="external-link" class="w-3.5 h-3.5"></i> API Docs
         </a>
       </nav>
@@ -127,53 +130,52 @@
       
       <!-- Studio Hero Header & Quick-Test Action Buttons -->
       <div class="card-glass p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-5 relative overflow-hidden">
-        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="relative z-10">
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium mb-2">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold mb-2">
             <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Interactive Biometric Studio
           </div>
-          <h2 class="text-2xl font-bold text-white tracking-tight">Document Signature Verification</h2>
-          <p class="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
+          <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Document Signature Verification</h2>
+          <p class="text-slate-600 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
             Localizes handwritten signatures in complex documents, crops sub-images, extracts 256-D cosine embeddings, and classifies authenticity against reference signatures.
           </p>
         </div>
         <div class="flex items-center gap-2.5 relative z-10 shrink-0">
-          <button onclick="loadSample('authentic')" class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 active:scale-95 transition flex items-center gap-2 shadow-sm">
-            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> Test Authentic Sample
+          <button onclick="loadSample('authentic')" class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 active:scale-95 transition flex items-center gap-2 shadow-sm">
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Test Authentic Sample
           </button>
-          <button onclick="loadSample('impostor')" class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-rose-500/10 text-rose-300 border border-rose-500/30 hover:bg-rose-500/20 active:scale-95 transition flex items-center gap-2 shadow-sm">
-            <i data-lucide="x-circle" class="w-4 h-4 text-rose-400"></i> Test Impostor Sample
+          <button onclick="loadSample('impostor')" class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-rose-50 text-rose-800 border border-rose-200 hover:bg-rose-100 active:scale-95 transition flex items-center gap-2 shadow-sm">
+            <i data-lucide="x-circle" class="w-4 h-4 text-rose-600"></i> Test Impostor Sample
           </button>
         </div>
       </div>
 
-      <!-- Upload Drop Zones -->
+      <!-- Upload Drop Zones (Simple White Glass) -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         
         <!-- Document Upload Box -->
         <div class="card-glass p-5 rounded-2xl flex flex-col justify-between group">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-semibold text-slate-200 flex items-center gap-2">
-                <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i> Scanned Document Image
+              <span class="text-xs font-semibold text-slate-800 flex items-center gap-2">
+                <i data-lucide="file-text" class="w-4 h-4 text-indigo-600"></i> Scanned Document Image
               </span>
-              <span class="text-[11px] font-mono text-slate-500">JPG, PNG, TIFF, PDF</span>
+              <span class="text-[11px] font-mono text-slate-400">JPG, PNG, TIFF, PDF</span>
             </div>
-            <div id="doc-drop-zone" onclick="document.getElementById('doc-input').click()" class="border-2 border-dashed border-slate-700/80 hover:border-cyan-500/80 rounded-xl p-6 text-center cursor-pointer transition-all duration-300 bg-slate-900/40 hover:bg-slate-900/70">
+            <div id="doc-drop-zone" onclick="document.getElementById('doc-input').click()" class="border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-xl p-6 text-center cursor-pointer transition-all duration-300 bg-slate-50/60 hover:bg-white shadow-inner">
               <input type="file" id="doc-input" accept="image/*" class="hidden" onchange="previewDoc(this)">
               <div id="doc-placeholder" class="py-5">
-                <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mx-auto mb-2.5">
+                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-2.5 shadow-sm border border-indigo-100">
                   <i data-lucide="upload-cloud" class="w-6 h-6"></i>
                 </div>
-                <p class="text-xs font-semibold text-slate-300">Click to upload document or drag & drop</p>
+                <p class="text-xs font-semibold text-slate-800">Click to upload document or drag & drop</p>
                 <p class="text-[11px] text-slate-500 mt-1">Contracts, checks, deeds, loan applications</p>
               </div>
-              <img id="doc-preview" class="max-h-56 mx-auto rounded-lg shadow-md hidden object-contain">
+              <img id="doc-preview" class="max-h-56 mx-auto rounded-lg shadow-sm border border-slate-200 hidden object-contain">
             </div>
           </div>
-          <div class="flex items-center justify-between text-xs text-slate-400 mt-3 pt-3 border-t border-slate-800/80">
-            <span class="text-slate-500">Selected:</span>
-            <span id="doc-filename" class="font-mono text-[11px] text-cyan-400 truncate max-w-[280px]">No file chosen</span>
+          <div class="flex items-center justify-between text-xs text-slate-500 mt-3 pt-3 border-t border-slate-100">
+            <span class="text-slate-400">Selected:</span>
+            <span id="doc-filename" class="font-mono text-[11px] text-indigo-700 font-semibold truncate max-w-[280px]">No file chosen</span>
           </div>
         </div>
 
@@ -181,26 +183,26 @@
         <div class="card-glass p-5 rounded-2xl flex flex-col justify-between group">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-semibold text-slate-200 flex items-center gap-2">
-                <i data-lucide="pen-tool" class="w-4 h-4 text-emerald-400"></i> Genuine Reference Signature(s)
+              <span class="text-xs font-semibold text-slate-800 flex items-center gap-2">
+                <i data-lucide="pen-tool" class="w-4 h-4 text-emerald-600"></i> Genuine Reference Signature(s)
               </span>
-              <span class="text-[11px] font-mono text-emerald-400">Multi-sample supported</span>
+              <span class="text-[11px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Multi-sample supported</span>
             </div>
-            <div id="ref-drop-zone" onclick="document.getElementById('ref-input').click()" class="border-2 border-dashed border-slate-700/80 hover:border-emerald-500/80 rounded-xl p-6 text-center cursor-pointer transition-all duration-300 bg-slate-900/40 hover:bg-slate-900/70">
+            <div id="ref-drop-zone" onclick="document.getElementById('ref-input').click()" class="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-xl p-6 text-center cursor-pointer transition-all duration-300 bg-slate-50/60 hover:bg-white shadow-inner">
               <input type="file" id="ref-input" accept="image/*" multiple class="hidden" onchange="previewRef(this)">
               <div id="ref-placeholder" class="py-5">
-                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-2.5">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-2.5 shadow-sm border border-emerald-100">
                   <i data-lucide="signature" class="w-6 h-6"></i>
                 </div>
-                <p class="text-xs font-semibold text-slate-300">Click to upload genuine signature crop(s)</p>
+                <p class="text-xs font-semibold text-slate-800">Click to upload genuine signature crop(s)</p>
                 <p class="text-[11px] text-slate-500 mt-1">Upload 1 or more authentic specimens</p>
               </div>
               <div id="ref-preview-container" class="flex flex-wrap gap-2 justify-center max-h-56 overflow-y-auto hidden py-2"></div>
             </div>
           </div>
-          <div class="flex items-center justify-between text-xs text-slate-400 mt-3 pt-3 border-t border-slate-800/80">
-            <span class="text-slate-500">References:</span>
-            <span id="ref-filename" class="font-mono text-[11px] text-emerald-400 truncate max-w-[280px]">No references chosen</span>
+          <div class="flex items-center justify-between text-xs text-slate-500 mt-3 pt-3 border-t border-slate-100">
+            <span class="text-slate-400">References:</span>
+            <span id="ref-filename" class="font-mono text-[11px] text-emerald-700 font-semibold truncate max-w-[280px]">No references chosen</span>
           </div>
         </div>
 
@@ -208,19 +210,19 @@
 
       <!-- Action Button -->
       <div class="flex justify-center pt-1">
-        <button id="verify-btn" onclick="executeVerification()" class="px-8 py-3 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 active:scale-95 transition-all glow-blue inline-flex items-center gap-2.5 shadow-lg">
+        <button id="verify-btn" onclick="executeVerification()" class="px-8 py-3.5 rounded-xl font-bold text-sm text-white bg-slate-900 hover:bg-slate-800 active:scale-95 transition-all inline-flex items-center gap-2.5 shadow-md shadow-slate-900/10">
           <i data-lucide="play" class="w-4 h-4 fill-current"></i> Run End-to-End Verification Pipeline
         </button>
       </div>
 
       <!-- Live Results Container (Hidden until verified) -->
       <div id="results-panel" class="hidden space-y-6 pt-3">
-        <div class="border-t border-slate-800/80 pt-6">
+        <div class="border-t border-slate-200/80 pt-6">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-bold text-white flex items-center gap-2">
-              <i data-lucide="sparkles" class="w-5 h-5 text-cyan-400"></i> Verification Inference Results
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-5 h-5 text-indigo-600"></i> Verification Inference Results
             </h3>
-            <span id="job-id-badge" class="font-mono text-[11px] text-slate-400 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">Job: --</span>
+            <span id="job-id-badge" class="font-mono text-[11px] text-slate-600 bg-white px-2.5 py-1 rounded-md border border-slate-200 shadow-sm">Job: --</span>
           </div>
           
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -228,13 +230,13 @@
             <!-- Left 2 Cols: Document Localization Canvas -->
             <div class="lg:col-span-2 card-glass p-5 rounded-2xl space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                  <i data-lucide="crosshair" class="w-4 h-4 text-cyan-400"></i> Bounding Box Localization Canvas
+                <span class="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
+                  <i data-lucide="crosshair" class="w-4 h-4 text-indigo-600"></i> Bounding Box Localization Canvas
                 </span>
-                <span id="detected-count-badge" class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-cyan-300 font-mono border border-slate-700">1 Signature Found</span>
+                <span id="detected-count-badge" class="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-800 font-mono font-medium border border-slate-200">1 Signature Found</span>
               </div>
               <div id="sig-pills-container" class="flex flex-wrap gap-2 pt-1 pb-1"></div>
-              <div class="bg-black/80 rounded-xl p-2.5 flex items-center justify-center overflow-hidden max-h-[520px] border border-slate-800/80">
+              <div class="bg-slate-50 rounded-xl p-2.5 flex items-center justify-center overflow-hidden max-h-[520px] border border-slate-200/80 shadow-inner">
                 <canvas id="detection-canvas" onclick="openZoom(this)" title="Click to view full resolution" class="max-w-full max-h-[490px] object-contain cursor-zoom-in hover:opacity-95 transition"></canvas>
               </div>
               <p class="text-[11px] text-slate-500 text-center font-mono">💡 Click document canvas to open high-resolution zoom inspector</p>
@@ -244,24 +246,24 @@
             <div class="space-y-4">
               
               <!-- Decision Verdict Card -->
-              <div id="decision-card" class="p-6 rounded-2xl border text-center transition-all bg-slate-900/90 border-slate-800">
+              <div id="decision-card" class="p-6 rounded-2xl border text-center transition-all bg-white/80 border-slate-200 shadow-sm">
                 <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Authenticity Verdict</span>
-                <div id="decision-text" class="text-3xl font-black mt-2 mb-1 tracking-tight text-white">READY</div>
-                <p id="decision-sub" class="text-xs text-slate-400">Awaiting inference execution</p>
+                <div id="decision-text" class="text-3xl font-black mt-2 mb-1 tracking-tight text-slate-900">READY</div>
+                <p id="decision-sub" class="text-xs text-slate-500">Awaiting inference execution</p>
                 
                 <!-- Cosine Similarity Progress Gauge -->
-                <div class="mt-5 pt-5 border-t border-slate-800/80">
+                <div class="mt-5 pt-5 border-t border-slate-100">
                   <div class="flex justify-between items-center text-xs mb-1.5">
-                    <span class="text-slate-400">Cosine Similarity:</span>
-                    <span id="score-text" class="font-mono font-bold text-white text-sm">--</span>
+                    <span class="text-slate-500 font-medium">Cosine Similarity:</span>
+                    <span id="score-text" class="font-mono font-bold text-slate-900 text-sm">--</span>
                   </div>
-                  <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden p-0.5 border border-slate-700/50">
-                    <div id="score-bar" class="bg-blue-500 h-2 rounded-full transition-all duration-700" style="width: 0%"></div>
+                  <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden p-0.5 border border-slate-200">
+                    <div id="score-bar" class="bg-indigo-600 h-2 rounded-full transition-all duration-700" style="width: 0%"></div>
                   </div>
-                  <div class="flex justify-between text-[10px] font-mono text-slate-500 mt-1.5">
-                    <span class="text-rose-400">Forged (&lt; 0.65)</span>
-                    <span class="text-amber-400">Review</span>
-                    <span class="text-emerald-400">Genuine (&ge; 0.82)</span>
+                  <div class="flex justify-between text-[10px] font-mono text-slate-400 mt-1.5">
+                    <span class="text-rose-600 font-semibold">Forged (&lt; 0.65)</span>
+                    <span class="text-amber-600 font-semibold">Review</span>
+                    <span class="text-emerald-600 font-semibold">Genuine (&ge; 0.82)</span>
                   </div>
                 </div>
               </div>
@@ -269,38 +271,38 @@
               <!-- Biometric Crop Pair Comparison -->
               <div class="card-glass p-4 rounded-2xl space-y-3">
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-semibold text-slate-300">Biometric Pair Visual</span>
-                  <span class="text-[10px] text-cyan-400 font-mono">🔍 Click to zoom</span>
+                  <span class="text-xs font-semibold text-slate-800">Biometric Pair Visual</span>
+                  <span class="text-[10px] text-indigo-600 font-mono font-medium">🔍 Click to zoom</span>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
-                  <div class="bg-slate-900/90 p-2 rounded-xl border border-slate-800 text-center">
-                    <span class="text-[10px] text-slate-400 block mb-1 font-mono">Detected Crop</span>
-                    <img id="crop-preview" onclick="openZoom(this.src)" title="Click to zoom in" class="h-16 mx-auto object-contain rounded bg-white cursor-pointer hover:scale-105 transition shadow">
+                  <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shadow-sm">
+                    <span class="text-[10px] text-slate-500 block mb-1 font-mono">Detected Crop</span>
+                    <img id="crop-preview" onclick="openZoom(this.src)" title="Click to zoom in" class="h-16 mx-auto object-contain rounded bg-white cursor-pointer hover:scale-105 transition">
                   </div>
-                  <div class="bg-slate-900/90 p-2 rounded-xl border border-slate-800 text-center">
-                    <span class="text-[10px] text-slate-400 block mb-1 font-mono">Best Reference</span>
-                    <img id="best-ref-preview" onclick="openZoom(this.src)" title="Click to zoom in" class="h-16 mx-auto object-contain rounded bg-white cursor-pointer hover:scale-105 transition shadow">
+                  <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shadow-sm">
+                    <span class="text-[10px] text-slate-500 block mb-1 font-mono">Best Reference</span>
+                    <img id="best-ref-preview" onclick="openZoom(this.src)" title="Click to zoom in" class="h-16 mx-auto object-contain rounded bg-white cursor-pointer hover:scale-105 transition">
                   </div>
                 </div>
               </div>
 
               <!-- Technical Metadata -->
-              <div class="card-glass p-4 rounded-xl text-xs space-y-2 text-slate-300 font-mono">
+              <div class="card-glass p-4 rounded-xl text-xs space-y-2 text-slate-700 font-mono">
                 <div class="flex justify-between">
                   <span class="text-slate-500">Bounding Box:</span>
-                  <span id="meta-bbox" class="text-cyan-400">--</span>
+                  <span id="meta-bbox" class="text-indigo-700 font-semibold">--</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-slate-500">Detector Conf:</span>
-                  <span id="meta-conf" class="text-emerald-400">--</span>
+                  <span id="meta-conf" class="text-emerald-700 font-semibold">--</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-slate-500">Embedding:</span>
-                  <span class="text-purple-400">256-D L2 Unit Sphere</span>
+                  <span class="text-purple-700 font-semibold">256-D L2 Unit Sphere</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-slate-500">Inference Latency:</span>
-                  <span id="meta-latency" class="text-slate-300">--</span>
+                  <span id="meta-latency" class="text-slate-800 font-semibold">--</span>
                 </div>
               </div>
 
@@ -320,17 +322,17 @@
       <!-- Jobs Header with Controls -->
       <div class="card-glass p-6 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium mb-1">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold mb-1">
             <i data-lucide="database" class="w-3.5 h-3.5"></i> PostgreSQL / SQLite Job Store
           </div>
-          <h2 class="text-2xl font-bold text-white tracking-tight">Audit Log & Verification Jobs</h2>
-          <p class="text-slate-400 text-xs mt-1">Live asynchronous queue and verification history persisted across worker executions.</p>
+          <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Audit Log & Verification Jobs</h2>
+          <p class="text-slate-600 text-xs mt-1">Live asynchronous queue and verification history persisted across worker executions.</p>
         </div>
         <div class="flex items-center gap-3">
-          <div class="flex items-center gap-1.5 text-xs text-slate-400 font-mono bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Auto-refresh: 8s
+          <div class="flex items-center gap-1.5 text-xs text-slate-600 font-mono bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Auto-refresh: 8s
           </div>
-          <button onclick="fetchJobsList()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-white transition flex items-center gap-1.5 border border-slate-700">
+          <button onclick="fetchJobsList()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition flex items-center gap-1.5 shadow-sm">
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Now
           </button>
         </div>
@@ -338,40 +340,40 @@
 
       <!-- Quick KPI Counters -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div class="card-glass p-4 rounded-xl">
-          <span class="text-[11px] font-mono text-slate-400 uppercase">Total Ingested Jobs</span>
-          <div id="stat-total-jobs" class="text-2xl font-bold font-mono text-white mt-1">0</div>
+        <div class="card-glass p-5 rounded-xl">
+          <span class="text-[11px] font-mono text-slate-400 uppercase font-semibold">Total Ingested Jobs</span>
+          <div id="stat-total-jobs" class="text-2xl font-bold font-mono text-slate-900 mt-1">0</div>
         </div>
-        <div class="card-glass p-4 rounded-xl">
-          <span class="text-[11px] font-mono text-slate-400 uppercase">Completed</span>
-          <div id="stat-completed-jobs" class="text-2xl font-bold font-mono text-emerald-400 mt-1">0</div>
+        <div class="card-glass p-5 rounded-xl">
+          <span class="text-[11px] font-mono text-slate-400 uppercase font-semibold">Completed</span>
+          <div id="stat-completed-jobs" class="text-2xl font-bold font-mono text-emerald-600 mt-1">0</div>
         </div>
-        <div class="card-glass p-4 rounded-xl">
-          <span class="text-[11px] font-mono text-slate-400 uppercase">Processing / Pending</span>
-          <div id="stat-pending-jobs" class="text-2xl font-bold font-mono text-amber-400 mt-1">0</div>
+        <div class="card-glass p-5 rounded-xl">
+          <span class="text-[11px] font-mono text-slate-400 uppercase font-semibold">Processing / Pending</span>
+          <div id="stat-pending-jobs" class="text-2xl font-bold font-mono text-amber-600 mt-1">0</div>
         </div>
-        <div class="card-glass p-4 rounded-xl">
-          <span class="text-[11px] font-mono text-slate-400 uppercase">Success Rate</span>
-          <div id="stat-success-rate" class="text-2xl font-bold font-mono text-cyan-400 mt-1">100.0%</div>
+        <div class="card-glass p-5 rounded-xl">
+          <span class="text-[11px] font-mono text-slate-400 uppercase font-semibold">Success Rate</span>
+          <div id="stat-success-rate" class="text-2xl font-bold font-mono text-indigo-600 mt-1">100.0%</div>
         </div>
       </div>
 
       <!-- Jobs Table -->
-      <div class="card-glass rounded-2xl overflow-hidden border border-slate-800">
+      <div class="card-glass rounded-2xl overflow-hidden border border-slate-200">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs border-collapse">
             <thead>
-              <tr class="bg-slate-900/80 border-b border-slate-800 text-slate-400 font-mono uppercase text-[11px]">
-                <th class="py-3 px-4">Job ID</th>
-                <th class="py-3 px-4">Timestamp</th>
-                <th class="py-3 px-4">Status</th>
-                <th class="py-3 px-4">Signatures</th>
-                <th class="py-3 px-4">Similarity</th>
-                <th class="py-3 px-4">Verdict</th>
-                <th class="py-3 px-4 text-right">Actions</th>
+              <tr class="bg-slate-50/90 border-b border-slate-200 text-slate-600 font-mono uppercase text-[11px]">
+                <th class="py-3.5 px-4 font-semibold">Job ID</th>
+                <th class="py-3.5 px-4 font-semibold">Timestamp</th>
+                <th class="py-3.5 px-4 font-semibold">Status</th>
+                <th class="py-3.5 px-4 font-semibold">Signatures</th>
+                <th class="py-3.5 px-4 font-semibold">Similarity</th>
+                <th class="py-3.5 px-4 font-semibold">Verdict</th>
+                <th class="py-3.5 px-4 text-right font-semibold">Actions</th>
               </tr>
             </thead>
-            <tbody id="jobs-table-body" class="divide-y divide-slate-800/80 font-mono">
+            <tbody id="jobs-table-body" class="divide-y divide-slate-100 font-mono">
               <tr>
                 <td colspan="7" class="py-8 text-center text-slate-500 font-sans">
                   <i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto mb-2 text-slate-400"></i>
@@ -393,13 +395,13 @@
       <!-- Matrices Header -->
       <div class="card-glass p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-medium mb-1">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold mb-1">
             <i data-lucide="gauge" class="w-3.5 h-3.5"></i> Prometheus & ML Benchmark Matrices
           </div>
-          <h2 class="text-2xl font-bold text-white tracking-tight">Evaluation Matrices & Live Telemetry</h2>
-          <p class="text-slate-400 text-xs mt-1">Empirical architecture evaluations, calibrated decision boundaries, and real-time observability telemetry.</p>
+          <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Evaluation Matrices & Live Telemetry</h2>
+          <p class="text-slate-600 text-xs mt-1">Empirical architecture evaluations, calibrated decision boundaries, and real-time observability telemetry.</p>
         </div>
-        <button onclick="fetchPrometheusMetrics()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white transition flex items-center gap-2 shadow-sm shrink-0">
+        <button onclick="fetchPrometheusMetrics()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition flex items-center gap-2 shadow-sm shrink-0">
           <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Live /metrics
         </button>
       </div>
@@ -407,40 +409,40 @@
       <!-- Live Observability Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
-        <div class="card-glass p-5 rounded-xl border-l-4 border-l-blue-500">
+        <div class="card-glass p-5 rounded-xl border-l-4 border-l-indigo-600">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-mono text-slate-400 uppercase">HTTP API Calls</span>
-            <i data-lucide="activity" class="w-4 h-4 text-blue-400"></i>
+            <span class="text-xs font-mono text-slate-500 uppercase font-semibold">HTTP API Calls</span>
+            <i data-lucide="activity" class="w-4 h-4 text-indigo-600"></i>
           </div>
-          <div id="prom-http-requests" class="text-2xl font-bold font-mono text-white mt-2">--</div>
-          <span class="text-[11px] text-slate-500">Ingested via FastAPI</span>
+          <div id="prom-http-requests" class="text-2xl font-bold font-mono text-slate-900 mt-2">--</div>
+          <span class="text-[11px] text-slate-400">Ingested via FastAPI</span>
         </div>
 
         <div class="card-glass p-5 rounded-xl border-l-4 border-l-emerald-500">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-mono text-slate-400 uppercase">Genuine Verified</span>
-            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+            <span class="text-xs font-mono text-slate-500 uppercase font-semibold">Genuine Verified</span>
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
           </div>
-          <div id="prom-genuine-count" class="text-2xl font-bold font-mono text-emerald-400 mt-2">--</div>
-          <span class="text-[11px] text-slate-500">Biometric match &ge; 0.82</span>
+          <div id="prom-genuine-count" class="text-2xl font-bold font-mono text-emerald-600 mt-2">--</div>
+          <span class="text-[11px] text-slate-400">Biometric match &ge; 0.82</span>
         </div>
 
         <div class="card-glass p-5 rounded-xl border-l-4 border-l-rose-500">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-mono text-slate-400 uppercase">Forged Rejected</span>
-            <i data-lucide="shield-alert" class="w-4 h-4 text-rose-400"></i>
+            <span class="text-xs font-mono text-slate-500 uppercase font-semibold">Forged Rejected</span>
+            <i data-lucide="shield-alert" class="w-4 h-4 text-rose-600"></i>
           </div>
-          <div id="prom-forged-count" class="text-2xl font-bold font-mono text-rose-400 mt-2">--</div>
-          <span class="text-[11px] text-slate-500">Biometric distance &lt; 0.65</span>
+          <div id="prom-forged-count" class="text-2xl font-bold font-mono text-rose-600 mt-2">--</div>
+          <span class="text-[11px] text-slate-400">Biometric distance &lt; 0.65</span>
         </div>
 
-        <div class="card-glass p-5 rounded-xl border-l-4 border-l-cyan-500">
+        <div class="card-glass p-5 rounded-xl border-l-4 border-l-blue-500">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-mono text-slate-400 uppercase">Latency p50 / p95</span>
-            <i data-lucide="timer" class="w-4 h-4 text-cyan-400"></i>
+            <span class="text-xs font-mono text-slate-500 uppercase font-semibold">Latency p50 / p95</span>
+            <i data-lucide="timer" class="w-4 h-4 text-blue-600"></i>
           </div>
-          <div class="text-2xl font-bold font-mono text-cyan-400 mt-2">9.5s / 9.9s</div>
-          <span class="text-[11px] text-slate-500">Sequential CPU benchmark</span>
+          <div class="text-2xl font-bold font-mono text-blue-700 mt-2">9.5s / 9.9s</div>
+          <span class="text-[11px] text-slate-400">Sequential CPU benchmark</span>
         </div>
 
       </div>
@@ -448,15 +450,15 @@
       <!-- Decision Distribution Progress Bar -->
       <div class="card-glass p-5 rounded-2xl space-y-3">
         <div class="flex items-center justify-between text-xs">
-          <span class="font-semibold text-slate-200">Live Decision Ratio Distribution</span>
-          <span class="font-mono text-slate-400 text-[11px]">Real-time audit proportions</span>
+          <span class="font-semibold text-slate-800">Live Decision Ratio Distribution</span>
+          <span class="font-mono text-slate-500 text-[11px]">Real-time audit proportions</span>
         </div>
-        <div class="w-full bg-slate-800 h-3.5 rounded-full overflow-hidden flex border border-slate-700/60">
+        <div class="w-full bg-slate-100 h-3.5 rounded-full overflow-hidden flex border border-slate-200">
           <div id="ratio-bar-genuine" style="width: 70%" class="bg-emerald-500 h-full transition-all duration-500" title="Genuine"></div>
           <div id="ratio-bar-review" style="width: 10%" class="bg-amber-500 h-full transition-all duration-500" title="Review"></div>
           <div id="ratio-bar-forged" style="width: 20%" class="bg-rose-500 h-full transition-all duration-500" title="Forged"></div>
         </div>
-        <div class="flex items-center justify-between text-xs font-mono text-slate-400 pt-1">
+        <div class="flex items-center justify-between text-xs font-mono text-slate-600 pt-1">
           <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-emerald-500"></span> Genuine (<span id="ratio-val-genuine">--</span>)</span>
           <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-amber-500"></span> Manual Review (<span id="ratio-val-review">--</span>)</span>
           <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-rose-500"></span> Forged (<span id="ratio-val-forged">--</span>)</span>
@@ -469,62 +471,62 @@
         <!-- Table 1: Detection Benchmark Matrix -->
         <div class="card-glass p-6 rounded-2xl space-y-4">
           <div class="flex items-center justify-between">
-            <h3 class="text-base font-bold text-white flex items-center gap-2">
-              <i data-lucide="crosshair" class="w-4 h-4 text-cyan-400"></i> Signature Detection Candidates Benchmark Matrix
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="crosshair" class="w-4 h-4 text-indigo-600"></i> Signature Detection Candidates Benchmark Matrix
             </h3>
-            <span class="text-xs font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">Dataset A (28,958 Images)</span>
+            <span class="text-xs font-mono text-slate-600 bg-white px-2.5 py-0.5 rounded border border-slate-200 shadow-sm font-medium">Dataset A (28,958 Images)</span>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs border-collapse">
               <thead>
-                <tr class="border-b border-slate-800 text-slate-400 uppercase font-mono text-[11px] bg-slate-900/50">
-                  <th class="py-3 px-4">Architecture</th>
-                  <th class="py-3 px-4">mAP@50</th>
-                  <th class="py-3 px-4">mAP@50:95</th>
-                  <th class="py-3 px-4">Latency (GPU)</th>
-                  <th class="py-3 px-4">Parameters</th>
-                  <th class="py-3 px-4">License Compliance</th>
-                  <th class="py-3 px-4">Production Decision</th>
+                <tr class="border-b border-slate-200 text-slate-600 uppercase font-mono text-[11px] bg-slate-50/80">
+                  <th class="py-3 px-4 font-semibold">Architecture</th>
+                  <th class="py-3 px-4 font-semibold">mAP@50</th>
+                  <th class="py-3 px-4 font-semibold">mAP@50:95</th>
+                  <th class="py-3 px-4 font-semibold">Latency (GPU)</th>
+                  <th class="py-3 px-4 font-semibold">Parameters</th>
+                  <th class="py-3 px-4 font-semibold">License Compliance</th>
+                  <th class="py-3 px-4 font-semibold">Production Decision</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800/80 font-mono">
-                <tr class="bg-blue-950/30 text-white font-medium">
-                  <td class="py-3 px-4 text-cyan-300 font-bold flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span> RTMDet-Tiny (Selected)
+              <tbody class="divide-y divide-slate-100 font-mono">
+                <tr class="bg-indigo-50/50 text-slate-900 font-medium">
+                  <td class="py-3 px-4 text-indigo-900 font-bold flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span> RTMDet-Tiny (Selected)
                   </td>
-                  <td class="py-3 px-4 text-emerald-400 font-bold">0.884</td>
-                  <td class="py-3 px-4">0.642</td>
-                  <td class="py-3 px-4">18.2 ms</td>
-                  <td class="py-3 px-4">4.8 M</td>
-                  <td class="py-3 px-4 text-emerald-400">Apache-2.0</td>
-                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">Production Champion</span></td>
+                  <td class="py-3 px-4 text-emerald-700 font-bold">0.884</td>
+                  <td class="py-3 px-4 text-slate-800">0.642</td>
+                  <td class="py-3 px-4 text-slate-800">18.2 ms</td>
+                  <td class="py-3 px-4 text-slate-800">4.8 M</td>
+                  <td class="py-3 px-4 text-emerald-700 font-medium">Apache-2.0</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200 font-semibold">Production Champion</span></td>
                 </tr>
-                <tr class="text-slate-300">
+                <tr class="text-slate-700 hover:bg-slate-50">
                   <td class="py-3 px-4">Faster R-CNN (ResNet-50 FPN)</td>
-                  <td class="py-3 px-4 text-emerald-400 font-semibold">0.880</td>
+                  <td class="py-3 px-4 text-emerald-700 font-semibold">0.880</td>
                   <td class="py-3 px-4">0.635</td>
                   <td class="py-3 px-4">32.5 ms</td>
                   <td class="py-3 px-4">41.5 M</td>
-                  <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
-                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">Trained Baseline</span></td>
+                  <td class="py-3 px-4 text-emerald-700">BSD-3-Clause</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">Trained Baseline</span></td>
                 </tr>
-                <tr class="text-slate-300">
+                <tr class="text-slate-700 hover:bg-slate-50">
                   <td class="py-3 px-4">YOLOX-Tiny</td>
                   <td class="py-3 px-4">0.861</td>
                   <td class="py-3 px-4">0.618</td>
                   <td class="py-3 px-4">21.0 ms</td>
                   <td class="py-3 px-4">5.0 M</td>
-                  <td class="py-3 px-4 text-emerald-400">Apache-2.0</td>
-                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Candidate B</span></td>
+                  <td class="py-3 px-4 text-emerald-700">Apache-2.0</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-500">Candidate B</span></td>
                 </tr>
-                <tr class="text-rose-400/80 bg-rose-950/10">
+                <tr class="text-rose-800 bg-rose-50/60">
                   <td class="py-3 px-4 font-semibold">Ultralytics YOLOv11s</td>
                   <td class="py-3 px-4">0.892</td>
                   <td class="py-3 px-4">0.650</td>
                   <td class="py-3 px-4">19.5 ms</td>
                   <td class="py-3 px-4">9.4 M</td>
-                  <td class="py-3 px-4 text-rose-400 font-bold">AGPL-3.0 (Copyleft)</td>
-                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 font-semibold">REJECTED (License Risk)</span></td>
+                  <td class="py-3 px-4 text-rose-700 font-bold">AGPL-3.0 (Copyleft)</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-200 font-semibold">REJECTED (License Risk)</span></td>
                 </tr>
               </tbody>
             </table>
@@ -534,53 +536,53 @@
         <!-- Table 2: Verification Benchmark Matrix -->
         <div class="card-glass p-6 rounded-2xl space-y-4">
           <div class="flex items-center justify-between">
-            <h3 class="text-base font-bold text-white flex items-center gap-2">
-              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i> Signature Verification Candidates Benchmark Matrix
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i> Signature Verification Candidates Benchmark Matrix
             </h3>
-            <span class="text-xs font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">Dataset B (CEDAR & BHSig260)</span>
+            <span class="text-xs font-mono text-slate-600 bg-white px-2.5 py-0.5 rounded border border-slate-200 shadow-sm font-medium">Dataset B (CEDAR & BHSig260)</span>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs border-collapse">
               <thead>
-                <tr class="border-b border-slate-800 text-slate-400 uppercase font-mono text-[11px] bg-slate-900/50">
-                  <th class="py-3 px-4">Architecture</th>
-                  <th class="py-3 px-4">EER (CEDAR)</th>
-                  <th class="py-3 px-4">EER (BHSig260-B)</th>
-                  <th class="py-3 px-4">ROC-AUC</th>
-                  <th class="py-3 px-4">Embedding Dim</th>
-                  <th class="py-3 px-4">License Compliance</th>
-                  <th class="py-3 px-4">Production Decision</th>
+                <tr class="border-b border-slate-200 text-slate-600 uppercase font-mono text-[11px] bg-slate-50/80">
+                  <th class="py-3 px-4 font-semibold">Architecture</th>
+                  <th class="py-3 px-4 font-semibold">EER (CEDAR)</th>
+                  <th class="py-3 px-4 font-semibold">EER (BHSig260-B)</th>
+                  <th class="py-3 px-4 font-semibold">ROC-AUC</th>
+                  <th class="py-3 px-4 font-semibold">Embedding Dim</th>
+                  <th class="py-3 px-4 font-semibold">License Compliance</th>
+                  <th class="py-3 px-4 font-semibold">Production Decision</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800/80 font-mono">
-                <tr class="bg-emerald-950/30 text-white font-medium">
-                  <td class="py-3 px-4 text-emerald-300 font-bold flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Siamese ResNet-50 (Selected)
+              <tbody class="divide-y divide-slate-100 font-mono">
+                <tr class="bg-emerald-50/50 text-slate-900 font-medium">
+                  <td class="py-3 px-4 text-emerald-900 font-bold flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Siamese ResNet-50 (Selected)
                   </td>
-                  <td class="py-3 px-4 text-emerald-400 font-bold">7.4%</td>
-                  <td class="py-3 px-4 text-emerald-400 font-bold">11.2%</td>
-                  <td class="py-3 px-4 text-emerald-400 font-bold">0.978</td>
+                  <td class="py-3 px-4 text-emerald-700 font-bold">7.4%</td>
+                  <td class="py-3 px-4 text-emerald-700 font-bold">11.2%</td>
+                  <td class="py-3 px-4 text-emerald-700 font-bold">0.978</td>
                   <td class="py-3 px-4">256-D L2</td>
-                  <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
-                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">Production Champion</span></td>
+                  <td class="py-3 px-4 text-emerald-700 font-medium">BSD-3-Clause</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200 font-semibold">Production Champion</span></td>
                 </tr>
-                <tr class="text-slate-300">
+                <tr class="text-slate-700 hover:bg-slate-50">
                   <td class="py-3 px-4">Triplet Network (ResNet-50)</td>
                   <td class="py-3 px-4">8.1%</td>
                   <td class="py-3 px-4">12.5%</td>
                   <td class="py-3 px-4">0.969</td>
                   <td class="py-3 px-4">256-D L2</td>
-                  <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
-                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">Candidate B</span></td>
+                  <td class="py-3 px-4 text-emerald-700">BSD-3-Clause</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">Candidate B</span></td>
                 </tr>
-                <tr class="text-slate-300">
+                <tr class="text-slate-700 hover:bg-slate-50">
                   <td class="py-3 px-4">Siamese ResNet-18</td>
                   <td class="py-3 px-4">9.8%</td>
                   <td class="py-3 px-4">14.1%</td>
                   <td class="py-3 px-4">0.942</td>
                   <td class="py-3 px-4">128-D L2</td>
-                  <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
-                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Lightweight</span></td>
+                  <td class="py-3 px-4 text-emerald-700">BSD-3-Clause</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-500">Lightweight</span></td>
                 </tr>
               </tbody>
             </table>
@@ -593,14 +595,14 @@
       <div class="card-glass p-5 rounded-2xl space-y-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-              <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i> Live Prometheus Metric Stream (/metrics)
+            <span class="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
+              <i data-lucide="terminal" class="w-4 h-4 text-indigo-600"></i> Live Prometheus Metric Stream (/metrics)
             </span>
-            <span class="text-[10px] text-emerald-400 font-mono bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">HTTP 200 OK</span>
+            <span class="text-[10px] text-emerald-700 font-mono bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">HTTP 200 OK</span>
           </div>
-          <span class="text-[11px] text-slate-400 font-mono">Format: OpenMetrics / Prometheus text</span>
+          <span class="text-[11px] text-slate-500 font-mono">Format: OpenMetrics / Prometheus text</span>
         </div>
-        <pre id="raw-metrics-box" class="bg-black/90 border border-slate-800 p-4 rounded-xl text-[11px] font-mono text-cyan-300 max-h-60 overflow-y-auto leading-relaxed">
+        <pre id="raw-metrics-box" class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-[11px] font-mono text-emerald-400 max-h-60 overflow-y-auto leading-relaxed shadow-sm">
 # Polling live Prometheus endpoint...
         </pre>
       </div>
@@ -613,54 +615,54 @@
     <section id="tab-models" class="tab-content hidden space-y-6">
       
       <div class="card-glass p-6 rounded-2xl">
-        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-medium mb-1">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-purple-50 border border-purple-100 text-purple-700 text-xs font-semibold mb-1">
           <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Deep Neural Vision Architecture
         </div>
-        <h2 class="text-2xl font-bold text-white tracking-tight">Decoupled Two-Stage Model Pipeline</h2>
-        <p class="text-slate-400 text-xs mt-1">Industrial machine learning architecture built to strictly respect commercial licenses and avoid AGPL-3.0 viral copyleft.</p>
+        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Decoupled Two-Stage Model Pipeline</h2>
+        <p class="text-slate-600 text-xs mt-1">Industrial machine learning architecture built to strictly respect commercial licenses and avoid AGPL-3.0 viral copyleft.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         
         <!-- Detector Card -->
-        <div class="card-glass p-6 rounded-2xl space-y-4 border-l-4 border-l-cyan-500">
+        <div class="card-glass p-6 rounded-2xl space-y-4 border-l-4 border-l-indigo-600">
           <div class="flex items-center justify-between">
-            <span class="text-xs px-2.5 py-1 rounded-full bg-cyan-950/80 text-cyan-300 font-semibold border border-cyan-800">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 font-semibold border border-indigo-200">
               Stage 1: Detection
             </span>
-            <span class="text-xs font-mono text-emerald-400">Apache 2.0 / BSD-3</span>
+            <span class="text-xs font-mono text-emerald-700 font-medium">Apache 2.0 / BSD-3</span>
           </div>
-          <h3 class="text-xl font-bold text-white">RTMDet-Tiny / Faster R-CNN FPN</h3>
-          <p class="text-xs text-slate-300 leading-relaxed">
+          <h3 class="text-xl font-bold text-slate-900">RTMDet-Tiny / Faster R-CNN FPN</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
             High-efficiency single-stage real-time object detector optimized for document micro-strokes, seals, and signatures with extreme aspect ratios. Avoids the AGPL viral copyleft of Ultralytics completely.
           </p>
-          <div class="space-y-2 text-xs border-t border-slate-800/80 pt-4 font-mono">
-            <div class="flex justify-between"><span class="text-slate-400">Backbone:</span><span class="text-slate-200 font-medium">CSPNeXt-Tiny / ResNet-50</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Feature Pyramids:</span><span class="text-slate-200 font-medium">PAFPN Multi-scale P3-P5</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">IoU Post-Processing:</span><span class="text-slate-200 font-medium">NMS threshold = 0.25</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Parameters:</span><span class="text-slate-200 font-medium">4.8 M (Tiny) / 41.5 M (R50)</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Input Tile:</span><span class="text-slate-200 font-medium">640 &times; 640 Dynamic Resize</span></div>
+          <div class="space-y-2 text-xs border-t border-slate-100 pt-4 font-mono">
+            <div class="flex justify-between"><span class="text-slate-500">Backbone:</span><span class="text-slate-900 font-medium">CSPNeXt-Tiny / ResNet-50</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Feature Pyramids:</span><span class="text-slate-900 font-medium">PAFPN Multi-scale P3-P5</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">IoU Post-Processing:</span><span class="text-slate-900 font-medium">NMS threshold = 0.25</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Parameters:</span><span class="text-slate-900 font-medium">4.8 M (Tiny) / 41.5 M (R50)</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Input Tile:</span><span class="text-slate-900 font-medium">640 &times; 640 Dynamic Resize</span></div>
           </div>
         </div>
 
         <!-- Verifier Card -->
-        <div class="card-glass p-6 rounded-2xl space-y-4 border-l-4 border-l-emerald-500">
+        <div class="card-glass p-6 rounded-2xl space-y-4 border-l-4 border-l-emerald-600">
           <div class="flex items-center justify-between">
-            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950/80 text-emerald-300 font-semibold border border-emerald-800">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">
               Stage 2: Verification
             </span>
-            <span class="text-xs font-mono text-emerald-400">BSD-3-Clause</span>
+            <span class="text-xs font-mono text-emerald-700 font-medium">BSD-3-Clause</span>
           </div>
-          <h3 class="text-xl font-bold text-white">Siamese ResNet-50 Metric Extractor</h3>
-          <p class="text-xs text-slate-300 leading-relaxed">
+          <h3 class="text-xl font-bold text-slate-900">Siamese ResNet-50 Metric Extractor</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
             Deep Siamese convolutional neural network with twin shared weights and Contrastive Loss optimization. Encodes raw signature crops into a 256-dimensional unit hypersphere where genuine pairs cluster with cosine similarity near 1.0.
           </p>
-          <div class="space-y-2 text-xs border-t border-slate-800/80 pt-4 font-mono">
-            <div class="flex justify-between"><span class="text-slate-400">Architecture:</span><span class="text-slate-200 font-medium">Twin ResNet-50 Backbone</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Embedding Space:</span><span class="text-slate-200 font-medium">256-D L2-Normalized</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Objective Loss:</span><span class="text-slate-200 font-medium">Contrastive Loss (margin=1.0)</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Parameters:</span><span class="text-slate-200 font-medium">25.6 Million</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Metric Measure:</span><span class="text-slate-200 font-medium">Cosine Distance (u &bull; v)</span></div>
+          <div class="space-y-2 text-xs border-t border-slate-100 pt-4 font-mono">
+            <div class="flex justify-between"><span class="text-slate-500">Architecture:</span><span class="text-slate-900 font-medium">Twin ResNet-50 Backbone</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Embedding Space:</span><span class="text-slate-900 font-medium">256-D L2-Normalized</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Objective Loss:</span><span class="text-slate-900 font-medium">Contrastive Loss (margin=1.0)</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Parameters:</span><span class="text-slate-900 font-medium">25.6 Million</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Metric Measure:</span><span class="text-slate-900 font-medium">Cosine Distance (u &bull; v)</span></div>
           </div>
         </div>
 
@@ -668,28 +670,28 @@
 
       <!-- MLOps Automated Retraining Pipeline -->
       <div class="card-glass p-6 rounded-2xl space-y-4">
-        <h3 class="text-base font-bold text-white flex items-center gap-2">
-          <i data-lucide="git-branch" class="w-4 h-4 text-cyan-400"></i> Automated MLOps Continuous Retraining Pipeline
+        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+          <i data-lucide="git-branch" class="w-4 h-4 text-indigo-600"></i> Automated MLOps Continuous Retraining Pipeline
         </h3>
-        <p class="text-xs text-slate-300 leading-relaxed">
-          The continuous learning system ingests Hugging Face Dataset webhook events via HMAC-SHA256 signature verification, executes unattended training tasks in Celery workers, and enforces an automated Promotion Quality Gate (<code class="text-cyan-400 font-mono">mAP@50 &ge; 0.85</code> and <code class="text-cyan-400 font-mono">EER &le; 0.08</code>) before pushing SHA-256 versioned artifacts to S3 outside Git.
+        <p class="text-xs text-slate-600 leading-relaxed">
+          The continuous learning system ingests Hugging Face Dataset webhook events via HMAC-SHA256 signature verification, executes unattended training tasks in Celery workers, and enforces an automated Promotion Quality Gate (<code class="text-indigo-600 font-mono font-semibold">mAP@50 &ge; 0.85</code> and <code class="text-indigo-600 font-mono font-semibold">EER &le; 0.08</code>) before pushing SHA-256 versioned artifacts to S3 outside Git.
         </p>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-2 font-mono text-xs">
-          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <span class="text-cyan-400 font-bold block mb-1">1. Webhook Ingest</span>
-            <span class="text-slate-400 text-[11px] font-sans">HMAC-SHA256 authenticated event triggers Celery task</span>
+          <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+            <span class="text-indigo-600 font-bold block mb-1">1. Webhook Ingest</span>
+            <span class="text-slate-500 text-[11px] font-sans">HMAC-SHA256 authenticated event triggers Celery task</span>
           </div>
-          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <span class="text-cyan-400 font-bold block mb-1">2. Remote Train</span>
-            <span class="text-slate-400 text-[11px] font-sans">Distributed PyTorch training run across GPU nodes</span>
+          <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+            <span class="text-indigo-600 font-bold block mb-1">2. Remote Train</span>
+            <span class="text-slate-500 text-[11px] font-sans">Distributed PyTorch training run with MLflow tracking</span>
           </div>
-          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <span class="text-cyan-400 font-bold block mb-1">3. Quality Gate</span>
-            <span class="text-slate-400 text-[11px] font-sans">Automated validation benchmark evaluation guard</span>
+          <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+            <span class="text-indigo-600 font-bold block mb-1">3. Quality Gate</span>
+            <span class="text-slate-500 text-[11px] font-sans">Automated validation benchmark evaluation guard</span>
           </div>
-          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <span class="text-cyan-400 font-bold block mb-1">4. Versioned Deploy</span>
-            <span class="text-slate-400 text-[11px] font-sans">SHA-256 binary upload to S3 & zero-downtime hot-swap</span>
+          <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+            <span class="text-indigo-600 font-bold block mb-1">4. Versioned Deploy</span>
+            <span class="text-slate-500 text-[11px] font-sans">SHA-256 binary upload to S3 & zero-downtime hot-swap</span>
           </div>
         </div>
       </div>
@@ -703,21 +705,21 @@
       
       <div class="card-glass p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium mb-1">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold mb-1">
             <i data-lucide="cloud" class="w-3.5 h-3.5"></i> Production AWS Cloud Topology
           </div>
-          <h2 class="text-2xl font-bold text-white tracking-tight">AWS Infrastructure & Terraform Architecture</h2>
-          <p class="text-slate-400 text-xs mt-1">Decoupled enterprise microservice topology provisioned via automated Terraform Infrastructure as Code.</p>
+          <h2 class="text-2xl font-bold text-slate-900 tracking-tight">AWS Infrastructure & Architecture Diagram</h2>
+          <p class="text-slate-600 text-xs mt-1">Decoupled enterprise microservice topology provisioned via automated Terraform Infrastructure as Code.</p>
         </div>
-        <button onclick="openZoom('/architecture/aws-end-to-end-architecture.png')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition flex items-center gap-2 shadow-sm shrink-0">
+        <button onclick="openZoom('/architecture/aws-end-to-end-architecture.png')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition flex items-center gap-2 shadow-sm shrink-0">
           <i data-lucide="zoom-in" class="w-3.5 h-3.5"></i> Zoom Architecture Diagram
         </button>
       </div>
 
-      <!-- Architecture Image Card -->
+      <!-- Architecture Image Card (Simple White Glass Frame) -->
       <div class="card-glass p-5 rounded-2xl space-y-3">
-        <div class="border border-slate-800/80 rounded-xl overflow-hidden bg-slate-950/80 p-3 text-center">
-          <img src="/architecture/aws-end-to-end-architecture.png" alt="AWS Cloud Architecture" onclick="openZoom(this.src)" title="Click to zoom in" class="max-h-[480px] mx-auto rounded shadow-2xl object-contain cursor-zoom-in hover:scale-[1.01] transition-transform">
+        <div class="border border-slate-200 rounded-xl overflow-hidden bg-white p-3 text-center shadow-sm">
+          <img src="/architecture/aws-end-to-end-architecture.png" alt="AWS Cloud Architecture" onclick="openZoom(this.src)" title="Click to zoom in" class="max-h-[480px] mx-auto rounded shadow-md object-contain cursor-zoom-in hover:scale-[1.01] transition-transform">
         </div>
         <p class="text-[11px] text-slate-500 text-center font-mono">💡 Click architecture diagram to open high-resolution interactive lightbox</p>
       </div>
@@ -726,55 +728,55 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
         
         <div class="card-glass p-4 rounded-xl space-y-2">
-          <div class="flex items-center gap-2 text-cyan-400 font-bold">
+          <div class="flex items-center gap-2 text-indigo-700 font-bold">
             <i data-lucide="server" class="w-4 h-4"></i> ECS Fargate Ingestion API
           </div>
-          <p class="text-slate-400 text-[11px] font-sans leading-relaxed">
+          <p class="text-slate-600 text-[11px] font-sans leading-relaxed">
             Stateless FastAPI container running behind AWS Application Load Balancer. Validates multipart payloads, saves originals to S3, and dispatches job IDs to RabbitMQ.
           </p>
         </div>
 
         <div class="card-glass p-4 rounded-xl space-y-2">
-          <div class="flex items-center gap-2 text-emerald-400 font-bold">
+          <div class="flex items-center gap-2 text-emerald-700 font-bold">
             <i data-lucide="cpu" class="w-4 h-4"></i> ECS Fargate Celery Workers
           </div>
-          <p class="text-slate-400 text-[11px] font-sans leading-relaxed">
+          <p class="text-slate-600 text-[11px] font-sans leading-relaxed">
             Auto-scaling inference workers executing PyTorch detection & verification models. Fully decoupled from client request threads to maintain SLA stability.
           </p>
         </div>
 
         <div class="card-glass p-4 rounded-xl space-y-2">
-          <div class="flex items-center gap-2 text-purple-400 font-bold">
+          <div class="flex items-center gap-2 text-purple-700 font-bold">
             <i data-lucide="database" class="w-4 h-4"></i> Amazon RDS PostgreSQL 16
           </div>
-          <p class="text-slate-400 text-[11px] font-sans leading-relaxed">
+          <p class="text-slate-600 text-[11px] font-sans leading-relaxed">
             Multi-AZ relational database storing asynchronous job states, detected bounding boxes, cosine similarity scores, audit trails, and version registry.
           </p>
         </div>
 
         <div class="card-glass p-4 rounded-xl space-y-2">
-          <div class="flex items-center gap-2 text-amber-400 font-bold">
+          <div class="flex items-center gap-2 text-amber-700 font-bold">
             <i data-lucide="layers" class="w-4 h-4"></i> Amazon MQ (RabbitMQ)
           </div>
-          <p class="text-slate-400 text-[11px] font-sans leading-relaxed">
+          <p class="text-slate-600 text-[11px] font-sans leading-relaxed">
             Managed AMQP message broker with dead-letter exchanges (DLX) providing guaranteed delivery and buffering high document bursts under load.
           </p>
         </div>
 
         <div class="card-glass p-4 rounded-xl space-y-2">
-          <div class="flex items-center gap-2 text-blue-400 font-bold">
+          <div class="flex items-center gap-2 text-blue-700 font-bold">
             <i data-lucide="box" class="w-4 h-4"></i> S3 Artifact & Storage Bucket
           </div>
-          <p class="text-slate-400 text-[11px] font-sans leading-relaxed">
-            Stores input documents, signature crops, and versioned SHA-256 model weights (<code class="text-white">detector_best.pth</code>, <code class="text-white">verifier_best.pth</code>) outside Git.
+          <p class="text-slate-600 text-[11px] font-sans leading-relaxed">
+            Stores input documents, signature crops, and versioned SHA-256 model weights (<code class="text-slate-900 font-semibold">detector_best.pth</code>, <code class="text-slate-900 font-semibold">verifier_best.pth</code>) outside Git.
           </p>
         </div>
 
         <div class="card-glass p-4 rounded-xl space-y-2">
-          <div class="flex items-center gap-2 text-rose-400 font-bold">
+          <div class="flex items-center gap-2 text-rose-700 font-bold">
             <i data-lucide="bar-chart-2" class="w-4 h-4"></i> Prometheus & Grafana
           </div>
-          <p class="text-slate-400 text-[11px] font-sans leading-relaxed">
+          <p class="text-slate-600 text-[11px] font-sans leading-relaxed">
             Scrapes `/metrics` every 15s to monitor p50/p95/p99 latency percentiles, worker task saturation, and authenticity decision distributions.
           </p>
         </div>
@@ -784,46 +786,71 @@
     </section>
 
     <!-- ============================================================= -->
-    <!-- TAB 6: COLAB GPU & MLOps HUB -->
+    <!-- TAB 6: JIRA BOARD & SPRINTS -->
+    <!-- ============================================================= -->
+    <section id="tab-jira" class="tab-content hidden space-y-6">
+      <div class="card-glass p-6 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold mb-1">
+            <i data-lucide="kanban-square" class="w-3.5 h-3.5"></i> Jira Software Scrum Board
+          </div>
+          <h2 class="text-2xl font-bold text-slate-900 tracking-tight">SIG Sprint Board & Team Checkpoints</h2>
+          <p class="text-slate-600 text-xs mt-1">Group 4 (5 Members) • Lead: Usman • Daily Checkpoints: Sat 11:30 PM, Sun, Mon, Final Tue</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="/jira" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition flex items-center gap-2 shadow-sm">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Open Fullscreen Board
+          </a>
+        </div>
+      </div>
+
+      <!-- Live Embedded Jira Board Frame -->
+      <div class="card-glass p-3 rounded-2xl overflow-hidden shadow-sm border border-slate-200">
+        <iframe src="/jira" class="w-full h-[750px] rounded-xl border border-slate-200/80 bg-white" title="Jira Board"></iframe>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 7: COLAB GPU & MLOps HUB -->
     <!-- ============================================================= -->
     <section id="tab-colab" class="tab-content hidden space-y-6">
       
       <div class="card-glass p-6 rounded-2xl">
-        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-xs font-medium mb-1">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-amber-50 border border-amber-100 text-amber-800 text-xs font-semibold mb-1">
           <i data-lucide="zap" class="w-3.5 h-3.5"></i> Google Colab GPU & Retraining Hub
         </div>
-        <h2 class="text-2xl font-bold text-white tracking-tight">Full Dataset (28,000 Images) GPU Acceleration</h2>
-        <p class="text-slate-400 text-xs mt-1">Execute high-throughput GPU training on free Google Colab Nvidia Tesla T4 hardware and sync weights back.</p>
+        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Full Dataset (28,000 Images) GPU Acceleration</h2>
+        <p class="text-slate-600 text-xs mt-1">Execute high-throughput GPU training on free Google Colab Nvidia Tesla T4 hardware and sync weights back.</p>
       </div>
 
       <div class="card-glass p-6 rounded-2xl space-y-4">
-        <h3 class="text-base font-bold text-white flex items-center gap-2">
-          <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i> Step 1: Execute Training in Google Colab
+        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+          <i data-lucide="terminal" class="w-4 h-4 text-indigo-600"></i> Step 1: Execute Training in Google Colab with MLflow Tracking
         </h3>
-        <p class="text-xs text-slate-300">
-          Upload <code class="text-cyan-400 font-mono">notebooks/detection_training.ipynb</code> to Google Colab, select GPU (T4), and run the cells:
+        <p class="text-xs text-slate-600">
+          Upload <code class="text-indigo-600 font-mono font-semibold">notebooks/detection_training.ipynb</code> to Google Colab, select GPU (T4), and run the cells:
         </p>
-        <pre class="bg-black/90 border border-slate-800 p-4 rounded-xl text-xs font-mono text-emerald-400 overflow-x-auto leading-relaxed">
+        <pre class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-xs font-mono text-emerald-400 overflow-x-auto leading-relaxed shadow-sm">
 # Clone or pull latest code
 !git clone https://github.com/your-org/signature-detection-verification.git
 %cd signature-detection-verification
 
-# Train Stage 1 Object Detector on Tesla T4 GPU (BSD-3 / Apache 2.0 compliant)
-!python training/detection/train_rtdetr.py --epochs 10 --batch-size 8 --tracker none
+# Train Stage 1 Object Detector on Tesla T4 GPU with MLflow Dataset & Model Tracking
+!python training/detection/train_rtdetr.py --epochs 10 --batch-size 8 --tracker mlflow
 
-# Train Stage 2 Siamese Verification Model on GPU
-!python training/verification/train_resnet50.py --epochs 10 --batch-size 16 --tracker none
+# Train Stage 2 Siamese Verification Model on GPU with MLflow Tracking
+!python training/verification/train_resnet50.py --epochs 10 --batch-size 16 --tracker mlflow
         </pre>
       </div>
 
       <div class="card-glass p-6 rounded-2xl space-y-4">
-        <h3 class="text-base font-bold text-white flex items-center gap-2">
-          <i data-lucide="webhook" class="w-4 h-4 text-emerald-400"></i> Step 2: Trigger Automated Webhook Pipeline
+        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+          <i data-lucide="webhook" class="w-4 h-4 text-emerald-600"></i> Step 2: Trigger Automated Webhook Pipeline
         </h3>
-        <p class="text-xs text-slate-300">
+        <p class="text-xs text-slate-600">
           Simulate a Hugging Face Dataset commit event using HMAC-SHA256 authentication:
         </p>
-        <pre class="bg-black/90 border border-slate-800 p-4 rounded-xl text-xs font-mono text-cyan-300 overflow-x-auto leading-relaxed">
+        <pre class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-xs font-mono text-indigo-300 overflow-x-auto leading-relaxed shadow-sm">
 curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
   -H "Content-Type: application/json" \
   -H "X-Webhook-Secret: default_hf_secret_change_in_production" \
@@ -835,27 +862,27 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
 
   </main>
 
-  <!-- Sticky Footer -->
-  <footer class="border-t border-slate-800/80 bg-[#070b14]/90 py-4 text-center text-xs text-slate-500 font-mono">
-    Signature Detection & Verification Platform • Permissively Licensed (Apache 2.0 / BSD-3-Clause) • Zero AGPL • Prometheus Monitored
+  <!-- Sticky Footer (Simple White Glass) -->
+  <footer class="border-t border-slate-200/80 bg-white/70 py-4 text-center text-xs text-slate-500 font-mono">
+    Signature Detection & Verification Platform • Permissively Licensed (Apache 2.0 / BSD-3-Clause) • Zero AGPL • MLflow & Prometheus Monitored
   </footer>
 
   <!-- High-Resolution Zoom Lightbox Modal -->
-  <div id="zoom-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 hidden" onclick="closeZoom()">
-    <div class="relative max-w-5xl max-h-[92vh] bg-slate-900 border border-slate-700/80 rounded-2xl p-4 shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
-        <span class="text-xs font-bold text-white flex items-center gap-2 font-mono">
-          <i data-lucide="zoom-in" class="w-4 h-4 text-cyan-400"></i> High-Resolution Inspection Lightbox
+  <div id="zoom-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 hidden" onclick="closeZoom()">
+    <div class="relative max-w-5xl max-h-[92vh] bg-white border border-slate-200 rounded-2xl p-4 shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
+        <span class="text-xs font-bold text-slate-900 flex items-center gap-2 font-mono">
+          <i data-lucide="zoom-in" class="w-4 h-4 text-indigo-600"></i> High-Resolution Inspection Lightbox
         </span>
-        <button onclick="closeZoom()" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition">
+        <button onclick="closeZoom()" class="p-1 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-      <div class="flex items-center justify-center overflow-auto max-h-[78vh]">
+      <div class="flex items-center justify-center overflow-auto max-h-[78vh] bg-slate-50 p-2 rounded-xl">
         <img id="zoom-image" class="max-w-full max-h-[75vh] object-contain rounded-lg">
       </div>
       <div class="text-center text-[11px] text-slate-500 mt-2 font-mono">
-        Click outside or press X to close lightbox
+        Click outside or press ESC to close lightbox
       </div>
     </div>
   </div>
@@ -865,12 +892,12 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
     // Initialize icons
     lucide.createIcons();
 
-    // Tab Navigation Controller
+    // Tab Navigation Controller (Simple White Glass Styling)
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('bg-blue-600', 'text-white', 'shadow-sm');
-        btn.classList.add('text-slate-400');
+        btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'border', 'border-slate-200/80', 'font-semibold');
+        btn.classList.add('text-slate-600', 'font-medium');
       });
 
       const target = document.getElementById('tab-' + tabId);
@@ -879,8 +906,8 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
       }
       const activeBtn = document.getElementById('tab-btn-' + tabId);
       if (activeBtn) {
-        activeBtn.classList.add('bg-blue-600', 'text-white', 'shadow-sm');
-        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'border', 'border-slate-200/80', 'font-semibold');
+        activeBtn.classList.remove('text-slate-600', 'font-medium');
       }
 
       // Contextual data refresh
@@ -926,7 +953,7 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
           reader.onload = function(e) {
             const img = document.createElement('img');
             img.src = e.target.result;
-            img.className = 'h-14 w-24 object-contain rounded border border-slate-700 bg-white shadow-sm';
+            img.className = 'h-14 w-24 object-contain rounded border border-slate-200 bg-white shadow-sm p-1';
             container.appendChild(img);
           };
           reader.readAsDataURL(file);
@@ -955,7 +982,7 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
         document.getElementById('ref-filename').innerText = refName + (type === 'authentic' ? ' (Matches Document)' : ' (Impostor)');
 
         const container = document.getElementById('ref-preview-container');
-        container.innerHTML = `<img src="/sample_test_run/${refName}" class="h-14 w-28 object-contain rounded border border-slate-700 bg-white shadow-sm">`;
+        container.innerHTML = `<img src="/sample_test_run/${refName}" class="h-14 w-28 object-contain rounded border border-slate-200 bg-white shadow-sm p-1">`;
         container.classList.remove('hidden');
         document.getElementById('ref-placeholder').classList.add('hidden');
 
@@ -1050,13 +1077,13 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
         const isForged = item.decision === 'FORGED';
         const isSelected = (idx === selectedIdx);
         
-        let strokeColor = isGenuine ? '#10b981' : (isForged ? '#f43f5e' : '#f59e0b');
+        let strokeColor = isGenuine ? '#059669' : (isForged ? '#e11d48' : '#d97706');
         let lineWidth = Math.max(4, img.width / 220);
 
         if (isSelected) {
-          strokeColor = '#06b6d4'; // Highlight selected signature with bright cyan
+          strokeColor = '#4f46e5'; // Highlight selected signature with rich indigo
           lineWidth = Math.max(6, img.width / 160);
-          ctx.fillStyle = 'rgba(6, 182, 212, 0.18)';
+          ctx.fillStyle = 'rgba(79, 70, 229, 0.16)';
           ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
         }
 
@@ -1097,18 +1124,20 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
       scoreText.innerText = (score * 100).toFixed(2) + '%';
       scoreBar.style.width = Math.min(100, Math.max(0, score * 100)) + '%';
 
-      decisionCard.className = 'p-6 rounded-2xl border text-center transition-all ';
       if (decision === 'GENUINE') {
-        decisionCard.classList.add('bg-emerald-950/40', 'border-emerald-500/50', 'text-emerald-300', 'glow-emerald');
+        decisionCard.className = 'p-6 rounded-2xl border text-center transition-all bg-emerald-50/80 border-emerald-300/80 text-emerald-950 shadow-sm';
         scoreBar.className = 'h-2 rounded-full transition-all duration-700 bg-emerald-500';
+        decisionSub.className = 'text-xs text-emerald-700 mt-0.5 font-medium';
         decisionSub.innerText = 'High Biometric Confidence Match (Authentic)';
       } else if (decision === 'FORGED') {
-        decisionCard.classList.add('bg-rose-950/40', 'border-rose-500/50', 'text-rose-300', 'glow-rose');
+        decisionCard.className = 'p-6 rounded-2xl border text-center transition-all bg-rose-50/80 border-rose-300/80 text-rose-950 shadow-sm';
         scoreBar.className = 'h-2 rounded-full transition-all duration-700 bg-rose-500';
+        decisionSub.className = 'text-xs text-rose-700 mt-0.5 font-medium';
         decisionSub.innerText = 'Significant Biometric Divergence (Forged)';
       } else {
-        decisionCard.classList.add('bg-amber-950/40', 'border-amber-500/50', 'text-amber-300');
+        decisionCard.className = 'p-6 rounded-2xl border text-center transition-all bg-amber-50/80 border-amber-300/80 text-amber-950 shadow-sm';
         scoreBar.className = 'h-2 rounded-full transition-all duration-700 bg-amber-500';
+        decisionSub.className = 'text-xs text-amber-700 mt-0.5 font-medium';
         decisionSub.innerText = 'Borderline Similarity (Manual Review Required)';
       }
 
@@ -1124,9 +1153,9 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
 
       document.querySelectorAll('.sig-pill-btn').forEach((btn, bIdx) => {
         if (bIdx === idx) {
-          btn.className = 'sig-pill-btn px-3 py-1 text-xs rounded-full bg-cyan-600 text-white font-semibold shadow border border-cyan-400';
+          btn.className = 'sig-pill-btn px-3 py-1 text-xs rounded-full bg-slate-900 text-white font-semibold shadow-sm border border-slate-900';
         } else {
-          btn.className = 'sig-pill-btn px-3 py-1 text-xs rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition border border-slate-700';
+          btn.className = 'sig-pill-btn px-3 py-1 text-xs rounded-full bg-white text-slate-700 hover:bg-slate-50 font-medium transition border border-slate-200 shadow-sm';
         }
       });
 
@@ -1158,7 +1187,7 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
           pillsContainer.innerHTML = results.map((item, idx) => {
             const dec = item.decision || 'SIG';
             const sc = item.similarity_score !== undefined ? (item.similarity_score * 100).toFixed(0) + '%' : '';
-            const activeClass = idx === 0 ? 'bg-cyan-600 text-white font-semibold border-cyan-400' : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border-slate-700';
+            const activeClass = idx === 0 ? 'bg-slate-900 text-white font-semibold border-slate-900 shadow-sm' : 'bg-white text-slate-700 hover:bg-slate-50 border-slate-200 shadow-sm';
             return `<button onclick="selectSignature(${idx})" class="sig-pill-btn px-3 py-1 text-xs rounded-full ${activeClass} transition border font-mono">#${idx + 1}: ${dec} (${sc})</button>`;
           }).join('');
         } else {
@@ -1177,7 +1206,7 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
         decisionText.innerText = 'NO SIGNATURES';
         scoreText.innerText = '0.00%';
         scoreBar.style.width = '0%';
-        decisionCard.className = 'p-6 rounded-2xl border text-center transition-all bg-slate-900 border-slate-700 text-slate-300';
+        decisionCard.className = 'p-6 rounded-2xl border text-center transition-all bg-white border-slate-200 text-slate-700 shadow-sm';
         decisionSub.innerText = 'No signature candidate was detected in this document';
         document.getElementById('meta-bbox').innerText = '[--]';
         document.getElementById('meta-conf').innerText = '0.0%';
@@ -1187,18 +1216,20 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
         scoreText.innerText = (score * 100).toFixed(2) + '%';
         scoreBar.style.width = Math.min(100, Math.max(0, score * 100)) + '%';
 
-        decisionCard.className = 'p-6 rounded-2xl border text-center transition-all ';
         if (decision === 'GENUINE') {
-          decisionCard.classList.add('bg-emerald-950/40', 'border-emerald-500/50', 'text-emerald-300', 'glow-emerald');
+          decisionCard.className = 'p-6 rounded-2xl border text-center transition-all bg-emerald-50/80 border-emerald-300/80 text-emerald-950 shadow-sm';
           scoreBar.className = 'h-2 rounded-full transition-all duration-700 bg-emerald-500';
+          decisionSub.className = 'text-xs text-emerald-700 mt-0.5 font-medium';
           decisionSub.innerText = 'High Biometric Confidence Match (Authentic)';
         } else if (decision === 'FORGED') {
-          decisionCard.classList.add('bg-rose-950/40', 'border-rose-500/50', 'text-rose-300', 'glow-rose');
+          decisionCard.className = 'p-6 rounded-2xl border text-center transition-all bg-rose-50/80 border-rose-300/80 text-rose-950 shadow-sm';
           scoreBar.className = 'h-2 rounded-full transition-all duration-700 bg-rose-500';
+          decisionSub.className = 'text-xs text-rose-700 mt-0.5 font-medium';
           decisionSub.innerText = 'Significant Biometric Divergence (Forged)';
         } else {
-          decisionCard.classList.add('bg-amber-950/40', 'border-amber-500/50', 'text-amber-300');
+          decisionCard.className = 'p-6 rounded-2xl border text-center transition-all bg-amber-50/80 border-amber-300/80 text-amber-950 shadow-sm';
           scoreBar.className = 'h-2 rounded-full transition-all duration-700 bg-amber-500';
+          decisionSub.className = 'text-xs text-amber-700 mt-0.5 font-medium';
           decisionSub.innerText = 'Borderline Similarity (Manual Review Required)';
         }
 
@@ -1273,39 +1304,39 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
           const decision = firstResult.decision || '--';
           const score = firstResult.similarity_score !== undefined ? (firstResult.similarity_score * 100).toFixed(1) + '%' : '--';
           
-          let statusBadge = '<span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">PENDING</span>';
+          let statusBadge = '<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-semibold border border-slate-200">PENDING</span>';
           if (job.status === 'COMPLETED') {
-            statusBadge = '<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">COMPLETED</span>';
+            statusBadge = '<span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">COMPLETED</span>';
           } else if (job.status === 'PROCESSING') {
-            statusBadge = '<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 animate-pulse">PROCESSING</span>';
+            statusBadge = '<span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 font-semibold animate-pulse">PROCESSING</span>';
           } else if (job.status === 'FAILED') {
-            statusBadge = '<span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">FAILED</span>';
+            statusBadge = '<span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 font-semibold">FAILED</span>';
           }
 
-          let verdictBadge = '<span class="text-slate-500">--</span>';
+          let verdictBadge = '<span class="text-slate-400">--</span>';
           if (decision === 'GENUINE') {
-            verdictBadge = '<span class="text-emerald-400 font-bold">GENUINE</span>';
+            verdictBadge = '<span class="text-emerald-700 font-bold">GENUINE</span>';
           } else if (decision === 'FORGED') {
-            verdictBadge = '<span class="text-rose-400 font-bold">FORGED</span>';
+            verdictBadge = '<span class="text-rose-700 font-bold">FORGED</span>';
           } else if (decision === 'REVIEW') {
-            verdictBadge = '<span class="text-amber-400 font-bold">REVIEW</span>';
+            verdictBadge = '<span class="text-amber-700 font-bold">REVIEW</span>';
           }
 
           const timeStr = job.created_at ? new Date(job.created_at).toLocaleTimeString() : '--';
           const shortId = job.job_id.substring(0, 8);
 
           return `
-            <tr class="hover:bg-slate-800/40 transition">
-              <td class="py-3 px-4 font-mono font-medium text-cyan-400">
+            <tr class="hover:bg-slate-50/70 transition">
+              <td class="py-3 px-4 font-mono font-medium text-indigo-700">
                 <span title="${job.job_id}">${shortId}...</span>
               </td>
-              <td class="py-3 px-4 text-slate-400">${timeStr}</td>
+              <td class="py-3 px-4 text-slate-500">${timeStr}</td>
               <td class="py-3 px-4">${statusBadge}</td>
-              <td class="py-3 px-4 text-slate-300">${job.detected_count || (job.results ? job.results.length : 0)}</td>
-              <td class="py-3 px-4 text-slate-200">${score}</td>
+              <td class="py-3 px-4 text-slate-700">${job.detected_count || (job.results ? job.results.length : 0)}</td>
+              <td class="py-3 px-4 text-slate-900 font-semibold">${score}</td>
               <td class="py-3 px-4">${verdictBadge}</td>
               <td class="py-3 px-4 text-right">
-                <button onclick="inspectJob('${job.job_id}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-xs transition">
+                <button onclick="inspectJob('${job.job_id}')" class="px-2.5 py-1 rounded bg-white hover:bg-slate-50 text-indigo-700 border border-slate-200 shadow-sm text-xs font-semibold transition">
                   Inspect
                 </button>
               </td>
