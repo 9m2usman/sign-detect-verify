@@ -11,8 +11,36 @@ from typing import List, Dict, Any, Union
 import numpy as np
 from PIL import Image
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
 from backend.app.core.config import settings
+
+
+class SiameseSignatureNet(nn.Module):
+    """Siamese ResNet-18 architecture with LayerNorm embedding projection head."""
+    def __init__(self, embedding_dim: int = 256):
+        super().__init__()
+        from torchvision.models import resnet18
+        base = resnet18(weights=None)
+        in_features = base.fc.in_features
+        self.encoder = nn.Sequential(*list(base.children())[:-1])
+        self.head = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(in_features, 512),
+            nn.LayerNorm(512),
+            nn.ReLU(inplace=True),
+            nn.Dropout(0.2),
+            nn.Linear(512, embedding_dim)
+        )
+
+    def forward_one(self, x: torch.Tensor) -> torch.Tensor:
+        feat = self.encoder(x)
+        emb = self.head(feat)
+        return F.normalize(emb, p=2, dim=1)
+
+    def forward(self, x1: torch.Tensor, x2: torch.Tensor):
+        return self.forward_one(x1), self.forward_one(x2)
 
 
 class ProductionSignatureVerifier:
@@ -32,16 +60,19 @@ class ProductionSignatureVerifier:
         self.threshold_forged = forged_threshold or settings.THRESHOLD_FORGED
         self.model = None
 
-        # Check for trained PyTorch verifier checkpoint
+        # Check for trained PyTorch verifier checkpoint - prioritize repo checkpoints
+        import tempfile
+        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
         ckpt_paths = [
+            os.path.join(base_dir, "checkpoints", "resnet50_verifier", "verifier_best.pth"),
+            "checkpoints/resnet50_verifier/verifier_best.pth",
             "verification/selected_model/verifier_best.pth",
-            "checkpoints/resnet50_verifier/verifier_best.pth"
+            os.path.join(tempfile.gettempdir(), "checkpoints", "resnet50_verifier", "verifier_best.pth")
         ]
         for p in ckpt_paths:
             if os.path.exists(p):
                 try:
-                    from verification.models.siamese_cnn import SiameseSignatureCNN
-                    m = SiameseSignatureCNN(embedding_dim=embedding_dim, pretrained=False)
+                    m = SiameseSignatureNet(embedding_dim=embedding_dim)
                     m.load_state_dict(torch.load(p, map_location=self.device, weights_only=True))
                     m.to(self.device).eval()
                     self.model = m
@@ -92,42 +123,81 @@ class ProductionSignatureVerifier:
     def compute_similarity(self, crop: Union[Image.Image, str], ref: Union[Image.Image, str]) -> float:
         """
         Computes accurate biometric similarity between query crop and reference signature.
-        Combines stroke skeleton IoU, normalized cross-correlation, and embedding cosine distance.
+        1. If deep Siamese neural network checkpoint is present, computes L2-normalized cosine similarity.
+        2. Otherwise, uses translation-invariant biometric stroke geometry and gradient orientation histograms.
         """
         if isinstance(crop, str):
             crop = Image.open(crop)
         if isinstance(ref, str):
             ref = Image.open(ref)
 
+        # 1. Neural Siamese Inference
+        if self.model is not None:
+            try:
+                import torchvision.transforms.functional as TF
+                c_rgb = crop.convert("RGB").resize((224, 224))
+                r_rgb = ref.convert("RGB").resize((224, 224))
+                c_t = TF.normalize(TF.to_tensor(c_rgb), mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]).unsqueeze(0).to(self.device)
+                r_t = TF.normalize(TF.to_tensor(r_rgb), mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]).unsqueeze(0).to(self.device)
+                with torch.no_grad():
+                    e_c = self.model.forward_one(c_t)
+                    e_r = self.model.forward_one(r_t)
+                    cos_sim = float(torch.sum(e_c * e_r).item())
+                    # Calibrate neural similarity from [0.76, 1.00] baseline to [0.0, 1.0]
+                    norm_score = max(0.0, min(1.0, (cos_sim - 0.76) / 0.24))
+                    return float(round(norm_score, 4))
+            except Exception:
+                pass
+
+        # 2. Translation-Invariant Biometric Stroke Geometry Engine (Fallback)
         c_img = crop.convert("L").resize((128, 128))
         r_img = ref.convert("L").resize((128, 128))
 
         c_arr = np.array(c_img, dtype=np.float32)
         r_arr = np.array(r_img, dtype=np.float32)
+        ink_c = (c_arr < 190).astype(np.float32)
+        ink_r = (r_arr < 190).astype(np.float32)
 
-        # 1. Stroke overlap (IoU)
-        c_ink = c_arr < 190
-        r_ink = r_arr < 190
-        intersection = np.sum(c_ink & r_ink)
-        union = np.sum(c_ink | r_ink)
-        iou = intersection / (union + 1e-6)
+        # 1. Orientation histogram
+        gy_c, gx_c = np.gradient(c_arr)
+        ang_c = (np.arctan2(gy_c, gx_c) + np.pi) / (2 * np.pi)
+        mag_c = np.sqrt(gx_c**2 + gy_c**2)
+        mask_c = ink_c > 0
+        if np.sum(mask_c) > 0:
+            h_c, _ = np.histogram(ang_c[mask_c], bins=32, range=(0, 1), weights=mag_c[mask_c])
+            h_c = h_c / (np.sum(h_c) + 1e-6)
+        else:
+            h_c = np.zeros(32, dtype=np.float32)
 
-        # 2. Normalized cross correlation of stroke density
-        c_norm = c_arr - np.mean(c_arr)
-        r_norm = r_arr - np.mean(r_arr)
-        denom = (np.std(c_arr) * np.std(r_arr) * 128 * 128) + 1e-6
-        ncc = max(0.0, min(1.0, float(np.sum(c_norm * r_norm) / denom)))
+        mask_r = ink_r > 0
+        if np.sum(mask_r) > 0:
+            gy_r, gx_r = np.gradient(r_arr)
+            ang_r = (np.arctan2(gy_r, gx_r) + np.pi) / (2 * np.pi)
+            mag_r = np.sqrt(gx_r**2 + gy_r**2)
+            h_r, _ = np.histogram(ang_r[mask_r], bins=32, range=(0, 1), weights=mag_r[mask_r])
+            h_r = h_r / (np.sum(h_r) + 1e-6)
+        else:
+            h_r = np.zeros(32, dtype=np.float32)
 
-        # 3. Vector embedding cosine similarity
-        emb_c = self.extract_embedding(crop)
-        emb_r = self.extract_embedding(ref)
-        emb_cos = max(0.0, float(np.dot(emb_c, emb_r)))
+        hist_sim = float(np.dot(h_c, h_r) / (np.linalg.norm(h_c) * np.linalg.norm(h_r) + 1e-6))
 
-        # Weighted harmonic aggregation
-        combined = (0.45 * iou) + (0.35 * ncc) + (0.20 * emb_cos)
-        # Calibrate scaling: identical = 1.0, similar = 0.85-0.95, different = 0.15-0.55
-        score = np.sqrt(combined)
-        return float(round(max(0.0, min(1.0, score)), 4))
+        # 2. Grid density (8x8)
+        tot_c = np.sum(ink_c) + 1e-6
+        tot_r = np.sum(ink_r) + 1e-6
+        g_c = np.array([np.sum(ink_c[r*16:(r+1)*16, c*16:(c+1)*16]) for r in range(8) for c in range(8)]) / tot_c
+        g_r = np.array([np.sum(ink_r[r*16:(r+1)*16, c*16:(c+1)*16]) for r in range(8) for c in range(8)]) / tot_r
+        grid_sim = float(np.dot(g_c, g_r) / (np.linalg.norm(g_c) * np.linalg.norm(g_r) + 1e-6))
+
+        # 3. Cross-correlation
+        c_norm = ink_c - np.mean(ink_c)
+        r_norm = ink_r - np.mean(ink_r)
+        denom = (np.std(ink_c) * np.std(ink_r) * 128 * 128) + 1e-6
+        corr = float(np.sum(c_norm * r_norm) / denom)
+        norm_corr = max(0.0, min(1.0, (corr + 0.1) / 1.1))
+
+        combined = 0.50 * hist_sim + 0.35 * grid_sim + 0.15 * norm_corr
+        calibrated = max(0.0, min(1.0, (combined - 0.48) / 0.38))
+        return float(round(calibrated, 4))
 
     def verify_against_references(
         self,
@@ -146,6 +216,7 @@ class ProductionSignatureVerifier:
             comparison_scores.append(sim)
 
         aggregated_score = max(comparison_scores)
+        mean_score = float(np.mean(comparison_scores))
         best_ref_idx = int(np.argmax(comparison_scores))
 
         if aggregated_score >= self.threshold_genuine:
@@ -157,6 +228,7 @@ class ProductionSignatureVerifier:
 
         return {
             "aggregated_similarity": round(aggregated_score, 4),
+            "mean_similarity": round(mean_score, 4),
             "decision": decision,
             "best_reference_index": best_ref_idx,
             "individual_scores": [round(s, 4) for s in comparison_scores],

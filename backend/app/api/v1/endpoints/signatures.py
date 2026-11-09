@@ -5,7 +5,7 @@ Signatures API Endpoints: Document Verification Job Submission.
 import os
 import uuid
 from typing import List
-from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, status
+from fastapi import APIRouter, UploadFile, File, Query, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from backend.app.database.session import get_db
@@ -23,11 +23,11 @@ router = APIRouter()
     status_code=status.HTTP_202_ACCEPTED,
     summary="Submit document and reference signatures for asynchronous or synchronous verification"
 )
-async def verify_signature_endpoint(
+def verify_signature_endpoint(
     document: UploadFile = File(..., description="Document image containing signatures to verify"),
     references: List[UploadFile] = File(default=[], description="One or more authentic reference signatures"),
     reference_signatures: List[UploadFile] = File(default=[], description="Alternative field name for references"),
-    sync: bool = False,
+    sync: bool = Query(False, description="Whether to execute synchronously and return results immediately"),
     db: Session = Depends(get_db)
 ):
     """
@@ -39,7 +39,9 @@ async def verify_signature_endpoint(
         raise HTTPException(status_code=400, detail="Missing document file.")
 
     # Accept either 'references' or 'reference_signatures' field names
-    valid_refs = [r for r in (references + reference_signatures) if r and r.filename]
+    ref_list = references if isinstance(references, list) else ([references] if references else [])
+    alt_list = reference_signatures if isinstance(reference_signatures, list) else ([reference_signatures] if reference_signatures else [])
+    valid_refs = [r for r in (ref_list + alt_list) if hasattr(r, "filename") and r.filename]
     if not valid_refs:
         raise HTTPException(status_code=400, detail="At least one reference signature is required.")
 
@@ -50,7 +52,7 @@ async def verify_signature_endpoint(
     # Save document
     doc_path = os.path.join(job_dir, f"doc_{document.filename}")
     with open(doc_path, "wb") as f:
-        f.write(await document.read())
+        f.write(document.file.read())
 
     # Save references
     ref_paths = []
@@ -58,15 +60,18 @@ async def verify_signature_endpoint(
     for idx, ref in enumerate(valid_refs):
         ref_path = os.path.join(job_dir, f"ref_{idx}_{ref.filename}")
         with open(ref_path, "wb") as f:
-            f.write(await ref.read())
+            f.write(ref.file.read())
         ref_paths.append(ref_path)
         ref_filenames.append(ref.filename)
+
+    from backend.app.api.v1.endpoints.jobs import to_web_url
 
     # Create persistent DB record
     job = Job(
         id=job_id,
         status="PENDING",
         document_path=doc_path,
+        document_url=to_web_url(doc_path),
         reference_paths=ref_paths,
         detected_count=0
     )
@@ -78,6 +83,7 @@ async def verify_signature_endpoint(
         process_verification_job(job_id)
         # Fetch updated job and results from DB
         db.refresh(job)
+        from backend.app.api.v1.endpoints.jobs import to_web_url
         results_data = []
         for res in job.results:
             results_data.append(
@@ -85,10 +91,10 @@ async def verify_signature_endpoint(
                     signature_index=res.signature_index,
                     bbox=res.bbox,
                     confidence_detection=res.confidence_detection,
-                    reference_filename=res.reference_path,
+                    reference_filename=to_web_url(res.reference_path) or res.reference_path,
                     similarity_score=res.similarity_score,
                     decision=res.decision,
-                    crop_url=res.crop_path
+                    crop_url=to_web_url(res.crop_path)
                 )
             )
         return JobStatusResponse(
@@ -98,7 +104,8 @@ async def verify_signature_endpoint(
             created_at=job.created_at,
             completed_at=job.completed_at,
             results=results_data,
-            error_message=job.error_message
+            error_message=job.error_message,
+            document_url=to_web_url(job.document_path)
         )
 
     # Otherwise dispatch to Celery queue (or run locally if broker not running)

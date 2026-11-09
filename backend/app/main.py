@@ -6,7 +6,7 @@ Initializes Database, CORS, Middleware, and API Routers.
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 import os
 
 from backend.app.core.config import settings
@@ -32,6 +32,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Register Prometheus observability middleware & metrics endpoint
+try:
+    from backend.app.core.metrics import metrics_endpoint_handler, prometheus_middleware
+    app.middleware("http")(prometheus_middleware)
+    app.add_route("/metrics", metrics_endpoint_handler, methods=["GET"], include_in_schema=False)
+except Exception:
+    pass
+
 # Register API v1 routes
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
@@ -46,8 +54,19 @@ if os.path.exists("sample_test_run"):
 if os.path.exists("architecture"):
     app.mount("/architecture", StaticFiles(directory="architecture"), name="architecture")
 
-os.makedirs("uploads", exist_ok=True)
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+upload_dir = settings.UPLOAD_DIR
+try:
+    os.makedirs(upload_dir, exist_ok=True)
+except (PermissionError, OSError):
+    import tempfile
+    upload_dir = os.path.join(tempfile.gettempdir(), "signature_uploads")
+    os.makedirs(upload_dir, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=upload_dir), name="uploads")
+
+import tempfile
+temp_crops = os.path.join(tempfile.gettempdir(), "signature_crops")
+if os.path.exists(temp_crops):
+    app.mount("/signature_crops", StaticFiles(directory=temp_crops), name="signature_crops")
 
 
 @app.get("/health", tags=["Health"])
@@ -68,7 +87,8 @@ def root(request: Request = None):
     if request is not None and "text/html" in request.headers.get("accept", ""):
         index_file = os.path.join(static_dir, "index.html")
         if os.path.exists(index_file):
-            return FileResponse(index_file)
+            with open(index_file, "r", encoding="utf-8") as f:
+                return HTMLResponse(content=f.read())
     return {
         "message": f"Welcome to {settings.PROJECT_NAME}",
         "docs_url": "/docs",
@@ -79,10 +99,11 @@ def root(request: Request = None):
 
 
 @app.get("/ui", tags=["UI"])
-def get_ui():
+async def get_ui():
     """Explicit UI dashboard route serving interactive HTML5 frontend."""
     index_file = os.path.join(static_dir, "index.html")
     if os.path.exists(index_file):
-        return FileResponse(index_file)
-    return {"message": "UI not found"}
+        with open(index_file, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>UI dashboard not found</h1>", status_code=404)
 

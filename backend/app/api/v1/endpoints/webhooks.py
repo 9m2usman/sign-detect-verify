@@ -7,8 +7,17 @@ import hashlib
 from fastapi import APIRouter, Header, HTTPException, Request, status
 from backend.app.schemas.jobs import HuggingFaceWebhookPayload
 from backend.app.core.config import settings
+from mlops.training_pipeline.retrain_orchestrator import RetrainingOrchestrator
 
 router = APIRouter()
+_orchestrator = None
+
+
+def get_orchestrator():
+    global _orchestrator
+    if _orchestrator is None:
+        _orchestrator = RetrainingOrchestrator()
+    return _orchestrator
 
 
 @router.post(
@@ -49,9 +58,18 @@ def huggingface_webhook_receiver(
     else:
         retraining_target = "detection_rtmdet"
 
+    # 4. Trigger Retraining Pipeline Orchestrator
+    event_id = payload.commit.get("id", "event-manual") if payload.commit else f"event-{repo_name}"
+    orchestrator = get_orchestrator()
+    run_outcome = orchestrator.handle_dataset_update_event(
+        event_id=event_id,
+        payload=payload.model_dump()
+    )
+
     return {
         "status": "triggered",
         "retraining_target": retraining_target,
         "repo": repo_name,
+        "pipeline_outcome": run_outcome,
         "message": f"Automated remote GPU retraining job queued for target: {retraining_target}."
     }

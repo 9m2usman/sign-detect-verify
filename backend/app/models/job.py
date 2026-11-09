@@ -17,6 +17,7 @@ class Job(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     status: Mapped[str] = mapped_column(String(20), default="PENDING", index=True)
     document_path: Mapped[str] = mapped_column(String(500), nullable=False)
+    document_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
     reference_paths: Mapped[list] = mapped_column(JSON, default=list)
     detected_count: Mapped[int] = mapped_column(Integer, default=0)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
@@ -42,3 +43,20 @@ class VerificationResult(Base):
     crop_path: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
 
     job: Mapped["Job"] = relationship("Job", back_populates="results")
+
+
+class ModelVersion(Base):
+    """Tracks deployed model versions, metadata, and evaluation metrics."""
+    __tablename__ = "model_versions"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    model_type: Mapped[str] = mapped_column(String(50), nullable=False)  # 'detection' or 'verification'
+    model_name: Mapped[str] = mapped_column(String(100), nullable=False)
+    version_tag: Mapped[str] = mapped_column(String(50), nullable=False)
+    framework: Mapped[str] = mapped_column(String(50), default="PyTorch")
+    license: Mapped[str] = mapped_column(String(50), default="Apache-2.0")
+    artifact_path: Mapped[str] = mapped_column(String(500), nullable=False)
+    metrics: Mapped[dict] = mapped_column(JSON, default=dict)
+    is_active: Mapped[bool] = mapped_column(default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+

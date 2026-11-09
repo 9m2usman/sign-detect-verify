@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jira Software — Signature Detection & Verification Platform (SIG Board)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color: #f4f5f7; }
+        .jira-column { min-height: 680px; }
+        .card { transition: all 0.2s ease; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(9, 30, 66, 0.15); }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Top Atlassian Jira Header -->
+    <header class="bg-[#0747A6] text-white px-6 py-3 flex items-center justify-between shadow-md">
+        <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-2">
+                <i class="fa-brands fa-jira text-2xl text-blue-200"></i>
+                <span class="font-bold text-lg tracking-tight">Jira Software</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-4 text-sm font-medium text-blue-100">
+                <span class="hover:text-white cursor-pointer">Projects</span>
+                <span class="hover:text-white cursor-pointer">Filters</span>
+                <span class="hover:text-white cursor-pointer">Dashboards</span>
+                <span class="hover:text-white cursor-pointer">Teams</span>
+                <span class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">Create</span>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4 text-sm">
+            <span class="bg-blue-800/80 px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2"></span> Group 4 (5 Members) • Lead: Usman
+            </span>
+            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-xs border border-blue-300">
+                US
+            </div>
+        </div>
+    </header>
+
+    <!-- Subheader / Project Navigation -->
+    <nav class="bg-white border-b border-slate-200 px-6 py-3 flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <div class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Projects / Signature Detection & Verification</div>
+            <div class="text-xl font-bold text-slate-900 flex items-center space-x-3 mt-0.5">
+                <span>SIG board</span>
+                <span class="text-xs px-2 py-0.5 bg-blue-100 text-blue-800 font-semibold rounded">Scrum</span>
+                <span class="text-xs px-2 py-0.5 bg-purple-100 text-purple-800 font-semibold rounded">Checkpoint: 11:30 PM Tonight</span>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button onclick="window.print()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded border border-slate-300 flex items-center space-x-1.5">
+                <i class="fa-solid fa-print"></i>
+                <span>Export / Screenshot View</span>
+            </button>
+            <div class="flex -space-x-2">
+                <div title="Usman (Lead & Cloud)" class="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-sm">U</div>
+                <div title="Junaid (Detection ML)" class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-sm">J</div>
+                <div title="Saim (MLOps & Eval)" class="w-7 h-7 rounded-full bg-amber-600 text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-sm">S</div>
+                <div title="Ayesha (Verification ML)" class="w-7 h-7 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-sm">A</div>
+                <div title="Sobia (Backend & Worker)" class="w-7 h-7 rounded-full bg-cyan-600 text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-sm">SB</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Daily Milestones Bar (Sat, Sun, Mon, Tue) -->
+    <div class="bg-slate-50 border-b border-slate-200 px-6 py-2.5 text-xs flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center space-x-2 font-medium text-slate-600">
+            <span class="font-bold text-slate-800">Sprint Roadmap & Agreed Milestones:</span>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 bg-blue-100 text-blue-900 font-medium rounded border border-blue-200">
+                <strong>Sat 11:30 PM:</strong> Jira Planning & Architecture Alignment
+            </span>
+            <span class="px-2.5 py-1 bg-amber-100 text-amber-900 font-medium rounded border border-amber-200">
+                <strong>Sun Milestone:</strong> Detection Colab Training & Siamese Metric Model
+            </span>
+            <span class="px-2.5 py-1 bg-purple-100 text-purple-900 font-medium rounded border border-purple-200">
+                <strong>Mon Milestone:</strong> FastAPI, RabbitMQ, Celery & HF Retraining
+            </span>
+            <span class="px-2.5 py-1 bg-emerald-100 text-emerald-900 font-medium rounded border border-emerald-200">
+                <strong>Tue Milestone:</strong> AWS Deployment, Observability & Final Presentation
+            </span>
+        </div>
+    </div>
+
+    <!-- Scrum Board Grid -->
+    <main class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+            <!-- TO DO / SPRINT BACKLOG -->
+            <div class="bg-[#EBECF0] rounded-lg p-3 flex flex-col jira-column">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-300">
+                    <span class="font-bold text-xs uppercase tracking-wider text-slate-700">TO DO (8)</span>
+                    <span class="text-xs font-semibold px-2 py-0.5 bg-slate-300 rounded text-slate-700">36 pts</span>
+                </div>
+                <div class="space-y-3 flex-1 overflow-y-auto">
+
+                    <!-- SIG-9.1 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-9.1</span>
+                            <span class="px-1.5 py-0.5 bg-purple-100 text-purple-700 font-semibold rounded text-[10px]">AWS Deploy</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Build multi-stage production Docker images and push to Amazon ECR</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Usman</span>
+                            <span class="w-5 h-5 bg-slate-200 rounded-full flex items-center justify-center font-bold text-[10px] text-slate-700">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-9.2 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-9.2</span>
+                            <span class="px-1.5 py-0.5 bg-purple-100 text-purple-700 font-semibold rounded text-[10px]">AWS Deploy</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Deploy ECS Fargate tasks behind ALB with RDS PostgreSQL & Amazon MQ</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Usman</span>
+                            <span class="w-5 h-5 bg-slate-200 rounded-full flex items-center justify-center font-bold text-[10px] text-slate-700">8</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-10.1 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-10.1</span>
+                            <span class="px-1.5 py-0.5 bg-rose-100 text-rose-700 font-semibold rounded text-[10px]">Observability</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Implement structured JSON logs with distributed correlation IDs across services</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Sobia</span>
+                            <span class="w-5 h-5 bg-slate-200 rounded-full flex items-center justify-center font-bold text-[10px] text-slate-700">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-10.2 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-10.2</span>
+                            <span class="px-1.5 py-0.5 bg-rose-100 text-rose-700 font-semibold rounded text-[10px]">Observability</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Instrument Prometheus metrics and build Grafana dashboards (latency, queue backlog)</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Usman</span>
+                            <span class="w-5 h-5 bg-slate-200 rounded-full flex items-center justify-center font-bold text-[10px] text-slate-700">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-11.1 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-11.1</span>
+                            <span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 font-semibold rounded text-[10px]">Load Test</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Author Locust concurrent upload load test suite (1, 5, 10, 20, 50 users)</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Usman</span>
+                            <span class="w-5 h-5 bg-slate-200 rounded-full flex items-center justify-center font-bold text-[10px] text-slate-700">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-11.2 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-11.2</span>
+                            <span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 font-semibold rounded text-[10px]">Load Test</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Measure container cold-start, model download, warm inference latency & memory soak</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Saim</span>
+                            <span class="w-5 h-5 bg-slate-200 rounded-full flex items-center justify-center font-bold text-[10px] text-slate-700">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-12.1 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-12.1</span>
+                            <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 font-semibold rounded text-[10px]">Docs & Pres</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Create production AWS-style architecture diagrams for inference and retraining</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Usman</span>
+                            <span class="w-5 h-5 bg-slate-200 rounded-full flex items-center justify-center font-bold text-[10px] text-slate-700">3</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- IN PROGRESS (CURRENT SPRINT) -->
+            <div class="bg-[#EBECF0] rounded-lg p-3 flex flex-col jira-column">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-300">
+                    <span class="font-bold text-xs uppercase tracking-wider text-slate-700">IN PROGRESS (6)</span>
+                    <span class="text-xs font-semibold px-2 py-0.5 bg-blue-200 text-blue-900 rounded">36 pts</span>
+                </div>
+                <div class="space-y-3 flex-1 overflow-y-auto">
+
+                    <!-- SIG-3.1 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-blue-600 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-3.1</span>
+                            <span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 font-semibold rounded text-[10px]">Detection ML</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Develop reproducible Google Colab / GPU detection training notebook (Faster R-CNN ResNet-50)</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Junaid</span>
+                            <span class="w-5 h-5 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center font-bold text-[10px]">8</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-4.1 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-blue-600 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-4.1</span>
+                            <span class="px-1.5 py-0.5 bg-cyan-100 text-cyan-700 font-semibold rounded text-[10px]">Verification ML</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Build real Siamese ResNet-50 metric learning network with contrastive/triplet loss on CEDAR</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Ayesha</span>
+                            <span class="w-5 h-5 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center font-bold text-[10px]">8</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-5.1 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-blue-600 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-5.1</span>
+                            <span class="px-1.5 py-0.5 bg-indigo-100 text-indigo-700 font-semibold rounded text-[10px]">Backend</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Implement FastAPI REST endpoints (/documents/upload, /signatures/verify, /jobs/{id})</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Sobia</span>
+                            <span class="w-5 h-5 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center font-bold text-[10px]">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-6.1 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-blue-600 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-6.1</span>
+                            <span class="px-1.5 py-0.5 bg-indigo-100 text-indigo-700 font-semibold rounded text-[10px]">Workers</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Enforce RabbitMQ AMQP routing & Celery task workers (eliminate silent synchronous fallbacks)</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Sobia</span>
+                            <span class="w-5 h-5 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center font-bold text-[10px]">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-7.1 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-blue-600 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-7.1</span>
+                            <span class="px-1.5 py-0.5 bg-teal-100 text-teal-700 font-semibold rounded text-[10px]">MLOps Tracking</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Configure MLflow experiment tracking server with S3 artifact backend for mAP and EER</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Saim</span>
+                            <span class="w-5 h-5 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center font-bold text-[10px]">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-8.1 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-blue-600 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-8.1</span>
+                            <span class="px-1.5 py-0.5 bg-teal-100 text-teal-700 font-semibold rounded text-[10px]">MLOps Retrain</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Implement Hugging Face dataset revision monitor with HMAC webhook authentication</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Usman</span>
+                            <span class="w-5 h-5 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center font-bold text-[10px]">5</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- CODE REVIEW / VERIFICATION -->
+            <div class="bg-[#EBECF0] rounded-lg p-3 flex flex-col jira-column">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-300">
+                    <span class="font-bold text-xs uppercase tracking-wider text-slate-700">IN REVIEW (4)</span>
+                    <span class="text-xs font-semibold px-2 py-0.5 bg-amber-200 text-amber-900 rounded">18 pts</span>
+                </div>
+                <div class="space-y-3 flex-1 overflow-y-auto">
+
+                    <!-- SIG-2.1 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-amber-500 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-2.1</span>
+                            <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 font-semibold rounded text-[10px]">Dataset A</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Fix negative sample full-image bounding box bug in train_rtdetr.py</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Junaid</span>
+                            <span class="w-5 h-5 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-bold text-[10px]">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-2.2 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-amber-500 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-2.2</span>
+                            <span class="px-1.5 py-0.5 bg-cyan-100 text-cyan-700 font-semibold rounded text-[10px]">Dataset B</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Complete formal comparative evaluation of CEDAR vs BHSig260 for verification</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Ayesha</span>
+                            <span class="w-5 h-5 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-bold text-[10px]">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-5.2 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-amber-500 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-5.2</span>
+                            <span class="px-1.5 py-0.5 bg-indigo-100 text-indigo-700 font-semibold rounded text-[10px]">Backend</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Configure PostgreSQL schema with Alembic migrations for jobs, detections & verification results</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Sobia</span>
+                            <span class="w-5 h-5 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-bold text-[10px]">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-1.2 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-amber-500 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-1.2</span>
+                            <span class="px-1.5 py-0.5 bg-slate-100 text-slate-700 font-semibold rounded text-[10px]">Architecture</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Standardize Pydantic v2 schemas and JSON API contracts</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-slate-500">Sobia</span>
+                            <span class="w-5 h-5 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-bold text-[10px]">3</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- DONE / COMPLETED (READY FOR 11:30PM CHECKPOINT) -->
+            <div class="bg-[#EBECF0] rounded-lg p-3 flex flex-col jira-column">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-300">
+                    <span class="font-bold text-xs uppercase tracking-wider text-slate-700">DONE (6)</span>
+                    <span class="text-xs font-semibold px-2 py-0.5 bg-emerald-200 text-emerald-900 rounded">22 pts</span>
+                </div>
+                <div class="space-y-3 flex-1 overflow-y-auto">
+
+                    <!-- SIG-1.1 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-emerald-500 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-1.1</span>
+                            <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 font-semibold rounded text-[10px]">Planning</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Forensic repository audit & license verification (MIT/Apache/BSD-3; zero AGPL)</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-emerald-600 font-semibold flex items-center"><i class="fa-solid fa-check mr-1"></i> Verified</span>
+                            <span class="w-5 h-5 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center font-bold text-[10px]">3</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-1.3 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-emerald-500 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-1.3</span>
+                            <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 font-semibold rounded text-[10px]">Architecture</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Formulate AWS architecture, event-driven async queue dataflow & cost mitigation plan</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-emerald-600 font-semibold flex items-center"><i class="fa-solid fa-check mr-1"></i> Verified</span>
+                            <span class="w-5 h-5 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center font-bold text-[10px]">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-2.3 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-emerald-500 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-2.3</span>
+                            <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 font-semibold rounded text-[10px]">Dataset A</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Dataset A audit: 28,958 images, 38,094 boxes, verify zero identity leakage</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-emerald-600 font-semibold flex items-center"><i class="fa-solid fa-check mr-1"></i> Verified</span>
+                            <span class="w-5 h-5 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center font-bold text-[10px]">5</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-1.4 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-emerald-500 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-1.4</span>
+                            <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 font-semibold rounded text-[10px]">Jira Setup</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Decompose requirements into 12 Epics, 24 Stories, story points and group member owners</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-emerald-600 font-semibold flex items-center"><i class="fa-solid fa-check mr-1"></i> Verified</span>
+                            <span class="w-5 h-5 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center font-bold text-[10px]">3</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-3.3 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-emerald-500 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-3.3</span>
+                            <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 font-semibold rounded text-[10px]">Detection ML</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Standardize on Torchvision Faster R-CNN ResNet-50 FPN (BSD-3-Clause permissive license)</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-emerald-600 font-semibold flex items-center"><i class="fa-solid fa-check mr-1"></i> Verified</span>
+                            <span class="w-5 h-5 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center font-bold text-[10px]">3</span>
+                        </div>
+                    </div>
+
+                    <!-- SIG-2.4 -->
+                    <div class="card bg-white p-3 rounded shadow-sm border-l-4 border-l-emerald-500 border border-slate-200">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-blue-600">SIG-2.4</span>
+                            <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 font-semibold rounded text-[10px]">Dataset B</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-800 mb-2">Formal recommendation of CEDAR signature verification dataset (55 writers, 2,640 pairs)</p>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+                            <span class="text-[11px] text-emerald-600 font-semibold flex items-center"><i class="fa-solid fa-check mr-1"></i> Verified</span>
+                            <span class="w-5 h-5 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center font-bold text-[10px]">3</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bottom Status Bar -->
+    <footer class="bg-white border-t border-slate-200 px-6 py-2.5 text-xs text-slate-500 flex items-center justify-between">
+        <div>
+            <strong>Ready for 11:30 PM Checkpoint:</strong> 12 Epics, 24 Stories, 112 Total Story Points.
+        </div>
+        <div class="flex items-center space-x-4">
+            <span><i class="fa-solid fa-circle text-emerald-500 text-[10px] mr-1"></i> 22 pts Done</span>
+            <span><i class="fa-solid fa-circle text-amber-500 text-[10px] mr-1"></i> 18 pts In Review</span>
+            <span><i class="fa-solid fa-circle text-blue-500 text-[10px] mr-1"></i> 36 pts In Progress</span>
+            <span><i class="fa-solid fa-circle text-slate-400 text-[10px] mr-1"></i> 36 pts Backlog</span>
+        </div>
+    </footer>
+
+</body>
+</html>

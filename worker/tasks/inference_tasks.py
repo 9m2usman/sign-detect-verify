@@ -45,7 +45,13 @@ def process_verification_job(self, job_id: str = None):
 
         # Run pipeline
         storage_dir = os.path.dirname(job.document_path)
-        crops_dir = os.path.join(storage_dir, f"crops_{job_id}")
+        crops_dir = os.path.join(storage_dir, "crops")
+        try:
+            os.makedirs(crops_dir, exist_ok=True)
+        except (PermissionError, OSError):
+            import tempfile
+            crops_dir = os.path.join(tempfile.gettempdir(), "signature_crops", job_id, "crops")
+            os.makedirs(crops_dir, exist_ok=True)
 
         pipeline = get_pipeline()
         pipeline_output = pipeline.process_document(
@@ -58,6 +64,7 @@ def process_verification_job(self, job_id: str = None):
 
         # Save individual verification results
         for item in pipeline_output["results"]:
+            clean_crop = item["crop_path"].replace("\\", "/") if item.get("crop_path") else None
             res = VerificationResult(
                 job_id=job.id,
                 signature_index=item["signature_index"],
@@ -66,13 +73,29 @@ def process_verification_job(self, job_id: str = None):
                 reference_path=item["best_reference"],
                 similarity_score=item["similarity_score"],
                 decision=item["decision"],
-                crop_path=item["crop_path"]
+                crop_path=clean_crop
             )
             db.add(res)
 
         job.status = "COMPLETED"
         job.completed_at = datetime.utcnow()
         db.commit()
+
+        # Telemetry: Record Prometheus inference metrics
+        try:
+            from backend.app.core.metrics import (
+                SIGNATURE_DETECTIONS,
+                SIGNATURE_SIMILARITY_SCORES,
+                SIGNATURE_DECISIONS_TOTAL,
+                WORKER_JOBS_PROCESSED_TOTAL
+            )
+            SIGNATURE_DETECTIONS.observe(job.detected_count)
+            for item in pipeline_output["results"]:
+                SIGNATURE_SIMILARITY_SCORES.observe(float(item["similarity_score"]))
+                SIGNATURE_DECISIONS_TOTAL.labels(decision=item["decision"]).inc()
+            WORKER_JOBS_PROCESSED_TOTAL.labels(status="COMPLETED").inc()
+        except Exception:
+            pass
 
         return {
             "status": "success",

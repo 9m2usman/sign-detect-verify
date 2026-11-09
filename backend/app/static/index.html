@@ -9,217 +9,298 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    .gradient-header {
-      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #070b14;
     }
-    .card-blur {
-      background: rgba(30, 41, 59, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .gradient-header {
+      background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(37, 99, 235, 0.25), rgba(7, 11, 20, 0));
+    }
+    .card-glass {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .card-glass:hover {
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 20px -3px rgba(6, 182, 212, 0.25);
+    }
+    .glow-blue {
+      box-shadow: 0 0 25px -3px rgba(59, 130, 246, 0.3);
+    }
+    .glow-emerald {
+      box-shadow: 0 0 20px -3px rgba(16, 185, 129, 0.3);
+    }
+    .glow-rose {
+      box-shadow: 0 0 20px -3px rgba(244, 63, 94, 0.3);
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0f19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+<body class="text-slate-100 min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-white">
 
-  <!-- Top Navigation Bar -->
-  <header class="gradient-header border-b border-slate-800 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="p-2 bg-indigo-600 rounded-xl shadow-lg shadow-indigo-500/30">
-          <i data-lucide="pen-tool" class="w-6 h-6 text-white"></i>
+  <!-- Top Sticky Navigation Bar -->
+  <header class="sticky top-0 z-50 bg-[#070b14]/90 backdrop-blur-md border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+      
+      <!-- Brand & Badges -->
+      <div class="flex items-center space-x-3.5">
+        <div class="p-2.5 bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-xl shadow-lg shadow-blue-500/20 flex items-center justify-center">
+          <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
         </div>
         <div>
-          <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-            Signature AI Platform
-            <span class="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono">
-              Zero AGPL • Apache 2.0
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-1.5">
+              Signature AI <span class="text-cyan-400 font-medium">Platform</span>
+            </h1>
+            <span class="text-[10px] uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono font-semibold">
+              Zero AGPL • BSD-3 / Apache 2.0
             </span>
-          </h1>
-          <p class="text-xs text-slate-400">Two-Stage Detection & Siamese Biometric Verification</p>
+          </div>
+          <p class="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
+            <span>Two-Stage Object Detection & Siamese Metric Verification</span>
+            <span class="inline-block w-1 h-1 rounded-full bg-slate-600"></span>
+            <span class="text-emerald-400 flex items-center gap-1 font-mono text-[11px]">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Systems Online
+            </span>
+          </p>
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
-      <nav class="flex items-center space-x-1 sm:space-x-2">
-        <button onclick="switchTab('studio')" id="tab-btn-studio" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-indigo-600 text-white shadow-sm">
-          <i data-lucide="scan-line" class="w-4 h-4 inline-block mr-1.5"></i> Studio
+      <!-- Main Navigation Tabs -->
+      <nav class="flex items-center space-x-1 sm:space-x-1.5 bg-slate-900/80 p-1 rounded-xl border border-slate-800/80">
+        <button onclick="switchTab('studio')" id="tab-btn-studio" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm flex items-center gap-1.5">
+          <i data-lucide="scan-line" class="w-3.5 h-3.5"></i> Studio
         </button>
-        <button onclick="switchTab('models')" id="tab-btn-models" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">
-          <i data-lucide="cpu" class="w-4 h-4 inline-block mr-1.5"></i> Models
+        <button onclick="switchTab('jobs')" id="tab-btn-jobs" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all flex items-center gap-1.5">
+          <i data-lucide="list-checks" class="w-3.5 h-3.5"></i> Jobs <span id="jobs-count-pill" class="ml-1 px-1.5 py-0.2 bg-slate-800 text-slate-300 rounded-full font-mono text-[10px]">0</span>
         </button>
-        <button onclick="switchTab('metrics')" id="tab-btn-metrics" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">
-          <i data-lucide="bar-chart-3" class="w-4 h-4 inline-block mr-1.5"></i> Metrics
+        <button onclick="switchTab('metrics')" id="tab-btn-metrics" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all flex items-center gap-1.5">
+          <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i> Matrices & Telemetry
         </button>
-        <button onclick="switchTab('colab')" id="tab-btn-colab" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">
-          <i data-lucide="cloud-lightning" class="w-4 h-4 inline-block mr-1.5"></i> Colab Hub
+        <button onclick="switchTab('models')" id="tab-btn-models" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all flex items-center gap-1.5">
+          <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Models
         </button>
-        <a href="/docs" target="_blank" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition-all">
-          <i data-lucide="code" class="w-4 h-4 inline-block mr-1"></i> API Docs
+        <button onclick="switchTab('architecture')" id="tab-btn-architecture" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all flex items-center gap-1.5">
+          <i data-lucide="cloud" class="w-3.5 h-3.5"></i> AWS Cloud
+        </button>
+        <button onclick="switchTab('colab')" id="tab-btn-colab" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all flex items-center gap-1.5">
+          <i data-lucide="cloud-lightning" class="w-3.5 h-3.5"></i> Colab Hub
+        </button>
+        <a href="/docs" target="_blank" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-cyan-400 hover:bg-slate-800/60 transition-all flex items-center gap-1">
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i> API Docs
         </a>
       </nav>
+
     </div>
   </header>
 
-  <!-- Main Content Container -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Main Content Layout -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-7">
 
-    <!-- ========================================== -->
+    <!-- ============================================================= -->
     <!-- TAB 1: VERIFICATION STUDIO -->
-    <!-- ========================================== -->
-    <section id="tab-studio" class="tab-content block space-y-8">
+    <!-- ============================================================= -->
+    <section id="tab-studio" class="tab-content block space-y-6">
       
-      <!-- Studio Intro & Quick Action -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
-        <div>
-          <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-            Verification Studio
-          </h2>
-          <p class="text-slate-400 text-sm mt-1">
-            Upload any scanned document and genuine reference signatures to detect, crop, and verify biometrics in real time.
+      <!-- Studio Hero Header & Quick-Test Action Buttons -->
+      <div class="card-glass p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-5 relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium mb-2">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Interactive Biometric Studio
+          </div>
+          <h2 class="text-2xl font-bold text-white tracking-tight">Document Signature Verification</h2>
+          <p class="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
+            Localizes handwritten signatures in complex documents, crops sub-images, extracts 256-D cosine embeddings, and classifies authenticity against reference signatures.
           </p>
         </div>
-        <div class="flex items-center gap-3">
-          <button onclick="loadSample('authentic')" class="px-4 py-2 text-xs font-semibold rounded-lg bg-emerald-950 text-emerald-300 border border-emerald-800 hover:bg-emerald-900 transition flex items-center gap-1.5">
-            <i data-lucide="file-check" class="w-4 h-4"></i> Test Authentic Sample
+        <div class="flex items-center gap-2.5 relative z-10 shrink-0">
+          <button onclick="loadSample('authentic')" class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 active:scale-95 transition flex items-center gap-2 shadow-sm">
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> Test Authentic Sample
           </button>
-          <button onclick="loadSample('impostor')" class="px-4 py-2 text-xs font-semibold rounded-lg bg-rose-950 text-rose-300 border border-rose-800 hover:bg-rose-900 transition flex items-center gap-1.5">
-            <i data-lucide="file-x" class="w-4 h-4"></i> Test Impostor Sample
+          <button onclick="loadSample('impostor')" class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-rose-500/10 text-rose-300 border border-rose-500/30 hover:bg-rose-500/20 active:scale-95 transition flex items-center gap-2 shadow-sm">
+            <i data-lucide="x-circle" class="w-4 h-4 text-rose-400"></i> Test Impostor Sample
           </button>
         </div>
       </div>
 
       <!-- Upload Drop Zones -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         
         <!-- Document Upload Box -->
-        <div class="card-blur p-6 rounded-2xl flex flex-col justify-between">
+        <div class="card-glass p-5 rounded-2xl flex flex-col justify-between group">
           <div>
-            <div class="flex items-center justify-between mb-4">
-              <span class="text-sm font-semibold text-slate-200 flex items-center gap-2">
-                <i data-lucide="file-text" class="w-4 h-4 text-indigo-400"></i> Document to Scan
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-semibold text-slate-200 flex items-center gap-2">
+                <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i> Scanned Document Image
               </span>
-              <span class="text-xs text-slate-400">PDF, JPG, PNG</span>
+              <span class="text-[11px] font-mono text-slate-500">JPG, PNG, TIFF, PDF</span>
             </div>
-            <div id="doc-drop-zone" onclick="document.getElementById('doc-input').click()" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl p-6 text-center cursor-pointer transition-colors bg-slate-900/50">
+            <div id="doc-drop-zone" onclick="document.getElementById('doc-input').click()" class="border-2 border-dashed border-slate-700/80 hover:border-cyan-500/80 rounded-xl p-6 text-center cursor-pointer transition-all duration-300 bg-slate-900/40 hover:bg-slate-900/70">
               <input type="file" id="doc-input" accept="image/*" class="hidden" onchange="previewDoc(this)">
-              <div id="doc-placeholder" class="py-6">
-                <i data-lucide="upload-cloud" class="w-10 h-10 text-slate-400 mx-auto mb-2"></i>
-                <p class="text-sm font-medium text-slate-300">Click to upload document image</p>
-                <p class="text-xs text-slate-500 mt-1">or drag and drop here</p>
+              <div id="doc-placeholder" class="py-5">
+                <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mx-auto mb-2.5">
+                  <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+                </div>
+                <p class="text-xs font-semibold text-slate-300">Click to upload document or drag & drop</p>
+                <p class="text-[11px] text-slate-500 mt-1">Contracts, checks, deeds, loan applications</p>
               </div>
-              <img id="doc-preview" class="max-h-64 mx-auto rounded-lg shadow-md hidden object-contain">
+              <img id="doc-preview" class="max-h-56 mx-auto rounded-lg shadow-md hidden object-contain">
             </div>
           </div>
-          <div id="doc-filename" class="text-xs text-slate-400 mt-3 truncate">No file chosen</div>
+          <div class="flex items-center justify-between text-xs text-slate-400 mt-3 pt-3 border-t border-slate-800/80">
+            <span class="text-slate-500">Selected:</span>
+            <span id="doc-filename" class="font-mono text-[11px] text-cyan-400 truncate max-w-[280px]">No file chosen</span>
+          </div>
         </div>
 
         <!-- Reference Signature(s) Upload Box -->
-        <div class="card-blur p-6 rounded-2xl flex flex-col justify-between">
+        <div class="card-glass p-5 rounded-2xl flex flex-col justify-between group">
           <div>
-            <div class="flex items-center justify-between mb-4">
-              <span class="text-sm font-semibold text-slate-200 flex items-center gap-2">
-                <i data-lucide="check-check" class="w-4 h-4 text-emerald-400"></i> Genuine Reference Signature(s)
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-semibold text-slate-200 flex items-center gap-2">
+                <i data-lucide="pen-tool" class="w-4 h-4 text-emerald-400"></i> Genuine Reference Signature(s)
               </span>
-              <span class="text-xs text-slate-400">1 or more crops</span>
+              <span class="text-[11px] font-mono text-emerald-400">Multi-sample supported</span>
             </div>
-            <div id="ref-drop-zone" onclick="document.getElementById('ref-input').click()" class="border-2 border-dashed border-slate-700 hover:border-emerald-500 rounded-xl p-6 text-center cursor-pointer transition-colors bg-slate-900/50">
+            <div id="ref-drop-zone" onclick="document.getElementById('ref-input').click()" class="border-2 border-dashed border-slate-700/80 hover:border-emerald-500/80 rounded-xl p-6 text-center cursor-pointer transition-all duration-300 bg-slate-900/40 hover:bg-slate-900/70">
               <input type="file" id="ref-input" accept="image/*" multiple class="hidden" onchange="previewRef(this)">
-              <div id="ref-placeholder" class="py-6">
-                <i data-lucide="signature" class="w-10 h-10 text-slate-400 mx-auto mb-2"></i>
-                <p class="text-sm font-medium text-slate-300">Click to upload reference signature(s)</p>
-                <p class="text-xs text-slate-500 mt-1">Multi-reference comparison supported</p>
+              <div id="ref-placeholder" class="py-5">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-2.5">
+                  <i data-lucide="signature" class="w-6 h-6"></i>
+                </div>
+                <p class="text-xs font-semibold text-slate-300">Click to upload genuine signature crop(s)</p>
+                <p class="text-[11px] text-slate-500 mt-1">Upload 1 or more authentic specimens</p>
               </div>
-              <div id="ref-preview-container" class="flex flex-wrap gap-2 justify-center max-h-64 overflow-y-auto hidden"></div>
+              <div id="ref-preview-container" class="flex flex-wrap gap-2 justify-center max-h-56 overflow-y-auto hidden py-2"></div>
             </div>
           </div>
-          <div id="ref-filename" class="text-xs text-slate-400 mt-3 truncate">No reference chosen</div>
+          <div class="flex items-center justify-between text-xs text-slate-400 mt-3 pt-3 border-t border-slate-800/80">
+            <span class="text-slate-500">References:</span>
+            <span id="ref-filename" class="font-mono text-[11px] text-emerald-400 truncate max-w-[280px]">No references chosen</span>
+          </div>
         </div>
 
       </div>
 
       <!-- Action Button -->
-      <div class="text-center pt-2">
-        <button id="verify-btn" onclick="executeVerification()" class="px-8 py-3.5 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-500 active:scale-95 transition-all shadow-lg shadow-indigo-500/25 inline-flex items-center gap-2">
-          <i data-lucide="play" class="w-5 h-5 fill-current"></i> Run End-to-End Verification
+      <div class="flex justify-center pt-1">
+        <button id="verify-btn" onclick="executeVerification()" class="px-8 py-3 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 active:scale-95 transition-all glow-blue inline-flex items-center gap-2.5 shadow-lg">
+          <i data-lucide="play" class="w-4 h-4 fill-current"></i> Run End-to-End Verification Pipeline
         </button>
       </div>
 
       <!-- Live Results Container (Hidden until verified) -->
-      <div id="results-panel" class="hidden space-y-6 pt-4">
-        <div class="border-t border-slate-800 pt-6">
-          <h3 class="text-xl font-bold text-white flex items-center gap-2 mb-4">
-            <i data-lucide="sparkles" class="w-5 h-5 text-indigo-400"></i> Verification Results
-          </h3>
+      <div id="results-panel" class="hidden space-y-6 pt-3">
+        <div class="border-t border-slate-800/80 pt-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-5 h-5 text-cyan-400"></i> Verification Inference Results
+            </h3>
+            <span id="job-id-badge" class="font-mono text-[11px] text-slate-400 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">Job: --</span>
+          </div>
           
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- Left 2 Cols: Document with Detection Overlay Canvas -->
-            <div class="lg:col-span-2 card-blur p-6 rounded-2xl space-y-4">
+            <!-- Left 2 Cols: Document Localization Canvas -->
+            <div class="lg:col-span-2 card-glass p-5 rounded-2xl space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-sm font-semibold text-slate-300">Document Localization Overlay</span>
-                <span id="detected-count-badge" class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-indigo-300 font-mono">1 Signature Found</span>
+                <span class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                  <i data-lucide="crosshair" class="w-4 h-4 text-cyan-400"></i> Bounding Box Localization Canvas
+                </span>
+                <span id="detected-count-badge" class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-cyan-300 font-mono border border-slate-700">1 Signature Found</span>
               </div>
-              <div class="bg-black/60 rounded-xl p-2 flex items-center justify-center overflow-hidden max-h-[500px]">
-                <canvas id="detection-canvas" onclick="openZoom(this)" title="Click to Zoom In" class="max-w-full max-h-[480px] object-contain cursor-pointer hover:opacity-95 transition"></canvas>
+              <div id="sig-pills-container" class="flex flex-wrap gap-2 pt-1 pb-1"></div>
+              <div class="bg-black/80 rounded-xl p-2.5 flex items-center justify-center overflow-hidden max-h-[520px] border border-slate-800/80">
+                <canvas id="detection-canvas" onclick="openZoom(this)" title="Click to view full resolution" class="max-w-full max-h-[490px] object-contain cursor-zoom-in hover:opacity-95 transition"></canvas>
               </div>
+              <p class="text-[11px] text-slate-500 text-center font-mono">💡 Click document canvas to open high-resolution zoom inspector</p>
             </div>
 
-            <!-- Right 1 Col: Metric Decision Card -->
+            <!-- Right 1 Col: Decision Verdict & Metrics -->
             <div class="space-y-4">
-              <!-- Decision Badge Card -->
-              <div id="decision-card" class="p-6 rounded-2xl border text-center transition-all bg-slate-900 border-slate-800">
-                <span class="text-xs uppercase font-bold tracking-wider text-slate-400">System Verdict</span>
-                <div id="decision-text" class="text-3xl font-black mt-2 mb-1 text-slate-100">READY</div>
-                <p id="decision-sub" class="text-xs text-slate-400">Awaiting document submission</p>
+              
+              <!-- Decision Verdict Card -->
+              <div id="decision-card" class="p-6 rounded-2xl border text-center transition-all bg-slate-900/90 border-slate-800">
+                <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Authenticity Verdict</span>
+                <div id="decision-text" class="text-3xl font-black mt-2 mb-1 tracking-tight text-white">READY</div>
+                <p id="decision-sub" class="text-xs text-slate-400">Awaiting inference execution</p>
                 
-                <!-- Cosine Similarity Gauge -->
-                <div class="mt-6 pt-6 border-t border-slate-800/80">
-                  <div class="flex justify-between items-center text-xs mb-1">
-                    <span class="text-slate-400">Cosine Similarity Score:</span>
+                <!-- Cosine Similarity Progress Gauge -->
+                <div class="mt-5 pt-5 border-t border-slate-800/80">
+                  <div class="flex justify-between items-center text-xs mb-1.5">
+                    <span class="text-slate-400">Cosine Similarity:</span>
                     <span id="score-text" class="font-mono font-bold text-white text-sm">--</span>
                   </div>
-                  <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
-                    <div id="score-bar" class="bg-indigo-500 h-3 rounded-full transition-all duration-700" style="width: 0%"></div>
+                  <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden p-0.5 border border-slate-700/50">
+                    <div id="score-bar" class="bg-blue-500 h-2 rounded-full transition-all duration-700" style="width: 0%"></div>
                   </div>
-                  <div class="flex justify-between text-[10px] text-slate-500 mt-1">
-                    <span>Forged (&lt; 0.65)</span>
-                    <span>Review</span>
-                    <span>Genuine (&ge; 0.82)</span>
+                  <div class="flex justify-between text-[10px] font-mono text-slate-500 mt-1.5">
+                    <span class="text-rose-400">Forged (&lt; 0.65)</span>
+                    <span class="text-amber-400">Review</span>
+                    <span class="text-emerald-400">Genuine (&ge; 0.82)</span>
                   </div>
                 </div>
               </div>
 
-              <!-- Signature Crop Comparison -->
-              <div class="card-blur p-5 rounded-2xl space-y-3">
+              <!-- Biometric Crop Pair Comparison -->
+              <div class="card-glass p-4 rounded-2xl space-y-3">
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-semibold text-slate-300">Biometric Pair Alignment</span>
-                  <span class="text-[10px] text-indigo-400 font-mono">🔍 Click images to zoom</span>
+                  <span class="text-xs font-semibold text-slate-300">Biometric Pair Visual</span>
+                  <span class="text-[10px] text-cyan-400 font-mono">🔍 Click to zoom</span>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
-                  <div class="bg-slate-900 p-2 rounded-lg border border-slate-800 text-center">
-                    <span class="text-[10px] text-slate-400 block mb-1">Detected Crop</span>
-                    <img id="crop-preview" onclick="openZoom(this.src)" title="Click to zoom in" class="h-16 mx-auto object-contain rounded bg-white cursor-pointer hover:scale-105 transition">
+                  <div class="bg-slate-900/90 p-2 rounded-xl border border-slate-800 text-center">
+                    <span class="text-[10px] text-slate-400 block mb-1 font-mono">Detected Crop</span>
+                    <img id="crop-preview" onclick="openZoom(this.src)" title="Click to zoom in" class="h-16 mx-auto object-contain rounded bg-white cursor-pointer hover:scale-105 transition shadow">
                   </div>
-                  <div class="bg-slate-900 p-2 rounded-lg border border-slate-800 text-center">
-                    <span class="text-[10px] text-slate-400 block mb-1">Best Reference</span>
-                    <img id="best-ref-preview" onclick="openZoom(this.src)" title="Click to zoom in" class="h-16 mx-auto object-contain rounded bg-white cursor-pointer hover:scale-105 transition">
+                  <div class="bg-slate-900/90 p-2 rounded-xl border border-slate-800 text-center">
+                    <span class="text-[10px] text-slate-400 block mb-1 font-mono">Best Reference</span>
+                    <img id="best-ref-preview" onclick="openZoom(this.src)" title="Click to zoom in" class="h-16 mx-auto object-contain rounded bg-white cursor-pointer hover:scale-105 transition shadow">
                   </div>
                 </div>
               </div>
 
-              <!-- Technical Details Card -->
-              <div class="card-blur p-4 rounded-xl text-xs space-y-2 text-slate-300 font-mono">
+              <!-- Technical Metadata -->
+              <div class="card-glass p-4 rounded-xl text-xs space-y-2 text-slate-300 font-mono">
                 <div class="flex justify-between">
                   <span class="text-slate-500">Bounding Box:</span>
-                  <span id="meta-bbox">--</span>
+                  <span id="meta-bbox" class="text-cyan-400">--</span>
                 </div>
                 <div class="flex justify-between">
-                  <span class="text-slate-500">Detection Confidence:</span>
-                  <span id="meta-conf">--</span>
+                  <span class="text-slate-500">Detector Conf:</span>
+                  <span id="meta-conf" class="text-emerald-400">--</span>
                 </div>
                 <div class="flex justify-between">
-                  <span class="text-slate-500">Embedding Vector:</span>
-                  <span>256-D L2 Unit Sphere</span>
+                  <span class="text-slate-500">Embedding:</span>
+                  <span class="text-purple-400">256-D L2 Unit Sphere</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-500">Inference Latency:</span>
+                  <span id="meta-latency" class="text-slate-300">--</span>
                 </div>
               </div>
 
@@ -231,293 +312,588 @@
 
     </section>
 
-    <!-- ========================================== -->
-    <!-- TAB 2: MODELS & ARCHITECTURES -->
-    <!-- ========================================== -->
-    <section id="tab-models" class="tab-content hidden space-y-8">
-      <div>
-        <h2 class="text-2xl font-bold text-white">Production AI Architectures</h2>
-        <p class="text-slate-400 text-sm mt-1">Two-stage decoupled deep vision architecture designed for zero-license risk commercial deployment.</p>
+    <!-- ============================================================= -->
+    <!-- TAB 2: JOBS & AUDIT HISTORY -->
+    <!-- ============================================================= -->
+    <section id="tab-jobs" class="tab-content hidden space-y-6">
+      
+      <!-- Jobs Header with Controls -->
+      <div class="card-glass p-6 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium mb-1">
+            <i data-lucide="database" class="w-3.5 h-3.5"></i> PostgreSQL / SQLite Job Store
+          </div>
+          <h2 class="text-2xl font-bold text-white tracking-tight">Audit Log & Verification Jobs</h2>
+          <p class="text-slate-400 text-xs mt-1">Live asynchronous queue and verification history persisted across worker executions.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1.5 text-xs text-slate-400 font-mono bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Auto-refresh: 8s
+          </div>
+          <button onclick="fetchJobsList()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-white transition flex items-center gap-1.5 border border-slate-700">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Now
+          </button>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Quick KPI Counters -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="card-glass p-4 rounded-xl">
+          <span class="text-[11px] font-mono text-slate-400 uppercase">Total Ingested Jobs</span>
+          <div id="stat-total-jobs" class="text-2xl font-bold font-mono text-white mt-1">0</div>
+        </div>
+        <div class="card-glass p-4 rounded-xl">
+          <span class="text-[11px] font-mono text-slate-400 uppercase">Completed</span>
+          <div id="stat-completed-jobs" class="text-2xl font-bold font-mono text-emerald-400 mt-1">0</div>
+        </div>
+        <div class="card-glass p-4 rounded-xl">
+          <span class="text-[11px] font-mono text-slate-400 uppercase">Processing / Pending</span>
+          <div id="stat-pending-jobs" class="text-2xl font-bold font-mono text-amber-400 mt-1">0</div>
+        </div>
+        <div class="card-glass p-4 rounded-xl">
+          <span class="text-[11px] font-mono text-slate-400 uppercase">Success Rate</span>
+          <div id="stat-success-rate" class="text-2xl font-bold font-mono text-cyan-400 mt-1">100.0%</div>
+        </div>
+      </div>
+
+      <!-- Jobs Table -->
+      <div class="card-glass rounded-2xl overflow-hidden border border-slate-800">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-900/80 border-b border-slate-800 text-slate-400 font-mono uppercase text-[11px]">
+                <th class="py-3 px-4">Job ID</th>
+                <th class="py-3 px-4">Timestamp</th>
+                <th class="py-3 px-4">Status</th>
+                <th class="py-3 px-4">Signatures</th>
+                <th class="py-3 px-4">Similarity</th>
+                <th class="py-3 px-4">Verdict</th>
+                <th class="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="jobs-table-body" class="divide-y divide-slate-800/80 font-mono">
+              <tr>
+                <td colspan="7" class="py-8 text-center text-slate-500 font-sans">
+                  <i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto mb-2 text-slate-400"></i>
+                  Loading verification jobs...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 3: MATRICES & TELEMETRY -->
+    <!-- ============================================================= -->
+    <section id="tab-metrics" class="tab-content hidden space-y-6">
+      
+      <!-- Matrices Header -->
+      <div class="card-glass p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-medium mb-1">
+            <i data-lucide="gauge" class="w-3.5 h-3.5"></i> Prometheus & ML Benchmark Matrices
+          </div>
+          <h2 class="text-2xl font-bold text-white tracking-tight">Evaluation Matrices & Live Telemetry</h2>
+          <p class="text-slate-400 text-xs mt-1">Empirical architecture evaluations, calibrated decision boundaries, and real-time observability telemetry.</p>
+        </div>
+        <button onclick="fetchPrometheusMetrics()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white transition flex items-center gap-2 shadow-sm shrink-0">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Live /metrics
+        </button>
+      </div>
+
+      <!-- Live Observability Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <div class="card-glass p-5 rounded-xl border-l-4 border-l-blue-500">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-400 uppercase">HTTP API Calls</span>
+            <i data-lucide="activity" class="w-4 h-4 text-blue-400"></i>
+          </div>
+          <div id="prom-http-requests" class="text-2xl font-bold font-mono text-white mt-2">--</div>
+          <span class="text-[11px] text-slate-500">Ingested via FastAPI</span>
+        </div>
+
+        <div class="card-glass p-5 rounded-xl border-l-4 border-l-emerald-500">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-400 uppercase">Genuine Verified</span>
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+          </div>
+          <div id="prom-genuine-count" class="text-2xl font-bold font-mono text-emerald-400 mt-2">--</div>
+          <span class="text-[11px] text-slate-500">Biometric match &ge; 0.82</span>
+        </div>
+
+        <div class="card-glass p-5 rounded-xl border-l-4 border-l-rose-500">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-400 uppercase">Forged Rejected</span>
+            <i data-lucide="shield-alert" class="w-4 h-4 text-rose-400"></i>
+          </div>
+          <div id="prom-forged-count" class="text-2xl font-bold font-mono text-rose-400 mt-2">--</div>
+          <span class="text-[11px] text-slate-500">Biometric distance &lt; 0.65</span>
+        </div>
+
+        <div class="card-glass p-5 rounded-xl border-l-4 border-l-cyan-500">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-400 uppercase">Latency p50 / p95</span>
+            <i data-lucide="timer" class="w-4 h-4 text-cyan-400"></i>
+          </div>
+          <div class="text-2xl font-bold font-mono text-cyan-400 mt-2">9.5s / 9.9s</div>
+          <span class="text-[11px] text-slate-500">Sequential CPU benchmark</span>
+        </div>
+
+      </div>
+
+      <!-- Decision Distribution Progress Bar -->
+      <div class="card-glass p-5 rounded-2xl space-y-3">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-semibold text-slate-200">Live Decision Ratio Distribution</span>
+          <span class="font-mono text-slate-400 text-[11px]">Real-time audit proportions</span>
+        </div>
+        <div class="w-full bg-slate-800 h-3.5 rounded-full overflow-hidden flex border border-slate-700/60">
+          <div id="ratio-bar-genuine" style="width: 70%" class="bg-emerald-500 h-full transition-all duration-500" title="Genuine"></div>
+          <div id="ratio-bar-review" style="width: 10%" class="bg-amber-500 h-full transition-all duration-500" title="Review"></div>
+          <div id="ratio-bar-forged" style="width: 20%" class="bg-rose-500 h-full transition-all duration-500" title="Forged"></div>
+        </div>
+        <div class="flex items-center justify-between text-xs font-mono text-slate-400 pt-1">
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-emerald-500"></span> Genuine (<span id="ratio-val-genuine">--</span>)</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-amber-500"></span> Manual Review (<span id="ratio-val-review">--</span>)</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-rose-500"></span> Forged (<span id="ratio-val-forged">--</span>)</span>
+        </div>
+      </div>
+
+      <!-- Candidate Model Benchmark Matrices -->
+      <div class="space-y-5">
+        
+        <!-- Table 1: Detection Benchmark Matrix -->
+        <div class="card-glass p-6 rounded-2xl space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="crosshair" class="w-4 h-4 text-cyan-400"></i> Signature Detection Candidates Benchmark Matrix
+            </h3>
+            <span class="text-xs font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">Dataset A (28,958 Images)</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 text-slate-400 uppercase font-mono text-[11px] bg-slate-900/50">
+                  <th class="py-3 px-4">Architecture</th>
+                  <th class="py-3 px-4">mAP@50</th>
+                  <th class="py-3 px-4">mAP@50:95</th>
+                  <th class="py-3 px-4">Latency (GPU)</th>
+                  <th class="py-3 px-4">Parameters</th>
+                  <th class="py-3 px-4">License Compliance</th>
+                  <th class="py-3 px-4">Production Decision</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/80 font-mono">
+                <tr class="bg-blue-950/30 text-white font-medium">
+                  <td class="py-3 px-4 text-cyan-300 font-bold flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span> RTMDet-Tiny (Selected)
+                  </td>
+                  <td class="py-3 px-4 text-emerald-400 font-bold">0.884</td>
+                  <td class="py-3 px-4">0.642</td>
+                  <td class="py-3 px-4">18.2 ms</td>
+                  <td class="py-3 px-4">4.8 M</td>
+                  <td class="py-3 px-4 text-emerald-400">Apache-2.0</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">Production Champion</span></td>
+                </tr>
+                <tr class="text-slate-300">
+                  <td class="py-3 px-4">Faster R-CNN (ResNet-50 FPN)</td>
+                  <td class="py-3 px-4 text-emerald-400 font-semibold">0.880</td>
+                  <td class="py-3 px-4">0.635</td>
+                  <td class="py-3 px-4">32.5 ms</td>
+                  <td class="py-3 px-4">41.5 M</td>
+                  <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">Trained Baseline</span></td>
+                </tr>
+                <tr class="text-slate-300">
+                  <td class="py-3 px-4">YOLOX-Tiny</td>
+                  <td class="py-3 px-4">0.861</td>
+                  <td class="py-3 px-4">0.618</td>
+                  <td class="py-3 px-4">21.0 ms</td>
+                  <td class="py-3 px-4">5.0 M</td>
+                  <td class="py-3 px-4 text-emerald-400">Apache-2.0</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Candidate B</span></td>
+                </tr>
+                <tr class="text-rose-400/80 bg-rose-950/10">
+                  <td class="py-3 px-4 font-semibold">Ultralytics YOLOv11s</td>
+                  <td class="py-3 px-4">0.892</td>
+                  <td class="py-3 px-4">0.650</td>
+                  <td class="py-3 px-4">19.5 ms</td>
+                  <td class="py-3 px-4">9.4 M</td>
+                  <td class="py-3 px-4 text-rose-400 font-bold">AGPL-3.0 (Copyleft)</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 font-semibold">REJECTED (License Risk)</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Table 2: Verification Benchmark Matrix -->
+        <div class="card-glass p-6 rounded-2xl space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i> Signature Verification Candidates Benchmark Matrix
+            </h3>
+            <span class="text-xs font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">Dataset B (CEDAR & BHSig260)</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 text-slate-400 uppercase font-mono text-[11px] bg-slate-900/50">
+                  <th class="py-3 px-4">Architecture</th>
+                  <th class="py-3 px-4">EER (CEDAR)</th>
+                  <th class="py-3 px-4">EER (BHSig260-B)</th>
+                  <th class="py-3 px-4">ROC-AUC</th>
+                  <th class="py-3 px-4">Embedding Dim</th>
+                  <th class="py-3 px-4">License Compliance</th>
+                  <th class="py-3 px-4">Production Decision</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/80 font-mono">
+                <tr class="bg-emerald-950/30 text-white font-medium">
+                  <td class="py-3 px-4 text-emerald-300 font-bold flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Siamese ResNet-50 (Selected)
+                  </td>
+                  <td class="py-3 px-4 text-emerald-400 font-bold">7.4%</td>
+                  <td class="py-3 px-4 text-emerald-400 font-bold">11.2%</td>
+                  <td class="py-3 px-4 text-emerald-400 font-bold">0.978</td>
+                  <td class="py-3 px-4">256-D L2</td>
+                  <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">Production Champion</span></td>
+                </tr>
+                <tr class="text-slate-300">
+                  <td class="py-3 px-4">Triplet Network (ResNet-50)</td>
+                  <td class="py-3 px-4">8.1%</td>
+                  <td class="py-3 px-4">12.5%</td>
+                  <td class="py-3 px-4">0.969</td>
+                  <td class="py-3 px-4">256-D L2</td>
+                  <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">Candidate B</span></td>
+                </tr>
+                <tr class="text-slate-300">
+                  <td class="py-3 px-4">Siamese ResNet-18</td>
+                  <td class="py-3 px-4">9.8%</td>
+                  <td class="py-3 px-4">14.1%</td>
+                  <td class="py-3 px-4">0.942</td>
+                  <td class="py-3 px-4">128-D L2</td>
+                  <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Lightweight</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Live Raw Prometheus Stream Viewer -->
+      <div class="card-glass p-5 rounded-2xl space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+              <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i> Live Prometheus Metric Stream (/metrics)
+            </span>
+            <span class="text-[10px] text-emerald-400 font-mono bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">HTTP 200 OK</span>
+          </div>
+          <span class="text-[11px] text-slate-400 font-mono">Format: OpenMetrics / Prometheus text</span>
+        </div>
+        <pre id="raw-metrics-box" class="bg-black/90 border border-slate-800 p-4 rounded-xl text-[11px] font-mono text-cyan-300 max-h-60 overflow-y-auto leading-relaxed">
+# Polling live Prometheus endpoint...
+        </pre>
+      </div>
+
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 4: MODELS & MLOPS ARCHITECTURE -->
+    <!-- ============================================================= -->
+    <section id="tab-models" class="tab-content hidden space-y-6">
+      
+      <div class="card-glass p-6 rounded-2xl">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-medium mb-1">
+          <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Deep Neural Vision Architecture
+        </div>
+        <h2 class="text-2xl font-bold text-white tracking-tight">Decoupled Two-Stage Model Pipeline</h2>
+        <p class="text-slate-400 text-xs mt-1">Industrial machine learning architecture built to strictly respect commercial licenses and avoid AGPL-3.0 viral copyleft.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         
         <!-- Detector Card -->
-        <div class="card-blur p-6 rounded-2xl space-y-4 border-l-4 border-l-indigo-500">
+        <div class="card-glass p-6 rounded-2xl space-y-4 border-l-4 border-l-cyan-500">
           <div class="flex items-center justify-between">
-            <span class="text-xs px-2.5 py-1 rounded-full bg-indigo-950 text-indigo-300 font-semibold border border-indigo-800">
-              Stage 1: Detection Champion
+            <span class="text-xs px-2.5 py-1 rounded-full bg-cyan-950/80 text-cyan-300 font-semibold border border-cyan-800">
+              Stage 1: Detection
             </span>
-            <span class="text-xs font-mono text-emerald-400">Apache 2.0</span>
+            <span class="text-xs font-mono text-emerald-400">Apache 2.0 / BSD-3</span>
           </div>
-          <h3 class="text-xl font-bold text-white">RTMDet-Tiny (CSPNeXt + PAFPN)</h3>
+          <h3 class="text-xl font-bold text-white">RTMDet-Tiny / Faster R-CNN FPN</h3>
           <p class="text-xs text-slate-300 leading-relaxed">
-            High-efficiency single-stage real-time object detector optimized for document micro-strokes and signatures with extreme aspect ratios. Avoids the AGPL viral copyleft of Ultralytics completely.
+            High-efficiency single-stage real-time object detector optimized for document micro-strokes, seals, and signatures with extreme aspect ratios. Avoids the AGPL viral copyleft of Ultralytics completely.
           </p>
-          <div class="space-y-2 text-xs border-t border-slate-800 pt-4">
-            <div class="flex justify-between"><span class="text-slate-400">Backbone:</span><span class="text-slate-200 font-medium">CSPNeXt-Tiny</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Neck:</span><span class="text-slate-200 font-medium">CSPNeXtPAFPN Multi-scale</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Head:</span><span class="text-slate-200 font-medium">RTMDetSepBNHead</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Parameters:</span><span class="text-slate-200 font-medium">4.8 Million</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Input Size:</span><span class="text-slate-200 font-medium">640 &times; 640 Dynamic Tile</span></div>
+          <div class="space-y-2 text-xs border-t border-slate-800/80 pt-4 font-mono">
+            <div class="flex justify-between"><span class="text-slate-400">Backbone:</span><span class="text-slate-200 font-medium">CSPNeXt-Tiny / ResNet-50</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Feature Pyramids:</span><span class="text-slate-200 font-medium">PAFPN Multi-scale P3-P5</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">IoU Post-Processing:</span><span class="text-slate-200 font-medium">NMS threshold = 0.25</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Parameters:</span><span class="text-slate-200 font-medium">4.8 M (Tiny) / 41.5 M (R50)</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Input Tile:</span><span class="text-slate-200 font-medium">640 &times; 640 Dynamic Resize</span></div>
           </div>
         </div>
 
         <!-- Verifier Card -->
-        <div class="card-blur p-6 rounded-2xl space-y-4 border-l-4 border-l-emerald-500">
+        <div class="card-glass p-6 rounded-2xl space-y-4 border-l-4 border-l-emerald-500">
           <div class="flex items-center justify-between">
-            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-300 font-semibold border border-emerald-800">
-              Stage 2: Verification Champion
+            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950/80 text-emerald-300 font-semibold border border-emerald-800">
+              Stage 2: Verification
             </span>
             <span class="text-xs font-mono text-emerald-400">BSD-3-Clause</span>
           </div>
           <h3 class="text-xl font-bold text-white">Siamese ResNet-50 Metric Extractor</h3>
           <p class="text-xs text-slate-300 leading-relaxed">
-            Deep Siamese convolutional neural network with twin shared weights and Contrastive Loss optimization. Encodes raw signature crops into a 256-dimensional unit hypersphere where genuine pairs cluster with cosine distance near 1.0.
+            Deep Siamese convolutional neural network with twin shared weights and Contrastive Loss optimization. Encodes raw signature crops into a 256-dimensional unit hypersphere where genuine pairs cluster with cosine similarity near 1.0.
           </p>
-          <div class="space-y-2 text-xs border-t border-slate-800 pt-4">
-            <div class="flex justify-between"><span class="text-slate-400">Architecture:</span><span class="text-slate-200 font-medium">ResNet-50 Siamese Twin</span></div>
+          <div class="space-y-2 text-xs border-t border-slate-800/80 pt-4 font-mono">
+            <div class="flex justify-between"><span class="text-slate-400">Architecture:</span><span class="text-slate-200 font-medium">Twin ResNet-50 Backbone</span></div>
             <div class="flex justify-between"><span class="text-slate-400">Embedding Space:</span><span class="text-slate-200 font-medium">256-D L2-Normalized</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Loss Function:</span><span class="text-slate-200 font-medium">Contrastive Loss (Margin = 1.0)</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Objective Loss:</span><span class="text-slate-200 font-medium">Contrastive Loss (margin=1.0)</span></div>
             <div class="flex justify-between"><span class="text-slate-400">Parameters:</span><span class="text-slate-200 font-medium">25.6 Million</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">Metric Measure:</span><span class="text-slate-200 font-medium">Cosine Similarity</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Metric Measure:</span><span class="text-slate-200 font-medium">Cosine Distance (u &bull; v)</span></div>
           </div>
         </div>
 
       </div>
 
-      <!-- Architecture Diagram Callout -->
-      <div class="card-blur p-6 rounded-2xl space-y-4">
-        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-          <i data-lucide="layers" class="w-5 h-5 text-indigo-400"></i> AWS End-to-End Infrastructure Flow
+      <!-- MLOps Automated Retraining Pipeline -->
+      <div class="card-glass p-6 rounded-2xl space-y-4">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="git-branch" class="w-4 h-4 text-cyan-400"></i> Automated MLOps Continuous Retraining Pipeline
         </h3>
-        <p class="text-xs text-slate-300">
-          The production deployment separates API ingestion (FastAPI on ECS Fargate) from inference execution (Celery Workers on ECS Fargate) through RabbitMQ message queues and PostgreSQL persistence.
+        <p class="text-xs text-slate-300 leading-relaxed">
+          The continuous learning system ingests Hugging Face Dataset webhook events via HMAC-SHA256 signature verification, executes unattended training tasks in Celery workers, and enforces an automated Promotion Quality Gate (<code class="text-cyan-400 font-mono">mAP@50 &ge; 0.85</code> and <code class="text-cyan-400 font-mono">EER &le; 0.08</code>) before pushing SHA-256 versioned artifacts to S3 outside Git.
         </p>
-        <div class="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/80 p-2 text-center">
-          <img src="/architecture/aws-end-to-end-architecture.png" alt="Architecture Diagram" class="max-h-96 mx-auto rounded shadow-lg object-contain">
-        </div>
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- TAB 3: EVALUATION METRICS MATRIX -->
-    <!-- ========================================== -->
-    <section id="tab-metrics" class="tab-content hidden space-y-8">
-      <div>
-        <h2 class="text-2xl font-bold text-white">Empirical Evaluation & Benchmarks</h2>
-        <p class="text-slate-400 text-sm mt-1">Experimental results across candidate architectures and calibrated decision thresholds.</p>
-      </div>
-
-      <!-- Detection Benchmark Table -->
-      <div class="card-blur p-6 rounded-2xl space-y-4">
-        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-          <i data-lucide="crosshair" class="w-5 h-5 text-indigo-400"></i> Signature Detection Candidates Benchmark
-        </h3>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr class="border-b border-slate-800 text-slate-400 uppercase font-mono">
-                <th class="py-3 px-4">Architecture</th>
-                <th class="py-3 px-4">mAP@50</th>
-                <th class="py-3 px-4">mAP@50:95</th>
-                <th class="py-3 px-4">Latency (GPU)</th>
-                <th class="py-3 px-4">Params</th>
-                <th class="py-3 px-4">License</th>
-                <th class="py-3 px-4">Production Status</th>
-              </tr>
-            </thead>
-            <tbody id="detection-metrics-body" class="divide-y divide-slate-800 font-mono">
-              <!-- Dynamically populated or fallback -->
-              <tr class="bg-indigo-950/20 text-white font-medium">
-                <td class="py-3 px-4 text-indigo-300 font-bold">RTMDet-Tiny (Selected)</td>
-                <td class="py-3 px-4 text-emerald-400 font-bold">0.884</td>
-                <td class="py-3 px-4">0.642</td>
-                <td class="py-3 px-4">18.2 ms</td>
-                <td class="py-3 px-4">4.8 M</td>
-                <td class="py-3 px-4 text-emerald-400">Apache-2.0</td>
-                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Selected Champion</span></td>
-              </tr>
-              <tr class="text-slate-300">
-                <td class="py-3 px-4">YOLOX-Tiny</td>
-                <td class="py-3 px-4">0.861</td>
-                <td class="py-3 px-4">0.618</td>
-                <td class="py-3 px-4">21.0 ms</td>
-                <td class="py-3 px-4">5.0 M</td>
-                <td class="py-3 px-4 text-emerald-400">Apache-2.0</td>
-                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Candidate B</span></td>
-              </tr>
-              <tr class="text-slate-300">
-                <td class="py-3 px-4">Faster R-CNN (ResNet-50)</td>
-                <td class="py-3 px-4">0.880</td>
-                <td class="py-3 px-4">0.635</td>
-                <td class="py-3 px-4">32.5 ms</td>
-                <td class="py-3 px-4">41.5 M</td>
-                <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
-                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Heavy Baseline</span></td>
-              </tr>
-              <tr class="text-rose-400 opacity-60">
-                <td class="py-3 px-4">Ultralytics YOLOv11s</td>
-                <td class="py-3 px-4">0.892</td>
-                <td class="py-3 px-4">0.650</td>
-                <td class="py-3 px-4">19.5 ms</td>
-                <td class="py-3 px-4">9.4 M</td>
-                <td class="py-3 px-4 text-rose-400 font-bold">AGPL-3.0 (Forbidden)</td>
-                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300">Rejected (Copyleft)</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Verification Benchmark Table -->
-      <div class="card-blur p-6 rounded-2xl space-y-4">
-        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-          <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400"></i> Signature Verification Candidates Benchmark
-        </h3>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr class="border-b border-slate-800 text-slate-400 uppercase font-mono">
-                <th class="py-3 px-4">Architecture</th>
-                <th class="py-3 px-4">EER (CEDAR)</th>
-                <th class="py-3 px-4">EER (BHSig-B)</th>
-                <th class="py-3 px-4">ROC-AUC</th>
-                <th class="py-3 px-4">Embedding Dim</th>
-                <th class="py-3 px-4">License</th>
-                <th class="py-3 px-4">Status</th>
-              </tr>
-            </thead>
-            <tbody id="verification-metrics-body" class="divide-y divide-slate-800 font-mono">
-              <tr class="bg-emerald-950/20 text-white font-medium">
-                <td class="py-3 px-4 text-emerald-300 font-bold">Siamese ResNet-50 (Selected)</td>
-                <td class="py-3 px-4 text-emerald-400 font-bold">7.4%</td>
-                <td class="py-3 px-4 text-emerald-400 font-bold">11.2%</td>
-                <td class="py-3 px-4 text-emerald-400 font-bold">0.978</td>
-                <td class="py-3 px-4">256-D</td>
-                <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
-                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Selected Champion</span></td>
-              </tr>
-              <tr class="text-slate-300">
-                <td class="py-3 px-4">Triplet Network (ResNet-50)</td>
-                <td class="py-3 px-4">8.1%</td>
-                <td class="py-3 px-4">12.5%</td>
-                <td class="py-3 px-4">0.969</td>
-                <td class="py-3 px-4">256-D</td>
-                <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
-                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Candidate B</span></td>
-              </tr>
-              <tr class="text-slate-300">
-                <td class="py-3 px-4">Siamese ResNet-18</td>
-                <td class="py-3 px-4">9.8%</td>
-                <td class="py-3 px-4">14.1%</td>
-                <td class="py-3 px-4">0.942</td>
-                <td class="py-3 px-4">128-D</td>
-                <td class="py-3 px-4 text-emerald-400">BSD-3-Clause</td>
-                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Lightweight</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Decision Calibration Explanation -->
-      <div class="card-blur p-6 rounded-2xl space-y-4">
-        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-          <i data-lucide="sliders" class="w-5 h-5 text-indigo-400"></i> Calibrated Decision Policy
-        </h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
-          <div class="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/50">
-            <span class="text-emerald-400 font-bold block mb-1">✅ GENUINE (Score &ge; 0.82)</span>
-            <p class="text-slate-300 font-sans">High biometric confidence. Stroke pressure, curvature, and aspect-ratio alignment strongly match authentic references.</p>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-2 font-mono text-xs">
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-cyan-400 font-bold block mb-1">1. Webhook Ingest</span>
+            <span class="text-slate-400 text-[11px] font-sans">HMAC-SHA256 authenticated event triggers Celery task</span>
           </div>
-          <div class="p-4 rounded-xl bg-amber-950/40 border border-amber-800/50">
-            <span class="text-amber-400 font-bold block mb-1">⚠️ MANUAL REVIEW (0.65 &le; Score &lt; 0.82)</span>
-            <p class="text-slate-300 font-sans">Borderline similarity. Inconclusive variation or mild tremor. Routed to compliance officer for human forensic review.</p>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-cyan-400 font-bold block mb-1">2. Remote Train</span>
+            <span class="text-slate-400 text-[11px] font-sans">Distributed PyTorch training run across GPU nodes</span>
           </div>
-          <div class="p-4 rounded-xl bg-rose-950/40 border border-rose-800/50">
-            <span class="text-rose-400 font-bold block mb-1">❌ FORGED (Score &lt; 0.65)</span>
-            <p class="text-slate-300 font-sans">High forgery probability. Significant divergence in cosine embedding distance across stroke topology.</p>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-cyan-400 font-bold block mb-1">3. Quality Gate</span>
+            <span class="text-slate-400 text-[11px] font-sans">Automated validation benchmark evaluation guard</span>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-cyan-400 font-bold block mb-1">4. Versioned Deploy</span>
+            <span class="text-slate-400 text-[11px] font-sans">SHA-256 binary upload to S3 & zero-downtime hot-swap</span>
           </div>
         </div>
       </div>
 
     </section>
 
-    <!-- ========================================== -->
-    <!-- TAB 4: COLAB & MLOPS RETRAINING HUB -->
-    <!-- ========================================== -->
-    <section id="tab-colab" class="tab-content hidden space-y-8">
-      <div>
-        <h2 class="text-2xl font-bold text-white">Google Colab GPU & MLOps Retraining Hub</h2>
-        <p class="text-slate-400 text-sm mt-1">Trigger GPU training runs on your 28,000-image dataset and automate MLOps deployment.</p>
+    <!-- ============================================================= -->
+    <!-- TAB 5: AWS CLOUD ARCHITECTURE -->
+    <!-- ============================================================= -->
+    <section id="tab-architecture" class="tab-content hidden space-y-6">
+      
+      <div class="card-glass p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium mb-1">
+            <i data-lucide="cloud" class="w-3.5 h-3.5"></i> Production AWS Cloud Topology
+          </div>
+          <h2 class="text-2xl font-bold text-white tracking-tight">AWS Infrastructure & Terraform Architecture</h2>
+          <p class="text-slate-400 text-xs mt-1">Decoupled enterprise microservice topology provisioned via automated Terraform Infrastructure as Code.</p>
+        </div>
+        <button onclick="openZoom('/architecture/aws-end-to-end-architecture.png')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition flex items-center gap-2 shadow-sm shrink-0">
+          <i data-lucide="zoom-in" class="w-3.5 h-3.5"></i> Zoom Architecture Diagram
+        </button>
       </div>
 
-      <div class="card-blur p-6 rounded-2xl space-y-4">
-        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-          <i data-lucide="terminal" class="w-5 h-5 text-indigo-400"></i> 1. Run GPU Training in Google Colab
+      <!-- Architecture Image Card -->
+      <div class="card-glass p-5 rounded-2xl space-y-3">
+        <div class="border border-slate-800/80 rounded-xl overflow-hidden bg-slate-950/80 p-3 text-center">
+          <img src="/architecture/aws-end-to-end-architecture.png" alt="AWS Cloud Architecture" onclick="openZoom(this.src)" title="Click to zoom in" class="max-h-[480px] mx-auto rounded shadow-2xl object-contain cursor-zoom-in hover:scale-[1.01] transition-transform">
+        </div>
+        <p class="text-[11px] text-slate-500 text-center font-mono">💡 Click architecture diagram to open high-resolution interactive lightbox</p>
+      </div>
+
+      <!-- Cloud Infrastructure Breakdown -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
+        
+        <div class="card-glass p-4 rounded-xl space-y-2">
+          <div class="flex items-center gap-2 text-cyan-400 font-bold">
+            <i data-lucide="server" class="w-4 h-4"></i> ECS Fargate Ingestion API
+          </div>
+          <p class="text-slate-400 text-[11px] font-sans leading-relaxed">
+            Stateless FastAPI container running behind AWS Application Load Balancer. Validates multipart payloads, saves originals to S3, and dispatches job IDs to RabbitMQ.
+          </p>
+        </div>
+
+        <div class="card-glass p-4 rounded-xl space-y-2">
+          <div class="flex items-center gap-2 text-emerald-400 font-bold">
+            <i data-lucide="cpu" class="w-4 h-4"></i> ECS Fargate Celery Workers
+          </div>
+          <p class="text-slate-400 text-[11px] font-sans leading-relaxed">
+            Auto-scaling inference workers executing PyTorch detection & verification models. Fully decoupled from client request threads to maintain SLA stability.
+          </p>
+        </div>
+
+        <div class="card-glass p-4 rounded-xl space-y-2">
+          <div class="flex items-center gap-2 text-purple-400 font-bold">
+            <i data-lucide="database" class="w-4 h-4"></i> Amazon RDS PostgreSQL 16
+          </div>
+          <p class="text-slate-400 text-[11px] font-sans leading-relaxed">
+            Multi-AZ relational database storing asynchronous job states, detected bounding boxes, cosine similarity scores, audit trails, and version registry.
+          </p>
+        </div>
+
+        <div class="card-glass p-4 rounded-xl space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-bold">
+            <i data-lucide="layers" class="w-4 h-4"></i> Amazon MQ (RabbitMQ)
+          </div>
+          <p class="text-slate-400 text-[11px] font-sans leading-relaxed">
+            Managed AMQP message broker with dead-letter exchanges (DLX) providing guaranteed delivery and buffering high document bursts under load.
+          </p>
+        </div>
+
+        <div class="card-glass p-4 rounded-xl space-y-2">
+          <div class="flex items-center gap-2 text-blue-400 font-bold">
+            <i data-lucide="box" class="w-4 h-4"></i> S3 Artifact & Storage Bucket
+          </div>
+          <p class="text-slate-400 text-[11px] font-sans leading-relaxed">
+            Stores input documents, signature crops, and versioned SHA-256 model weights (<code class="text-white">detector_best.pth</code>, <code class="text-white">verifier_best.pth</code>) outside Git.
+          </p>
+        </div>
+
+        <div class="card-glass p-4 rounded-xl space-y-2">
+          <div class="flex items-center gap-2 text-rose-400 font-bold">
+            <i data-lucide="bar-chart-2" class="w-4 h-4"></i> Prometheus & Grafana
+          </div>
+          <p class="text-slate-400 text-[11px] font-sans leading-relaxed">
+            Scrapes `/metrics` every 15s to monitor p50/p95/p99 latency percentiles, worker task saturation, and authenticity decision distributions.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 6: COLAB GPU & MLOps HUB -->
+    <!-- ============================================================= -->
+    <section id="tab-colab" class="tab-content hidden space-y-6">
+      
+      <div class="card-glass p-6 rounded-2xl">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-xs font-medium mb-1">
+          <i data-lucide="zap" class="w-3.5 h-3.5"></i> Google Colab GPU & Retraining Hub
+        </div>
+        <h2 class="text-2xl font-bold text-white tracking-tight">Full Dataset (28,000 Images) GPU Acceleration</h2>
+        <p class="text-slate-400 text-xs mt-1">Execute high-throughput GPU training on free Google Colab Nvidia Tesla T4 hardware and sync weights back.</p>
+      </div>
+
+      <div class="card-glass p-6 rounded-2xl space-y-4">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i> Step 1: Execute Training in Google Colab
         </h3>
         <p class="text-xs text-slate-300">
-          In your connected Google Colab notebook, execute the following commands to pull the latest code and train the detection and verification models on the Tesla T4 GPU:
+          Upload <code class="text-cyan-400 font-mono">notebooks/detection_training.ipynb</code> to Google Colab, select GPU (T4), and run the cells:
         </p>
-        <pre class="bg-black/80 border border-slate-800 p-4 rounded-xl text-xs font-mono text-emerald-400 overflow-x-auto">
-# Pull latest repository code
-%cd /content/sign-detect-verify
-!git pull origin main
+        <pre class="bg-black/90 border border-slate-800 p-4 rounded-xl text-xs font-mono text-emerald-400 overflow-x-auto leading-relaxed">
+# Clone or pull latest code
+!git clone https://github.com/your-org/signature-detection-verification.git
+%cd signature-detection-verification
 
-# Option A: Train Detection Model on Tesla T4 GPU (Zero Comet API key needed)
+# Train Stage 1 Object Detector on Tesla T4 GPU (BSD-3 / Apache 2.0 compliant)
 !python training/detection/train_rtdetr.py --epochs 10 --batch-size 8 --tracker none
 
-# Option B: Train Siamese Verification Model on GPU
+# Train Stage 2 Siamese Verification Model on GPU
 !python training/verification/train_resnet50.py --epochs 10 --batch-size 16 --tracker none
         </pre>
       </div>
 
-      <div class="card-blur p-6 rounded-2xl space-y-4">
-        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-          <i data-lucide="webhook" class="w-5 h-5 text-emerald-400"></i> 2. Automated Hugging Face Webhook Ingestion
+      <div class="card-glass p-6 rounded-2xl space-y-4">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="webhook" class="w-4 h-4 text-emerald-400"></i> Step 2: Trigger Automated Webhook Pipeline
         </h3>
         <p class="text-xs text-slate-300">
-          When new signature images are committed to Hugging Face Datasets, the webhook event hits <code class="text-indigo-300 font-mono">/api/v1/webhooks/huggingface</code> with an HMAC-SHA256 signature, dispatching a retraining job to Celery.
+          Simulate a Hugging Face Dataset commit event using HMAC-SHA256 authentication:
         </p>
-        <pre class="bg-black/80 border border-slate-800 p-4 rounded-xl text-xs font-mono text-indigo-300 overflow-x-auto">
-# Test Webhook Trigger via curl:
+        <pre class="bg-black/90 border border-slate-800 p-4 rounded-xl text-xs font-mono text-cyan-300 overflow-x-auto leading-relaxed">
 curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
   -H "Content-Type: application/json" \
   -H "X-Webhook-Secret: default_hf_secret_change_in_production" \
   -d '{"event": "dataset.update", "repo_id": "Mels22/Signature-Detection-Verification"}'
         </pre>
       </div>
+
     </section>
 
   </main>
 
-  <!-- Footer -->
-  <footer class="border-t border-slate-800 bg-slate-950/80 py-4 text-center text-xs text-slate-500">
-    Signature Detection & Verification System • Permissively Licensed (Apache 2.0 / BSD-3-Clause) • Zero AGPL
+  <!-- Sticky Footer -->
+  <footer class="border-t border-slate-800/80 bg-[#070b14]/90 py-4 text-center text-xs text-slate-500 font-mono">
+    Signature Detection & Verification Platform • Permissively Licensed (Apache 2.0 / BSD-3-Clause) • Zero AGPL • Prometheus Monitored
   </footer>
 
-  <!-- Application Logic -->
+  <!-- High-Resolution Zoom Lightbox Modal -->
+  <div id="zoom-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 hidden" onclick="closeZoom()">
+    <div class="relative max-w-5xl max-h-[92vh] bg-slate-900 border border-slate-700/80 rounded-2xl p-4 shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+        <span class="text-xs font-bold text-white flex items-center gap-2 font-mono">
+          <i data-lucide="zoom-in" class="w-4 h-4 text-cyan-400"></i> High-Resolution Inspection Lightbox
+        </span>
+        <button onclick="closeZoom()" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="flex items-center justify-center overflow-auto max-h-[78vh]">
+        <img id="zoom-image" class="max-w-full max-h-[75vh] object-contain rounded-lg">
+      </div>
+      <div class="text-center text-[11px] text-slate-500 mt-2 font-mono">
+        Click outside or press X to close lightbox
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Logic & Live Data Polling -->
   <script>
     // Initialize icons
     lucide.createIcons();
 
-    // Tab Switching
+    // Tab Navigation Controller
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
-        btn.classList.add('text-slate-300');
+        btn.classList.remove('bg-blue-600', 'text-white', 'shadow-sm');
+        btn.classList.add('text-slate-400');
       });
 
-      document.getElementById('tab-' + tabId).classList.remove('hidden');
+      const target = document.getElementById('tab-' + tabId);
+      if (target) {
+        target.classList.remove('hidden');
+      }
       const activeBtn = document.getElementById('tab-btn-' + tabId);
-      activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
-      activeBtn.classList.remove('text-slate-300');
+      if (activeBtn) {
+        activeBtn.classList.add('bg-blue-600', 'text-white', 'shadow-sm');
+        activeBtn.classList.remove('text-slate-400');
+      }
+
+      // Contextual data refresh
+      if (tabId === 'jobs') {
+        fetchJobsList();
+      } else if (tabId === 'metrics') {
+        fetchPrometheusMetrics();
+      }
     }
 
     let selectedDocFile = null;
     let selectedRefFiles = [];
+    let jobsRefreshInterval = null;
 
     // Document Preview
     function previewDoc(input) {
@@ -550,7 +926,7 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
           reader.onload = function(e) {
             const img = document.createElement('img');
             img.src = e.target.result;
-            img.className = 'h-16 w-24 object-contain rounded border border-slate-700 bg-white';
+            img.className = 'h-14 w-24 object-contain rounded border border-slate-700 bg-white shadow-sm';
             container.appendChild(img);
           };
           reader.readAsDataURL(file);
@@ -562,6 +938,7 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
     async function loadSample(type) {
       try {
         const docRes = await fetch('/sample_test_run/sample_document.jpg');
+        if (!docRes.ok) throw new Error('Could not fetch sample document');
         const docBlob = await docRes.blob();
         selectedDocFile = new File([docBlob], 'sample_document.jpg', { type: 'image/jpeg' });
         document.getElementById('doc-filename').innerText = 'sample_document.jpg (Authentic)';
@@ -571,35 +948,37 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
 
         const refName = type === 'authentic' ? 'reference_authentic.jpg' : 'reference_impostor.jpg';
         const refRes = await fetch('/sample_test_run/' + refName);
+        if (!refRes.ok) throw new Error('Could not fetch ' + refName);
         const refBlob = await refRes.blob();
         const refFile = new File([refBlob], refName, { type: 'image/jpeg' });
         selectedRefFiles = [refFile];
-        document.getElementById('ref-filename').innerText = refName + (type === 'authentic' ? ' (Matches Doc)' : ' (Impostor)');
+        document.getElementById('ref-filename').innerText = refName + (type === 'authentic' ? ' (Matches Document)' : ' (Impostor)');
 
         const container = document.getElementById('ref-preview-container');
-        container.innerHTML = `<img src="/sample_test_run/${refName}" class="h-16 w-28 object-contain rounded border border-slate-700 bg-white">`;
+        container.innerHTML = `<img src="/sample_test_run/${refName}" class="h-14 w-28 object-contain rounded border border-slate-700 bg-white shadow-sm">`;
         container.classList.remove('hidden');
         document.getElementById('ref-placeholder').classList.add('hidden');
 
-        // Automatically trigger verification for instant feedback!
+        // Automatically trigger verification for instant live feedback!
         executeVerification();
       } catch (err) {
         alert('Could not load sample fixture: ' + err.message);
       }
     }
 
-    // Execute Verification
+    // Execute Verification Pipeline
     async function executeVerification() {
       if (!selectedDocFile || selectedRefFiles.length === 0) {
-        alert('Please upload both a document image and at least one reference signature image.');
+        alert('Please upload both a document image and at least one reference signature.');
         return;
       }
 
       const btn = document.getElementById('verify-btn');
       btn.disabled = true;
-      btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Processing Neural Pipeline...';
+      btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Running Neural Pipeline...';
       lucide.createIcons();
 
+      const startTime = performance.now();
       const formData = new FormData();
       formData.append('document', selectedDocFile);
       selectedRefFiles.forEach(file => {
@@ -615,43 +994,99 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
 
         if (!res.ok) {
           const err = await res.json();
-          throw new Error(err.detail || 'Verification failed');
+          throw new Error(err.detail || 'Verification request failed');
         }
 
         let data = await res.json();
-        // If asynchronous job returned, poll until COMPLETED
+        
+        // If async job was returned, poll until completion
         if (data.status === 'PENDING' && data.poll_url) {
           while (data.status === 'PENDING' || data.status === 'PROCESSING') {
-            await new Promise(r => setTimeout(r, 500));
+            await new Promise(r => setTimeout(r, 600));
             const pollRes = await fetch(data.poll_url);
             if (pollRes.ok) {
               data = await pollRes.json();
             }
           }
         }
-        renderResults(data);
+        
+        const duration = ((performance.now() - startTime) / 1000).toFixed(2);
+        renderResults(data, duration);
+        fetchJobsList(); // Refresh jobs count
       } catch (err) {
-        alert('Error: ' + err.message);
+        alert('Verification Error: ' + err.message);
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i data-lucide="play" class="w-5 h-5 fill-current"></i> Run End-to-End Verification';
+        btn.innerHTML = '<i data-lucide="play" class="w-4 h-4 fill-current"></i> Run End-to-End Verification Pipeline';
         lucide.createIcons();
       }
     }
 
-    // Render Results & Overlay Bounding Box on Canvas
-    function renderResults(data) {
-      document.getElementById('results-panel').classList.remove('hidden');
+    let currentJobResults = [];
+    let currentLoadedImage = null;
 
-      const results = data.results || [];
-      const first = results[0] || {};
-      const score = first.similarity_score !== undefined ? first.similarity_score : 0;
-      const decision = first.decision || 'UNKNOWN';
-      const bbox = first.bbox || [0, 0, 0, 0];
-      const conf = first.confidence_detection !== undefined ? first.confidence_detection : 0;
-      const cropUrl = first.crop_url || first.crop_path || '';
+    function toWebUrl(url) {
+      if (!url) return '';
+      if (url.startsWith('http')) return url;
+      const norm = url.replace(/\\/g, '/');
+      if (norm.includes('/uploads/')) return '/uploads/' + norm.split('/uploads/')[1];
+      if (norm.includes('/signature_crops/')) return '/signature_crops/' + norm.split('/signature_crops/')[1];
+      if (norm.startsWith('uploads/')) return '/' + norm;
+      if (norm.includes('/sample_test_run/')) return '/sample_test_run/' + norm.split('/sample_test_run/')[1];
+      return '/' + norm.replace(/^\/+/, '');
+    }
 
-      // Update Decision Badge
+    function drawCanvasOverlay(img, results, selectedIdx) {
+      const canvas = document.getElementById('detection-canvas');
+      if (!canvas || !img) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+
+      results.forEach((item, idx) => {
+        const [x1, y1, x2, y2] = item.bbox;
+        const isGenuine = item.decision === 'GENUINE';
+        const isForged = item.decision === 'FORGED';
+        const isSelected = (idx === selectedIdx);
+        
+        let strokeColor = isGenuine ? '#10b981' : (isForged ? '#f43f5e' : '#f59e0b');
+        let lineWidth = Math.max(4, img.width / 220);
+
+        if (isSelected) {
+          strokeColor = '#06b6d4'; // Highlight selected signature with bright cyan
+          lineWidth = Math.max(6, img.width / 160);
+          ctx.fillStyle = 'rgba(6, 182, 212, 0.18)';
+          ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+        }
+
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = lineWidth;
+        ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+
+        // Draw Tag Label
+        ctx.fillStyle = strokeColor;
+        const scorePercent = item.similarity_score !== undefined ? (item.similarity_score * 100).toFixed(1) + '%' : '';
+        const label = ` #${idx + 1} ${item.decision || 'SIG'} ${scorePercent} `;
+        const fontSize = Math.max(14, img.width / 45);
+        ctx.font = `bold ${fontSize}px sans-serif`;
+        const textWidth = ctx.measureText(label).width;
+        ctx.fillRect(x1, Math.max(0, y1 - fontSize - 6), textWidth, fontSize + 6);
+        
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(label, x1, Math.max(fontSize, y1 - 4));
+      });
+    }
+
+    function selectSignature(idx) {
+      if (!currentJobResults || !currentJobResults[idx]) return;
+      const item = currentJobResults[idx];
+      const score = item.similarity_score !== undefined ? item.similarity_score : 0;
+      const decision = item.decision || 'UNKNOWN';
+      const bbox = item.bbox || [0, 0, 0, 0];
+      const conf = item.confidence_detection !== undefined ? item.confidence_detection : 0;
+      const cropUrl = item.crop_url || item.crop_path || '';
+
       const decisionCard = document.getElementById('decision-card');
       const decisionText = document.getElementById('decision-text');
       const decisionSub = document.getElementById('decision-sub');
@@ -664,79 +1099,308 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
 
       decisionCard.className = 'p-6 rounded-2xl border text-center transition-all ';
       if (decision === 'GENUINE') {
-        decisionCard.classList.add('bg-emerald-950/40', 'border-emerald-600', 'text-emerald-300');
-        scoreBar.className = 'h-3 rounded-full transition-all duration-700 bg-emerald-500';
-        decisionSub.innerText = 'High Biometric Confidence Match';
+        decisionCard.classList.add('bg-emerald-950/40', 'border-emerald-500/50', 'text-emerald-300', 'glow-emerald');
+        scoreBar.className = 'h-2 rounded-full transition-all duration-700 bg-emerald-500';
+        decisionSub.innerText = 'High Biometric Confidence Match (Authentic)';
       } else if (decision === 'FORGED') {
-        decisionCard.classList.add('bg-rose-950/40', 'border-rose-600', 'text-rose-300');
-        scoreBar.className = 'h-3 rounded-full transition-all duration-700 bg-rose-500';
+        decisionCard.classList.add('bg-rose-950/40', 'border-rose-500/50', 'text-rose-300', 'glow-rose');
+        scoreBar.className = 'h-2 rounded-full transition-all duration-700 bg-rose-500';
         decisionSub.innerText = 'Significant Biometric Divergence (Forged)';
       } else {
-        decisionCard.classList.add('bg-amber-950/40', 'border-amber-600', 'text-amber-300');
-        scoreBar.className = 'h-3 rounded-full transition-all duration-700 bg-amber-500';
+        decisionCard.classList.add('bg-amber-950/40', 'border-amber-500/50', 'text-amber-300');
+        scoreBar.className = 'h-2 rounded-full transition-all duration-700 bg-amber-500';
         decisionSub.innerText = 'Borderline Similarity (Manual Review Required)';
       }
 
       document.getElementById('meta-bbox').innerText = `[${bbox.map(v => Math.round(v)).join(', ')}]`;
       document.getElementById('meta-conf').innerText = `${(conf * 100).toFixed(1)}%`;
 
+      if (cropUrl) {
+        document.getElementById('crop-preview').src = toWebUrl(cropUrl);
+      }
+      if (item.reference_filename) {
+        document.getElementById('best-ref-preview').src = toWebUrl(item.reference_filename);
+      }
+
+      document.querySelectorAll('.sig-pill-btn').forEach((btn, bIdx) => {
+        if (bIdx === idx) {
+          btn.className = 'sig-pill-btn px-3 py-1 text-xs rounded-full bg-cyan-600 text-white font-semibold shadow border border-cyan-400';
+        } else {
+          btn.className = 'sig-pill-btn px-3 py-1 text-xs rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition border border-slate-700';
+        }
+      });
+
+      if (currentLoadedImage) {
+        drawCanvasOverlay(currentLoadedImage, currentJobResults, idx);
+      }
+    }
+
+    // Render Results & Overlay Bounding Box on Canvas
+    function renderResults(data, duration) {
+      document.getElementById('results-panel').classList.remove('hidden');
+
+      const results = data.results || [];
+      currentJobResults = results;
+      const first = results[0] || {};
+      const score = first.similarity_score !== undefined ? first.similarity_score : 0;
+      const decision = results.length > 0 ? (first.decision || 'UNKNOWN') : 'NO SIGNATURES';
+      const bbox = first.bbox || [0, 0, 0, 0];
+      const conf = first.confidence_detection !== undefined ? first.confidence_detection : 0;
+      const cropUrl = first.crop_url || first.crop_path || '';
+
+      document.getElementById('job-id-badge').innerText = 'Job: ' + (data.job_id || 'sync-run');
+      document.getElementById('detected-count-badge').innerText = results.length + ' Signature' + (results.length === 1 ? '' : 's') + ' Localized';
+
+      // Build Multi-Signature Selector Pills
+      const pillsContainer = document.getElementById('sig-pills-container');
+      if (pillsContainer) {
+        if (results.length > 1) {
+          pillsContainer.innerHTML = results.map((item, idx) => {
+            const dec = item.decision || 'SIG';
+            const sc = item.similarity_score !== undefined ? (item.similarity_score * 100).toFixed(0) + '%' : '';
+            const activeClass = idx === 0 ? 'bg-cyan-600 text-white font-semibold border-cyan-400' : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border-slate-700';
+            return `<button onclick="selectSignature(${idx})" class="sig-pill-btn px-3 py-1 text-xs rounded-full ${activeClass} transition border font-mono">#${idx + 1}: ${dec} (${sc})</button>`;
+          }).join('');
+        } else {
+          pillsContainer.innerHTML = '';
+        }
+      }
+
+      // Update Decision Badge Card
+      const decisionCard = document.getElementById('decision-card');
+      const decisionText = document.getElementById('decision-text');
+      const decisionSub = document.getElementById('decision-sub');
+      const scoreBar = document.getElementById('score-bar');
+      const scoreText = document.getElementById('score-text');
+
+      if (results.length === 0) {
+        decisionText.innerText = 'NO SIGNATURES';
+        scoreText.innerText = '0.00%';
+        scoreBar.style.width = '0%';
+        decisionCard.className = 'p-6 rounded-2xl border text-center transition-all bg-slate-900 border-slate-700 text-slate-300';
+        decisionSub.innerText = 'No signature candidate was detected in this document';
+        document.getElementById('meta-bbox').innerText = '[--]';
+        document.getElementById('meta-conf').innerText = '0.0%';
+        document.getElementById('crop-preview').src = '';
+      } else {
+        decisionText.innerText = decision;
+        scoreText.innerText = (score * 100).toFixed(2) + '%';
+        scoreBar.style.width = Math.min(100, Math.max(0, score * 100)) + '%';
+
+        decisionCard.className = 'p-6 rounded-2xl border text-center transition-all ';
+        if (decision === 'GENUINE') {
+          decisionCard.classList.add('bg-emerald-950/40', 'border-emerald-500/50', 'text-emerald-300', 'glow-emerald');
+          scoreBar.className = 'h-2 rounded-full transition-all duration-700 bg-emerald-500';
+          decisionSub.innerText = 'High Biometric Confidence Match (Authentic)';
+        } else if (decision === 'FORGED') {
+          decisionCard.classList.add('bg-rose-950/40', 'border-rose-500/50', 'text-rose-300', 'glow-rose');
+          scoreBar.className = 'h-2 rounded-full transition-all duration-700 bg-rose-500';
+          decisionSub.innerText = 'Significant Biometric Divergence (Forged)';
+        } else {
+          decisionCard.classList.add('bg-amber-950/40', 'border-amber-500/50', 'text-amber-300');
+          scoreBar.className = 'h-2 rounded-full transition-all duration-700 bg-amber-500';
+          decisionSub.innerText = 'Borderline Similarity (Manual Review Required)';
+        }
+
+        document.getElementById('meta-bbox').innerText = `[${bbox.map(v => Math.round(v)).join(', ')}]`;
+        document.getElementById('meta-conf').innerText = `${(conf * 100).toFixed(1)}%`;
+      }
+
+      document.getElementById('meta-latency').innerText = (duration || '9.5') + 's (e2e)';
+
       // Set Crop & Reference Previews
       if (cropUrl) {
-        document.getElementById('crop-preview').src = '/' + cropUrl.replace(/\\/g, '/').replace(/^\/+/, '');
+        document.getElementById('crop-preview').src = toWebUrl(cropUrl);
       }
-      if (selectedRefFiles.length > 0) {
+      if (first.reference_filename) {
+        document.getElementById('best-ref-preview').src = toWebUrl(first.reference_filename);
+      } else if (selectedRefFiles && selectedRefFiles.length > 0) {
         const reader = new FileReader();
         reader.onload = e => { document.getElementById('best-ref-preview').src = e.target.result; };
         reader.readAsDataURL(selectedRefFiles[0]);
       }
 
       // Draw Document + Bounding Box Overlay on Canvas
-      const canvas = document.getElementById('detection-canvas');
-      const ctx = canvas.getContext('2d');
       const img = new Image();
       img.onload = function() {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-
-        // Draw Bounding Box
-        results.forEach(item => {
-          const [x1, y1, x2, y2] = item.bbox;
-          ctx.strokeStyle = item.decision === 'GENUINE' ? '#10b981' : (item.decision === 'FORGED' ? '#f43f5e' : '#f59e0b');
-          ctx.lineWidth = Math.max(4, img.width / 200);
-          ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
-
-          // Draw Label Tag
-          ctx.fillStyle = ctx.strokeStyle;
-          const label = ` Signature: ${item.decision} (${(item.similarity_score * 100).toFixed(1)}%) `;
-          const fontSize = Math.max(14, img.width / 45);
-          ctx.font = `bold ${fontSize}px sans-serif`;
-          const textWidth = ctx.measureText(label).width;
-          ctx.fillRect(x1, Math.max(0, y1 - fontSize - 6), textWidth, fontSize + 6);
-          ctx.fillStyle = '#ffffff';
-          ctx.fillText(label, x1, Math.max(fontSize, y1 - 4));
-        });
+        currentLoadedImage = img;
+        drawCanvasOverlay(img, results, 0);
       };
 
-      const docReader = new FileReader();
-      docReader.onload = e => { img.src = e.target.result; };
-      docReader.readAsDataURL(selectedDocFile);
+      if (data.document_url) {
+        img.src = toWebUrl(data.document_url);
+      } else if (data.document_path) {
+        img.src = toWebUrl(data.document_path);
+      } else if (selectedDocFile) {
+        const docReader = new FileReader();
+        docReader.onload = e => { img.src = e.target.result; };
+        docReader.readAsDataURL(selectedDocFile);
+      } else {
+        img.src = '/sample_test_run/sample_document.jpg';
+      }
     }
 
-    // Zoom Lightbox Modal Functionality
+    // Fetch and Populate Recent Jobs Table
+    async function fetchJobsList() {
+      try {
+        const res = await fetch('/api/v1/jobs/?limit=25');
+        if (!res.ok) return;
+        const jobs = await res.json();
+
+        // Update Counter Badges
+        document.getElementById('jobs-count-pill').innerText = jobs.length;
+        document.getElementById('stat-total-jobs').innerText = jobs.length;
+        
+        const completed = jobs.filter(j => j.status === 'COMPLETED').length;
+        const pending = jobs.filter(j => j.status === 'PENDING' || j.status === 'PROCESSING').length;
+        document.getElementById('stat-completed-jobs').innerText = completed;
+        document.getElementById('stat-pending-jobs').innerText = pending;
+
+        const tbody = document.getElementById('jobs-table-body');
+        if (jobs.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" class="py-8 text-center text-slate-500 font-sans">
+                No verification jobs recorded yet. Run a verification in Studio to create one!
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = jobs.map(job => {
+          const firstResult = (job.results && job.results[0]) || {};
+          const decision = firstResult.decision || '--';
+          const score = firstResult.similarity_score !== undefined ? (firstResult.similarity_score * 100).toFixed(1) + '%' : '--';
+          
+          let statusBadge = '<span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">PENDING</span>';
+          if (job.status === 'COMPLETED') {
+            statusBadge = '<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">COMPLETED</span>';
+          } else if (job.status === 'PROCESSING') {
+            statusBadge = '<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 animate-pulse">PROCESSING</span>';
+          } else if (job.status === 'FAILED') {
+            statusBadge = '<span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">FAILED</span>';
+          }
+
+          let verdictBadge = '<span class="text-slate-500">--</span>';
+          if (decision === 'GENUINE') {
+            verdictBadge = '<span class="text-emerald-400 font-bold">GENUINE</span>';
+          } else if (decision === 'FORGED') {
+            verdictBadge = '<span class="text-rose-400 font-bold">FORGED</span>';
+          } else if (decision === 'REVIEW') {
+            verdictBadge = '<span class="text-amber-400 font-bold">REVIEW</span>';
+          }
+
+          const timeStr = job.created_at ? new Date(job.created_at).toLocaleTimeString() : '--';
+          const shortId = job.job_id.substring(0, 8);
+
+          return `
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="py-3 px-4 font-mono font-medium text-cyan-400">
+                <span title="${job.job_id}">${shortId}...</span>
+              </td>
+              <td class="py-3 px-4 text-slate-400">${timeStr}</td>
+              <td class="py-3 px-4">${statusBadge}</td>
+              <td class="py-3 px-4 text-slate-300">${job.detected_count || (job.results ? job.results.length : 0)}</td>
+              <td class="py-3 px-4 text-slate-200">${score}</td>
+              <td class="py-3 px-4">${verdictBadge}</td>
+              <td class="py-3 px-4 text-right">
+                <button onclick="inspectJob('${job.job_id}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-xs transition">
+                  Inspect
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+      } catch (err) {
+        console.warn('Jobs list fetch error:', err);
+      }
+    }
+
+    // Inspect Job from History
+    async function inspectJob(jobId) {
+      try {
+        const res = await fetch(`/api/v1/jobs/${jobId}`);
+        if (!res.ok) throw new Error('Job details not found');
+        const job = await res.json();
+        
+        switchTab('studio');
+        renderResults(job, 'Cached');
+      } catch (err) {
+        alert('Could not inspect job: ' + err.message);
+      }
+    }
+
+    // Fetch and Populate Prometheus Metrics
+    async function fetchPrometheusMetrics() {
+      try {
+        const res = await fetch('/metrics');
+        if (!res.ok) throw new Error('Could not fetch metrics endpoint');
+        const text = await res.text();
+        
+        document.getElementById('raw-metrics-box').innerText = text;
+
+        // Parse key counts from text
+        let httpCount = 0;
+        let genuineCount = 0;
+        let forgedCount = 0;
+        let reviewCount = 0;
+
+        const lines = text.split('\n');
+        lines.forEach(line => {
+          if (line.startsWith('http_requests_total{') || line.startsWith('http_requests_total ')) {
+            const parts = line.split(' ');
+            const val = parseFloat(parts[parts.length - 1]);
+            if (!isNaN(val)) httpCount += val;
+          }
+          if (line.includes('signature_decisions_total{decision="GENUINE"}')) {
+            const val = parseFloat(line.split(' ').pop());
+            if (!isNaN(val)) genuineCount = val;
+          }
+          if (line.includes('signature_decisions_total{decision="FORGED"}')) {
+            const val = parseFloat(line.split(' ').pop());
+            if (!isNaN(val)) forgedCount = val;
+          }
+          if (line.includes('signature_decisions_total{decision="REVIEW"}')) {
+            const val = parseFloat(line.split(' ').pop());
+            if (!isNaN(val)) reviewCount = val;
+          }
+        });
+
+        document.getElementById('prom-http-requests').innerText = Math.round(httpCount);
+        document.getElementById('prom-genuine-count').innerText = Math.round(genuineCount);
+        document.getElementById('prom-forged-count').innerText = Math.round(forgedCount);
+
+        const totalDecisions = genuineCount + forgedCount + reviewCount;
+        if (totalDecisions > 0) {
+          const genPct = ((genuineCount / totalDecisions) * 100).toFixed(1);
+          const revPct = ((reviewCount / totalDecisions) * 100).toFixed(1);
+          const forPct = ((forgedCount / totalDecisions) * 100).toFixed(1);
+
+          document.getElementById('ratio-bar-genuine').style.width = genPct + '%';
+          document.getElementById('ratio-bar-review').style.width = revPct + '%';
+          document.getElementById('ratio-bar-forged').style.width = forPct + '%';
+
+          document.getElementById('ratio-val-genuine').innerText = genPct + '%';
+          document.getElementById('ratio-val-review').innerText = revPct + '%';
+          document.getElementById('ratio-val-forged').innerText = forPct + '%';
+        }
+
+      } catch (err) {
+        document.getElementById('raw-metrics-box').innerText = 'Metrics error: ' + err.message;
+      }
+    }
+
+    // High-Resolution Zoom Lightbox Controls
     function openZoom(target) {
       const modal = document.getElementById('zoom-modal');
       const zoomImg = document.getElementById('zoom-image');
-      const zoomCanvas = document.getElementById('zoom-canvas-container');
 
       if (typeof target === 'string') {
         zoomImg.src = target;
-        zoomImg.classList.remove('hidden');
-        zoomCanvas.classList.add('hidden');
       } else if (target && target.tagName === 'CANVAS') {
         zoomImg.src = target.toDataURL();
-        zoomImg.classList.remove('hidden');
-        zoomCanvas.classList.add('hidden');
       }
       modal.classList.remove('hidden');
     }
@@ -744,27 +1408,23 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
     function closeZoom() {
       document.getElementById('zoom-modal').classList.add('hidden');
     }
-  </script>
 
-  <!-- Interactive Zoom Modal Lightbox -->
-  <div id="zoom-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 hidden" onclick="closeZoom()">
-    <div class="relative max-w-5xl max-h-[90vh] bg-slate-900 border border-slate-700 rounded-2xl p-4 shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
-        <span class="text-sm font-bold text-white flex items-center gap-2">
-          <i data-lucide="zoom-in" class="w-4 h-4 text-indigo-400"></i> High-Resolution Inspection
-        </span>
-        <button onclick="closeZoom()" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-      <div class="flex items-center justify-center overflow-auto max-h-[75vh]">
-        <img id="zoom-image" class="max-w-full max-h-[72vh] object-contain rounded-lg">
-        <div id="zoom-canvas-container" class="hidden"></div>
-      </div>
-      <div class="text-center text-xs text-slate-400 mt-2 font-mono">
-        Click outside or press the close button to exit zoom view
-      </div>
-    </div>
-  </div>
+    // Keyboard ESC to close lightbox
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeZoom();
+    });
+
+    // Auto-poll jobs list every 8 seconds
+    setInterval(() => {
+      const jobsTab = document.getElementById('tab-jobs');
+      if (jobsTab && !jobsTab.classList.contains('hidden')) {
+        fetchJobsList();
+      }
+    }, 8000);
+
+    // Initial background load
+    fetchJobsList();
+    fetchPrometheusMetrics();
+  </script>
 </body>
 </html>

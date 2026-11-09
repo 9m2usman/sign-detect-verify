@@ -1,0 +1,20 @@
+{
+  "model_name": "FasterRCNN-ResNet50-FPN",
+  "version_tag": "v20261109_HEAD",
+  "framework": "PyTorch",
+  "license": "Apache-2.0 / BSD-3-Clause",
+  "artifact_file": "detector_best.pth",
+  "sha256": "5a57a5a086d5378857dc7caefaa61b7359fe470a1a2a913814fbc7caa701b814",
+  "size_bytes": 165741843,
+  "metrics": {
+    "mAP@50": 0.892,
+    "mAP@50_95": 0.651,
+    "loss": 0.114
+  },
+  "created_at": "2026-11-09T16:42:28.027982+00:00",
+  "extra_metadata": {
+    "event_id": "event-user/signature-detection-dataset",
+    "repo_name": "user/signature-detection-dataset",
+    "commit_hash": "HEAD"
+  }
+}

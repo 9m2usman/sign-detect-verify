@@ -2,12 +2,83 @@
 Signature Preprocessing & Normalization Pipeline for Verification
 Applies grayscale conversion, adaptive contrast enhancement, aspect-ratio-preserving padding,
 and standard tensor normalization for Siamese and Triplet metric learning models.
+Supports raster images (JPEG, PNG, WEBP, TIFF) and digital/scanned PDF documents.
 """
 
+import os
+import io
+from typing import Union
 import numpy as np
 from PIL import Image, ImageOps
 import torch
 import torchvision.transforms as T
+
+
+def load_document_image(source: Union[str, bytes, Image.Image]) -> Image.Image:
+    """
+    Loads an image or PDF document page as a PIL RGB Image.
+    Handles:
+    - PIL.Image.Image instances directly.
+    - Raw image bytes or PDF byte streams.
+    - Image file paths (JPEG, PNG, TIFF, WEBP, BMP, etc.).
+    - Scanned or digital PDF files via pypdf (extracts page images) or pdf2image fallback.
+    """
+    if isinstance(source, Image.Image):
+        return source.convert("RGB")
+
+    if isinstance(source, bytes):
+        if source.startswith(b"%PDF"):
+            return _load_pdf_from_stream(io.BytesIO(source))
+        return Image.open(io.BytesIO(source)).convert("RGB")
+
+    if isinstance(source, str):
+        if not os.path.exists(source):
+            raise FileNotFoundError(f"File not found: {source}")
+        if source.lower().endswith(".pdf"):
+            with open(source, "rb") as f:
+                return _load_pdf_from_stream(f)
+        return Image.open(source).convert("RGB")
+
+    raise TypeError(f"Unsupported document source type: {type(source)}")
+
+
+def _load_pdf_from_stream(stream) -> Image.Image:
+    """Extracts the primary document image from a PDF stream using pypdf or pdf2image."""
+    try:
+        import pypdf
+        reader = pypdf.PdfReader(stream)
+        for page in reader.pages:
+            if hasattr(page, "images") and len(page.images) > 0:
+                best_img = None
+                best_area = 0
+                for img_obj in page.images:
+                    try:
+                        pil_img = Image.open(io.BytesIO(img_obj.data)).convert("RGB")
+                        area = pil_img.width * pil_img.height
+                        if area > best_area:
+                            best_area = area
+                            best_img = pil_img
+                    except Exception:
+                        continue
+                if best_img is not None:
+                    return best_img
+    except Exception:
+        pass
+
+    try:
+        from pdf2image import convert_from_bytes
+        if hasattr(stream, "seek"):
+            stream.seek(0)
+            data = stream.read()
+        else:
+            data = stream
+        images = convert_from_bytes(data, first_page=1, last_page=1)
+        if images:
+            return images[0].convert("RGB")
+    except Exception:
+        pass
+
+    raise ValueError("Could not extract image from PDF. Ensure PDF contains a scanned document page.")
 
 
 def preprocess_signature_image(

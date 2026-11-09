@@ -3,9 +3,28 @@ Application Configuration Settings
 Uses Pydantic v2 BaseSettings and ConfigDict to parse environment variables with safe defaults.
 """
 
+import os
+import tempfile
 from typing import List, Optional
 from pydantic_settings import BaseSettings
 from pydantic import ConfigDict
+
+
+def _get_writable_dir(dir_name: str, fallback_prefix: str) -> str:
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+    if not os.path.isabs(dir_name):
+        dir_name = os.path.join(project_root, dir_name)
+    try:
+        os.makedirs(dir_name, exist_ok=True)
+        test_file = os.path.join(dir_name, f".test_{os.getpid()}")
+        with open(test_file, "w") as f:
+            f.write("1")
+        os.remove(test_file)
+        return os.path.abspath(dir_name)
+    except Exception:
+        fallback = os.path.join(tempfile.gettempdir(), fallback_prefix)
+        os.makedirs(fallback, exist_ok=True)
+        return os.path.abspath(fallback)
 
 
 class Settings(BaseSettings):
@@ -31,8 +50,8 @@ class Settings(BaseSettings):
     CELERY_RESULT_BACKEND: str = "rpc://"
 
     # Storage Paths
-    UPLOAD_DIR: str = "uploads"
-    STORAGE_DIR: str = "storage"
+    UPLOAD_DIR: str = _get_writable_dir("uploads", "signature_uploads")
+    STORAGE_DIR: str = _get_writable_dir("storage", "signature_storage")
     
     # MLOps & MLflow
     MLFLOW_TRACKING_URI: str = "http://localhost:5000"

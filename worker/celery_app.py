@@ -41,6 +41,9 @@ celery_app = Celery(
 
 if HAS_CELERY:
     celery_app.conf.update(
+        broker_connection_retry_on_startup=False,
+        broker_connection_timeout=1.0,
+        broker_transport_options={"max_retries": 1, "interval_start": 0, "interval_step": 0},
         task_serializer="json",
         accept_content=["json"],
         result_serializer="json",

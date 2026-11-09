@@ -37,6 +37,7 @@ class JobStatusResponse(BaseModel):
     completed_at: Optional[datetime] = None
     results: List[SignatureVerificationResultItem] = []
     error_message: Optional[str] = None
+    document_url: Optional[str] = None
 
 
 class ModelInfoResponse(BaseModel):

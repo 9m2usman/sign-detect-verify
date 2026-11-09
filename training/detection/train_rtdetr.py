@@ -72,16 +72,19 @@ class SignatureYOLODataset(Dataset):
                         except ValueError:
                             continue
 
-        # If image had no bounding box or unannotated, create fallback whole image box
+        # Negative sample handling: images without signatures have empty box and label tensors
         if not boxes:
-            boxes = [[0.0, 0.0, float(w), float(h)]]
-            labels = [1]
-
-        target = {
-            'boxes': torch.tensor(boxes, dtype=torch.float32),
-            'labels': torch.tensor(labels, dtype=torch.int64),
-            'image_id': torch.tensor([idx])
-        }
+            target = {
+                'boxes': torch.zeros((0, 4), dtype=torch.float32),
+                'labels': torch.zeros((0,), dtype=torch.int64),
+                'image_id': torch.tensor([idx])
+            }
+        else:
+            target = {
+                'boxes': torch.tensor(boxes, dtype=torch.float32),
+                'labels': torch.tensor(labels, dtype=torch.int64),
+                'image_id': torch.tensor([idx])
+            }
 
         tensor_img = TF.to_tensor(img)
         return tensor_img, target

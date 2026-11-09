@@ -1,0 +1,2 @@
+# Signature Detection & Verification Workspace
+Project files are located in E:\sign_detect-verify

@@ -61,9 +61,14 @@ class MLflowTracker:
                 return run.info.run_id
         else:
             # Local fallback run logger
+            import tempfile
             run_id = f"local_{uuid.uuid4().hex[:12]}"
-            log_dir = os.path.join("mlruns", "local_experiments", run_id)
-            os.makedirs(log_dir, exist_ok=True)
+            try:
+                log_dir = os.path.join("mlruns", "local_experiments", run_id)
+                os.makedirs(log_dir, exist_ok=True)
+            except (PermissionError, OSError):
+                log_dir = os.path.join(tempfile.gettempdir(), "mlruns", "local_experiments", run_id)
+                os.makedirs(log_dir, exist_ok=True)
             with open(os.path.join(log_dir, "run_metadata.json"), "w", encoding="utf-8") as f:
                 json.dump({
                     "run_id": run_id,

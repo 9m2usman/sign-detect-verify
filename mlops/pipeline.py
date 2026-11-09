@@ -10,6 +10,7 @@ from PIL import Image
 from detection.selected_model.detector import ProductionSignatureDetector
 from verification.selected_model.verifier import ProductionSignatureVerifier
 from verification.preprocessing.signature_cropper import crop_signature
+from verification.preprocessing.preprocess import load_document_image
 
 
 class UnifiedSignaturePipeline:
@@ -31,11 +32,24 @@ class UnifiedSignaturePipeline:
         """
         Executes end-to-end detection and verification.
         """
-        if not os.path.exists(document_path):
-            raise FileNotFoundError(f"Document not found: {document_path}")
-
-        doc_img = Image.open(document_path).convert("RGB")
+        doc_img = load_document_image(document_path)
         detections = self.detector.detect(doc_img)
+
+        # Prepare references once upfront (Mode 1: cropped, Mode 2: full document)
+        prepared_refs = []
+        for ref_path in reference_paths:
+            try:
+                ref_img = load_document_image(ref_path)
+                # If reference is large/full document, detect signature region
+                if ref_img.width >= 400 and ref_img.height >= 400:
+                    ref_dets = self.detector.detect(ref_img)
+                    if ref_dets:
+                        ref_crop = crop_signature(ref_img, ref_dets[0]["bbox"], padding_ratio=0.05, coord_format="xyxy")
+                        prepared_refs.append(ref_crop)
+                        continue
+                prepared_refs.append(ref_img)
+            except Exception:
+                prepared_refs.append(ref_path)
 
         results = []
         if save_crops_dir:
@@ -51,27 +65,13 @@ class UnifiedSignaturePipeline:
             crop_path = None
             if save_crops_dir:
                 crop_filename = f"crop_sig_{idx}.jpg"
-                crop_path = os.path.join(save_crops_dir, crop_filename)
+                crop_path = os.path.join(save_crops_dir, crop_filename).replace("\\", "/")
                 cropped.save(crop_path, "JPEG")
 
             # Stage 2: Biometric verification against references
-            # If a reference is a full document image, detect its signature first
-            prepared_refs = []
-            for ref_path in reference_paths:
-                try:
-                    ref_img = Image.open(ref_path).convert("RGB")
-                    # If reference is large/full document, detect signature region
-                    if ref_img.width >= 400 and ref_img.height >= 400:
-                        ref_dets = self.detector.detect(ref_img)
-                        if ref_dets:
-                            ref_crop = crop_signature(ref_img, ref_dets[0]["bbox"], padding_ratio=0.05, coord_format="xyxy")
-                            prepared_refs.append(ref_crop)
-                            continue
-                    prepared_refs.append(ref_img)
-                except Exception:
-                    prepared_refs.append(ref_path)
-
             verif = self.verifier.verify_against_references(cropped, prepared_refs)
+
+            best_ref = reference_paths[verif["best_reference_index"]] if reference_paths else "ref_0"
 
             results.append({
                 "signature_index": idx,
@@ -80,7 +80,7 @@ class UnifiedSignaturePipeline:
                 "similarity_score": verif["aggregated_similarity"],
                 "decision": verif["decision"],
                 "individual_scores": verif["individual_scores"],
-                "best_reference": reference_paths[verif["best_reference_index"]],
+                "best_reference": best_ref,
                 "crop_path": crop_path
             })
 
