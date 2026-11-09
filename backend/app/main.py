@@ -46,6 +46,9 @@ if os.path.exists("sample_test_run"):
 if os.path.exists("architecture"):
     app.mount("/architecture", StaticFiles(directory="architecture"), name="architecture")
 
+os.makedirs("uploads", exist_ok=True)
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
 
 @app.get("/health", tags=["Health"])
 def health_check():

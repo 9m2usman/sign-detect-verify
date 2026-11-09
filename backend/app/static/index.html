@@ -160,7 +160,7 @@
                 <span id="detected-count-badge" class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-indigo-300 font-mono">1 Signature Found</span>
               </div>
               <div class="bg-black/60 rounded-xl p-2 flex items-center justify-center overflow-hidden max-h-[500px]">
-                <canvas id="detection-canvas" class="max-w-full max-h-[480px] object-contain"></canvas>
+                <canvas id="detection-canvas" onclick="openZoom(this)" title="Click to Zoom In" class="max-w-full max-h-[480px] object-contain cursor-pointer hover:opacity-95 transition"></canvas>
               </div>
             </div>
 
@@ -191,15 +191,18 @@
 
               <!-- Signature Crop Comparison -->
               <div class="card-blur p-5 rounded-2xl space-y-3">
-                <span class="text-xs font-semibold text-slate-300">Biometric Pair Alignment</span>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-semibold text-slate-300">Biometric Pair Alignment</span>
+                  <span class="text-[10px] text-indigo-400 font-mono">🔍 Click images to zoom</span>
+                </div>
                 <div class="grid grid-cols-2 gap-3">
                   <div class="bg-slate-900 p-2 rounded-lg border border-slate-800 text-center">
                     <span class="text-[10px] text-slate-400 block mb-1">Detected Crop</span>
-                    <img id="crop-preview" class="h-16 mx-auto object-contain rounded bg-white">
+                    <img id="crop-preview" onclick="openZoom(this.src)" title="Click to zoom in" class="h-16 mx-auto object-contain rounded bg-white cursor-pointer hover:scale-105 transition">
                   </div>
                   <div class="bg-slate-900 p-2 rounded-lg border border-slate-800 text-center">
                     <span class="text-[10px] text-slate-400 block mb-1">Best Reference</span>
-                    <img id="best-ref-preview" class="h-16 mx-auto object-contain rounded bg-white">
+                    <img id="best-ref-preview" onclick="openZoom(this.src)" title="Click to zoom in" class="h-16 mx-auto object-contain rounded bg-white cursor-pointer hover:scale-105 transition">
                   </div>
                 </div>
               </div>
@@ -719,6 +722,49 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
       docReader.onload = e => { img.src = e.target.result; };
       docReader.readAsDataURL(selectedDocFile);
     }
+
+    // Zoom Lightbox Modal Functionality
+    function openZoom(target) {
+      const modal = document.getElementById('zoom-modal');
+      const zoomImg = document.getElementById('zoom-image');
+      const zoomCanvas = document.getElementById('zoom-canvas-container');
+
+      if (typeof target === 'string') {
+        zoomImg.src = target;
+        zoomImg.classList.remove('hidden');
+        zoomCanvas.classList.add('hidden');
+      } else if (target && target.tagName === 'CANVAS') {
+        zoomImg.src = target.toDataURL();
+        zoomImg.classList.remove('hidden');
+        zoomCanvas.classList.add('hidden');
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closeZoom() {
+      document.getElementById('zoom-modal').classList.add('hidden');
+    }
   </script>
+
+  <!-- Interactive Zoom Modal Lightbox -->
+  <div id="zoom-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 hidden" onclick="closeZoom()">
+    <div class="relative max-w-5xl max-h-[90vh] bg-slate-900 border border-slate-700 rounded-2xl p-4 shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+        <span class="text-sm font-bold text-white flex items-center gap-2">
+          <i data-lucide="zoom-in" class="w-4 h-4 text-indigo-400"></i> High-Resolution Inspection
+        </span>
+        <button onclick="closeZoom()" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="flex items-center justify-center overflow-auto max-h-[75vh]">
+        <img id="zoom-image" class="max-w-full max-h-[72vh] object-contain rounded-lg">
+        <div id="zoom-canvas-container" class="hidden"></div>
+      </div>
+      <div class="text-center text-xs text-slate-400 mt-2 font-mono">
+        Click outside or press the close button to exit zoom view
+      </div>
+    </div>
+  </div>
 </body>
 </html>
