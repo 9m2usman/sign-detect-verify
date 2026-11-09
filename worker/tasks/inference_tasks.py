@@ -61,6 +61,10 @@ def process_verification_job(self, job_id: str = None):
         )
 
         job.detected_count = pipeline_output["detected_signatures_count"]
+        if pipeline_output.get("rendered_document_path"):
+            from backend.app.api.v1.endpoints.jobs import to_web_url
+            job.document_path = pipeline_output["rendered_document_path"]
+            job.document_url = to_web_url(job.document_path)
 
         # Save individual verification results
         for item in pipeline_output["results"]:

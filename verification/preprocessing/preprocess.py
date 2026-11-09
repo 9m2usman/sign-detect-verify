@@ -43,9 +43,32 @@ def load_document_image(source: Union[str, bytes, Image.Image]) -> Image.Image:
 
 
 def _load_pdf_from_stream(stream) -> Image.Image:
-    """Extracts the primary document image from a PDF stream using pypdf or pdf2image."""
+    """
+    Renders the first page of a PDF document to a high-resolution PIL RGB Image.
+    Uses pypdfium2 for direct vector/raster rasterization, with pypdf and pdf2image fallback.
+    """
+    # 1. High-fidelity rendering with pypdfium2 (handles both vector and scanned PDFs)
+    try:
+        import pypdfium2
+        if hasattr(stream, "seek"):
+            stream.seek(0)
+            raw_bytes = stream.read()
+        else:
+            raw_bytes = stream
+        pdf = pypdfium2.PdfDocument(raw_bytes)
+        if len(pdf) > 0:
+            # Render page 1 at scale 2.0 (approx 150-200 DPI) for high signature clarity
+            page = pdf[0]
+            pil_image = page.render(scale=2.0).to_pil().convert("RGB")
+            return pil_image
+    except Exception:
+        pass
+
+    # 2. Extract embedded images with pypdf
     try:
         import pypdf
+        if hasattr(stream, "seek"):
+            stream.seek(0)
         reader = pypdf.PdfReader(stream)
         for page in reader.pages:
             if hasattr(page, "images") and len(page.images) > 0:
@@ -65,6 +88,7 @@ def _load_pdf_from_stream(stream) -> Image.Image:
     except Exception:
         pass
 
+    # 3. Fallback to pdf2image
     try:
         from pdf2image import convert_from_bytes
         if hasattr(stream, "seek"):
@@ -78,7 +102,7 @@ def _load_pdf_from_stream(stream) -> Image.Image:
     except Exception:
         pass
 
-    raise ValueError("Could not extract image from PDF. Ensure PDF contains a scanned document page.")
+    raise ValueError("Could not render image from PDF document. Please verify the PDF is valid.")
 
 
 def preprocess_signature_image(

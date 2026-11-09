@@ -15,9 +15,9 @@
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: #f8fafc;
       background-image: 
-        radial-gradient(circle at 10% 10%, rgba(241, 245, 249, 0.95), transparent 40%),
-        radial-gradient(circle at 90% 15%, rgba(238, 242, 255, 0.75), transparent 35%),
-        radial-gradient(circle at 50% 90%, rgba(240, 253, 250, 0.7), transparent 45%);
+        radial-gradient(circle at 10% 12%, rgba(209, 250, 229, 0.65), transparent 42%),
+        radial-gradient(circle at 88% 18%, rgba(204, 251, 241, 0.55), transparent 38%),
+        radial-gradient(circle at 50% 92%, rgba(240, 253, 250, 0.8), transparent 48%);
       background-attachment: fixed;
       color: #0f172a;
     }
@@ -25,22 +25,22 @@
       font-family: 'JetBrains Mono', monospace;
     }
     .card-glass {
-      background: rgba(255, 255, 255, 0.78);
+      background: rgba(255, 255, 255, 0.82);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.9);
-      box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.04), 0 4px 6px -2px rgba(15, 23, 42, 0.02);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 10px 30px -5px rgba(5, 150, 105, 0.04), 0 4px 6px -2px rgba(15, 23, 42, 0.02);
       transition: all 0.25s ease;
     }
     .card-glass:hover {
-      border-color: rgba(99, 102, 241, 0.25);
-      box-shadow: 0 14px 34px -4px rgba(15, 23, 42, 0.07), 0 6px 12px -2px rgba(15, 23, 42, 0.03);
+      border-color: rgba(16, 185, 129, 0.35);
+      box-shadow: 0 14px 34px -4px rgba(5, 150, 105, 0.08), 0 6px 12px -2px rgba(15, 23, 42, 0.03);
     }
     .card-glass-subtle {
-      background: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.65);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(226, 232, 240, 0.7);
+      border: 1px solid rgba(209, 250, 229, 0.6);
     }
     /* Custom scrollbar */
     ::-webkit-scrollbar {
@@ -61,28 +61,28 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-slate-900 selection:text-white">
 
-  <!-- Top Sticky Navigation Bar (Simple White Glass) -->
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/80">
+  <!-- Top Sticky Navigation Bar (Emerald White Glass) -->
+  <header class="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-emerald-100/90 shadow-sm shadow-emerald-950/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
       
       <!-- Brand & Badges -->
       <div class="flex items-center space-x-3.5">
-        <div class="p-2.5 bg-slate-900 text-white rounded-xl shadow-md flex items-center justify-center">
+        <div class="p-2.5 bg-gradient-to-br from-emerald-600 to-teal-700 text-white rounded-xl shadow-md shadow-emerald-600/25 flex items-center justify-center">
           <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
         </div>
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-lg font-extrabold tracking-tight text-slate-900 flex items-center gap-1.5">
-              Signature AI <span class="text-indigo-600 font-semibold">Platform</span>
+              Signature AI <span class="text-emerald-600 font-semibold">Studio</span>
             </h1>
-            <span class="text-[10px] uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-mono font-semibold">
+            <span class="text-[10px] uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200/90 px-2 py-0.5 rounded-full font-mono font-semibold">
               Zero AGPL • Apache 2.0 / BSD-3
             </span>
           </div>
           <p class="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
-            <span>Two-Stage Object Detection & Metric Siamese Verification</span>
-            <span class="inline-block w-1 h-1 rounded-full bg-slate-400"></span>
-            <span class="text-emerald-600 flex items-center gap-1 font-mono text-[11px] font-medium">
+            <span>Two-Stage Object Detection & Metric ResNet-50 Siamese Verification</span>
+            <span class="inline-block w-1 h-1 rounded-full bg-emerald-300"></span>
+            <span class="text-emerald-700 flex items-center gap-1 font-mono text-[11px] font-medium">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Systems Online
             </span>
           </p>
@@ -91,28 +91,28 @@
 
       <!-- Main Navigation Tabs -->
       <nav class="flex items-center space-x-1 sm:space-x-1.5 bg-slate-100/90 p-1 rounded-xl border border-slate-200/80">
-        <button onclick="switchTab('studio')" id="tab-btn-studio" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white text-slate-900 shadow-sm border border-slate-200/80 flex items-center gap-1.5">
-          <i data-lucide="scan-line" class="w-3.5 h-3.5"></i> Studio
+        <button onclick="switchTab('studio')" id="tab-btn-studio" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white text-emerald-700 shadow-sm border border-emerald-200/80 flex items-center gap-1.5">
+          <i data-lucide="scan-line" class="w-3.5 h-3.5 text-emerald-600"></i> Studio
         </button>
-        <button onclick="switchTab('jobs')" id="tab-btn-jobs" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 transition-all flex items-center gap-1.5">
-          <i data-lucide="list-checks" class="w-3.5 h-3.5"></i> Jobs <span id="jobs-count-pill" class="ml-1 px-1.5 py-0.2 bg-slate-200/80 text-slate-700 rounded-full font-mono text-[10px]">0</span>
+        <button onclick="switchTab('jobs')" id="tab-btn-jobs" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-emerald-700 hover:bg-white/70 transition-all flex items-center gap-1.5">
+          <i data-lucide="list-checks" class="w-3.5 h-3.5"></i> Jobs <span id="jobs-count-pill" class="ml-1 px-1.5 py-0.2 bg-emerald-100/80 text-emerald-800 rounded-full font-mono text-[10px]">0</span>
         </button>
-        <button onclick="switchTab('metrics')" id="tab-btn-metrics" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 transition-all flex items-center gap-1.5">
+        <button onclick="switchTab('metrics')" id="tab-btn-metrics" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-emerald-700 hover:bg-white/70 transition-all flex items-center gap-1.5">
           <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i> Matrices & Telemetry
         </button>
-        <button onclick="switchTab('models')" id="tab-btn-models" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 transition-all flex items-center gap-1.5">
+        <button onclick="switchTab('models')" id="tab-btn-models" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-emerald-700 hover:bg-white/70 transition-all flex items-center gap-1.5">
           <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Models & MLOps
         </button>
-        <button onclick="switchTab('architecture')" id="tab-btn-architecture" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 transition-all flex items-center gap-1.5">
+        <button onclick="switchTab('architecture')" id="tab-btn-architecture" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-emerald-700 hover:bg-white/70 transition-all flex items-center gap-1.5">
           <i data-lucide="cloud" class="w-3.5 h-3.5"></i> AWS Cloud
         </button>
-        <button onclick="switchTab('jira')" id="tab-btn-jira" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 transition-all flex items-center gap-1.5">
-          <i data-lucide="kanban-square" class="w-3.5 h-3.5 text-blue-600"></i> Jira Board
+        <button onclick="switchTab('jira')" id="tab-btn-jira" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-emerald-700 hover:bg-white/70 transition-all flex items-center gap-1.5">
+          <i data-lucide="kanban-square" class="w-3.5 h-3.5 text-emerald-600"></i> Jira Board
         </button>
-        <button onclick="switchTab('colab')" id="tab-btn-colab" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-white/70 transition-all flex items-center gap-1.5">
-          <i data-lucide="cloud-lightning" class="w-3.5 h-3.5"></i> Colab Hub
+        <button onclick="switchTab('colab')" id="tab-btn-colab" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-emerald-700 hover:bg-white/70 transition-all flex items-center gap-1.5">
+          <i data-lucide="cloud-lightning" class="w-3.5 h-3.5 text-teal-600"></i> Colab Hub
         </button>
-        <a href="/docs" target="_blank" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-indigo-600 hover:bg-white/70 transition-all flex items-center gap-1">
+        <a href="/docs" target="_blank" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-emerald-600 hover:bg-white/70 transition-all flex items-center gap-1">
           <i data-lucide="external-link" class="w-3.5 h-3.5"></i> API Docs
         </a>
       </nav>
@@ -131,12 +131,12 @@
       <!-- Studio Hero Header & Quick-Test Action Buttons -->
       <div class="card-glass p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-5 relative overflow-hidden">
         <div class="relative z-10">
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold mb-2">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Interactive Biometric Studio
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-2">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i> Interactive Biometric Studio
           </div>
           <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Document Signature Verification</h2>
           <p class="text-slate-600 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
-            Localizes handwritten signatures in complex documents, crops sub-images, extracts 256-D cosine embeddings, and classifies authenticity against reference signatures.
+            Localizes handwritten signatures in complex documents & PDFs, extracts 2048-D ResNet-50 deep metric features and ink stroke topology, and verifies authenticity against genuine references.
           </p>
         </div>
         <div class="flex items-center gap-2.5 relative z-10 shrink-0">
@@ -149,7 +149,7 @@
         </div>
       </div>
 
-      <!-- Upload Drop Zones (Simple White Glass) -->
+      <!-- Upload Drop Zones (Emerald White Glass) -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         
         <!-- Document Upload Box -->
@@ -157,25 +157,35 @@
           <div>
             <div class="flex items-center justify-between mb-3">
               <span class="text-xs font-semibold text-slate-800 flex items-center gap-2">
-                <i data-lucide="file-text" class="w-4 h-4 text-indigo-600"></i> Scanned Document Image
+                <i data-lucide="file-text" class="w-4 h-4 text-emerald-600"></i> Scanned Document or Contract
               </span>
-              <span class="text-[11px] font-mono text-slate-400">JPG, PNG, TIFF, PDF</span>
+              <span class="text-[11px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">PDF, JPG, PNG, TIFF</span>
             </div>
-            <div id="doc-drop-zone" onclick="document.getElementById('doc-input').click()" class="border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-xl p-6 text-center cursor-pointer transition-all duration-300 bg-slate-50/60 hover:bg-white shadow-inner">
-              <input type="file" id="doc-input" accept="image/*" class="hidden" onchange="previewDoc(this)">
+            <div id="doc-drop-zone" onclick="document.getElementById('doc-input').click()" class="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-xl p-6 text-center cursor-pointer transition-all duration-300 bg-slate-50/60 hover:bg-white shadow-inner">
+              <input type="file" id="doc-input" accept="image/*,application/pdf,.pdf" class="hidden" onchange="previewDoc(this)">
               <div id="doc-placeholder" class="py-5">
-                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-2.5 shadow-sm border border-indigo-100">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-2.5 shadow-sm border border-emerald-100">
                   <i data-lucide="upload-cloud" class="w-6 h-6"></i>
                 </div>
-                <p class="text-xs font-semibold text-slate-800">Click to upload document or drag & drop</p>
-                <p class="text-[11px] text-slate-500 mt-1">Contracts, checks, deeds, loan applications</p>
+                <p class="text-xs font-semibold text-slate-800">Click to upload document / PDF or drag & drop</p>
+                <p class="text-[11px] text-slate-500 mt-1">Contracts, PDF agreements, deeds, checks</p>
               </div>
+              <!-- Standard Image Preview -->
               <img id="doc-preview" class="max-h-56 mx-auto rounded-lg shadow-sm border border-slate-200 hidden object-contain">
+              <!-- PDF Document Badge Preview -->
+              <div id="doc-pdf-preview" class="hidden py-6 flex flex-col items-center justify-center">
+                <div class="w-16 h-16 rounded-2xl bg-emerald-100/80 text-emerald-700 flex items-center justify-center shadow-md border border-emerald-300 mb-3">
+                  <i data-lucide="file-text" class="w-8 h-8"></i>
+                </div>
+                <p id="doc-pdf-name" class="font-mono text-xs font-bold text-slate-900 truncate max-w-[280px]">document.pdf</p>
+                <p id="doc-pdf-size" class="text-[11px] text-emerald-700 mt-1 font-mono font-medium">Digital / Vector PDF Contract</p>
+                <span class="mt-2 text-[10px] bg-emerald-600 text-white font-mono px-2.5 py-0.5 rounded-full font-semibold">Ready for Neural Rasterization</span>
+              </div>
             </div>
           </div>
           <div class="flex items-center justify-between text-xs text-slate-500 mt-3 pt-3 border-t border-slate-100">
             <span class="text-slate-400">Selected:</span>
-            <span id="doc-filename" class="font-mono text-[11px] text-indigo-700 font-semibold truncate max-w-[280px]">No file chosen</span>
+            <span id="doc-filename" class="font-mono text-[11px] text-emerald-700 font-semibold truncate max-w-[280px]">No file chosen</span>
           </div>
         </div>
 
@@ -210,7 +220,7 @@
 
       <!-- Action Button -->
       <div class="flex justify-center pt-1">
-        <button id="verify-btn" onclick="executeVerification()" class="px-8 py-3.5 rounded-xl font-bold text-sm text-white bg-slate-900 hover:bg-slate-800 active:scale-95 transition-all inline-flex items-center gap-2.5 shadow-md shadow-slate-900/10">
+        <button id="verify-btn" onclick="executeVerification()" class="px-8 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-800 hover:from-emerald-500 hover:to-teal-700 active:scale-95 transition-all inline-flex items-center gap-2.5 shadow-lg shadow-emerald-700/25">
           <i data-lucide="play" class="w-4 h-4 fill-current"></i> Run End-to-End Verification Pipeline
         </button>
       </div>
@@ -220,7 +230,7 @@
         <div class="border-t border-slate-200/80 pt-6">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-              <i data-lucide="sparkles" class="w-5 h-5 text-indigo-600"></i> Verification Inference Results
+              <i data-lucide="sparkles" class="w-5 h-5 text-emerald-600"></i> Verification Inference Results
             </h3>
             <span id="job-id-badge" class="font-mono text-[11px] text-slate-600 bg-white px-2.5 py-1 rounded-md border border-slate-200 shadow-sm">Job: --</span>
           </div>
@@ -231,9 +241,9 @@
             <div class="lg:col-span-2 card-glass p-5 rounded-2xl space-y-3">
               <div class="flex items-center justify-between">
                 <span class="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
-                  <i data-lucide="crosshair" class="w-4 h-4 text-indigo-600"></i> Bounding Box Localization Canvas
+                  <i data-lucide="crosshair" class="w-4 h-4 text-emerald-600"></i> Bounding Box Localization Canvas
                 </span>
-                <span id="detected-count-badge" class="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-800 font-mono font-medium border border-slate-200">1 Signature Found</span>
+                <span id="detected-count-badge" class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 font-mono font-medium border border-emerald-200">1 Signature Found</span>
               </div>
               <div id="sig-pills-container" class="flex flex-wrap gap-2 pt-1 pb-1"></div>
               <div class="bg-slate-50 rounded-xl p-2.5 flex items-center justify-center overflow-hidden max-h-[520px] border border-slate-200/80 shadow-inner">
@@ -258,12 +268,12 @@
                     <span id="score-text" class="font-mono font-bold text-slate-900 text-sm">--</span>
                   </div>
                   <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden p-0.5 border border-slate-200">
-                    <div id="score-bar" class="bg-indigo-600 h-2 rounded-full transition-all duration-700" style="width: 0%"></div>
+                    <div id="score-bar" class="bg-emerald-600 h-2 rounded-full transition-all duration-700" style="width: 0%"></div>
                   </div>
                   <div class="flex justify-between text-[10px] font-mono text-slate-400 mt-1.5">
                     <span class="text-rose-600 font-semibold">Forged (&lt; 0.65)</span>
                     <span class="text-amber-600 font-semibold">Review</span>
-                    <span class="text-emerald-600 font-semibold">Genuine (&ge; 0.82)</span>
+                    <span class="text-emerald-600 font-semibold">Genuine (&ge; 0.78)</span>
                   </div>
                 </div>
               </div>
@@ -272,7 +282,7 @@
               <div class="card-glass p-4 rounded-2xl space-y-3">
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-semibold text-slate-800">Biometric Pair Visual</span>
-                  <span class="text-[10px] text-indigo-600 font-mono font-medium">🔍 Click to zoom</span>
+                  <span class="text-[10px] text-emerald-600 font-mono font-medium">🔍 Click to zoom</span>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                   <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shadow-sm">
@@ -290,7 +300,7 @@
               <div class="card-glass p-4 rounded-xl text-xs space-y-2 text-slate-700 font-mono">
                 <div class="flex justify-between">
                   <span class="text-slate-500">Bounding Box:</span>
-                  <span id="meta-bbox" class="text-indigo-700 font-semibold">--</span>
+                  <span id="meta-bbox" class="text-emerald-800 font-semibold">--</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-slate-500">Detector Conf:</span>
@@ -322,8 +332,8 @@
       <!-- Jobs Header with Controls -->
       <div class="card-glass p-6 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold mb-1">
-            <i data-lucide="database" class="w-3.5 h-3.5"></i> PostgreSQL / SQLite Job Store
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-1">
+            <i data-lucide="database" class="w-3.5 h-3.5 text-emerald-600"></i> PostgreSQL / SQLite Job Store
           </div>
           <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Audit Log & Verification Jobs</h2>
           <p class="text-slate-600 text-xs mt-1">Live asynchronous queue and verification history persisted across worker executions.</p>
@@ -332,7 +342,7 @@
           <div class="flex items-center gap-1.5 text-xs text-slate-600 font-mono bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Auto-refresh: 8s
           </div>
-          <button onclick="fetchJobsList()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition flex items-center gap-1.5 shadow-sm">
+          <button onclick="fetchJobsList()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-700 hover:bg-emerald-800 text-white transition flex items-center gap-1.5 shadow-sm">
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Now
           </button>
         </div>
@@ -354,7 +364,7 @@
         </div>
         <div class="card-glass p-5 rounded-xl">
           <span class="text-[11px] font-mono text-slate-400 uppercase font-semibold">Success Rate</span>
-          <div id="stat-success-rate" class="text-2xl font-bold font-mono text-indigo-600 mt-1">100.0%</div>
+          <div id="stat-success-rate" class="text-2xl font-bold font-mono text-emerald-700 mt-1">100.0%</div>
         </div>
       </div>
 
@@ -395,13 +405,13 @@
       <!-- Matrices Header -->
       <div class="card-glass p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold mb-1">
-            <i data-lucide="gauge" class="w-3.5 h-3.5"></i> Prometheus & ML Benchmark Matrices
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-1">
+            <i data-lucide="gauge" class="w-3.5 h-3.5 text-emerald-600"></i> Prometheus & ML Benchmark Matrices
           </div>
           <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Evaluation Matrices & Live Telemetry</h2>
           <p class="text-slate-600 text-xs mt-1">Empirical architecture evaluations, calibrated decision boundaries, and real-time observability telemetry.</p>
         </div>
-        <button onclick="fetchPrometheusMetrics()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition flex items-center gap-2 shadow-sm shrink-0">
+        <button onclick="fetchPrometheusMetrics()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-700 hover:bg-emerald-800 text-white transition flex items-center gap-2 shadow-sm shrink-0">
           <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Live /metrics
         </button>
       </div>
@@ -409,10 +419,10 @@
       <!-- Live Observability Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
-        <div class="card-glass p-5 rounded-xl border-l-4 border-l-indigo-600">
+        <div class="card-glass p-5 rounded-xl border-l-4 border-l-teal-600">
           <div class="flex items-center justify-between">
             <span class="text-xs font-mono text-slate-500 uppercase font-semibold">HTTP API Calls</span>
-            <i data-lucide="activity" class="w-4 h-4 text-indigo-600"></i>
+            <i data-lucide="activity" class="w-4 h-4 text-teal-600"></i>
           </div>
           <div id="prom-http-requests" class="text-2xl font-bold font-mono text-slate-900 mt-2">--</div>
           <span class="text-[11px] text-slate-400">Ingested via FastAPI</span>
@@ -424,7 +434,7 @@
             <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
           </div>
           <div id="prom-genuine-count" class="text-2xl font-bold font-mono text-emerald-600 mt-2">--</div>
-          <span class="text-[11px] text-slate-400">Biometric match &ge; 0.82</span>
+          <span class="text-[11px] text-slate-400">Biometric match &ge; 0.78</span>
         </div>
 
         <div class="card-glass p-5 rounded-xl border-l-4 border-l-rose-500">
@@ -472,7 +482,7 @@
         <div class="card-glass p-6 rounded-2xl space-y-4">
           <div class="flex items-center justify-between">
             <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-              <i data-lucide="crosshair" class="w-4 h-4 text-indigo-600"></i> Signature Detection Candidates Benchmark Matrix
+              <i data-lucide="crosshair" class="w-4 h-4 text-emerald-600"></i> Signature Detection Candidates Benchmark Matrix
             </h3>
             <span class="text-xs font-mono text-slate-600 bg-white px-2.5 py-0.5 rounded border border-slate-200 shadow-sm font-medium">Dataset A (28,958 Images)</span>
           </div>
@@ -490,9 +500,9 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 font-mono">
-                <tr class="bg-indigo-50/50 text-slate-900 font-medium">
-                  <td class="py-3 px-4 text-indigo-900 font-bold flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span> RTMDet-Tiny (Selected)
+                <tr class="bg-emerald-50/60 text-slate-900 font-medium">
+                  <td class="py-3 px-4 text-emerald-950 font-bold flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> RTMDet-Tiny (Selected)
                   </td>
                   <td class="py-3 px-4 text-emerald-700 font-bold">0.884</td>
                   <td class="py-3 px-4 text-slate-800">0.642</td>
@@ -596,7 +606,7 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <span class="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
-              <i data-lucide="terminal" class="w-4 h-4 text-indigo-600"></i> Live Prometheus Metric Stream (/metrics)
+              <i data-lucide="terminal" class="w-4 h-4 text-emerald-600"></i> Live Prometheus Metric Stream (/metrics)
             </span>
             <span class="text-[10px] text-emerald-700 font-mono bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">HTTP 200 OK</span>
           </div>
@@ -615,8 +625,8 @@
     <section id="tab-models" class="tab-content hidden space-y-6">
       
       <div class="card-glass p-6 rounded-2xl">
-        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-purple-50 border border-purple-100 text-purple-700 text-xs font-semibold mb-1">
-          <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Deep Neural Vision Architecture
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-1">
+          <i data-lucide="cpu" class="w-3.5 h-3.5 text-emerald-600"></i> Deep Neural Vision Architecture
         </div>
         <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Decoupled Two-Stage Model Pipeline</h2>
         <p class="text-slate-600 text-xs mt-1">Industrial machine learning architecture built to strictly respect commercial licenses and avoid AGPL-3.0 viral copyleft.</p>
@@ -625,9 +635,9 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         
         <!-- Detector Card -->
-        <div class="card-glass p-6 rounded-2xl space-y-4 border-l-4 border-l-indigo-600">
+        <div class="card-glass p-6 rounded-2xl space-y-4 border-l-4 border-l-emerald-600">
           <div class="flex items-center justify-between">
-            <span class="text-xs px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 font-semibold border border-indigo-200">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 font-semibold border border-emerald-200">
               Stage 1: Detection
             </span>
             <span class="text-xs font-mono text-emerald-700 font-medium">Apache 2.0 / BSD-3</span>
@@ -671,26 +681,26 @@
       <!-- MLOps Automated Retraining Pipeline -->
       <div class="card-glass p-6 rounded-2xl space-y-4">
         <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-          <i data-lucide="git-branch" class="w-4 h-4 text-indigo-600"></i> Automated MLOps Continuous Retraining Pipeline
+          <i data-lucide="git-branch" class="w-4 h-4 text-emerald-600"></i> Automated MLOps Continuous Retraining Pipeline
         </h3>
         <p class="text-xs text-slate-600 leading-relaxed">
-          The continuous learning system ingests Hugging Face Dataset webhook events via HMAC-SHA256 signature verification, executes unattended training tasks in Celery workers, and enforces an automated Promotion Quality Gate (<code class="text-indigo-600 font-mono font-semibold">mAP@50 &ge; 0.85</code> and <code class="text-indigo-600 font-mono font-semibold">EER &le; 0.08</code>) before pushing SHA-256 versioned artifacts to S3 outside Git.
+          The continuous learning system ingests Hugging Face Dataset webhook events via HMAC-SHA256 signature verification, executes unattended training tasks in Celery workers, and enforces an automated Promotion Quality Gate (<code class="text-emerald-700 font-mono font-semibold">mAP@50 &ge; 0.85</code> and <code class="text-emerald-700 font-mono font-semibold">EER &le; 0.08</code>) before pushing SHA-256 versioned artifacts to S3 outside Git.
         </p>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-2 font-mono text-xs">
           <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-            <span class="text-indigo-600 font-bold block mb-1">1. Webhook Ingest</span>
+            <span class="text-emerald-700 font-bold block mb-1">1. Webhook Ingest</span>
             <span class="text-slate-500 text-[11px] font-sans">HMAC-SHA256 authenticated event triggers Celery task</span>
           </div>
           <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-            <span class="text-indigo-600 font-bold block mb-1">2. Remote Train</span>
+            <span class="text-emerald-700 font-bold block mb-1">2. Remote Train</span>
             <span class="text-slate-500 text-[11px] font-sans">Distributed PyTorch training run with MLflow tracking</span>
           </div>
           <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-            <span class="text-indigo-600 font-bold block mb-1">3. Quality Gate</span>
+            <span class="text-emerald-700 font-bold block mb-1">3. Quality Gate</span>
             <span class="text-slate-500 text-[11px] font-sans">Automated validation benchmark evaluation guard</span>
           </div>
           <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-            <span class="text-indigo-600 font-bold block mb-1">4. Versioned Deploy</span>
+            <span class="text-emerald-700 font-bold block mb-1">4. Versioned Deploy</span>
             <span class="text-slate-500 text-[11px] font-sans">SHA-256 binary upload to S3 & zero-downtime hot-swap</span>
           </div>
         </div>
@@ -728,8 +738,8 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
         
         <div class="card-glass p-4 rounded-xl space-y-2">
-          <div class="flex items-center gap-2 text-indigo-700 font-bold">
-            <i data-lucide="server" class="w-4 h-4"></i> ECS Fargate Ingestion API
+          <div class="flex items-center gap-2 text-emerald-800 font-bold">
+            <i data-lucide="server" class="w-4 h-4 text-emerald-600"></i> ECS Fargate Ingestion API
           </div>
           <p class="text-slate-600 text-[11px] font-sans leading-relaxed">
             Stateless FastAPI container running behind AWS Application Load Balancer. Validates multipart payloads, saves originals to S3, and dispatches job IDs to RabbitMQ.
@@ -791,14 +801,14 @@
     <section id="tab-jira" class="tab-content hidden space-y-6">
       <div class="card-glass p-6 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold mb-1">
-            <i data-lucide="kanban-square" class="w-3.5 h-3.5"></i> Jira Software Scrum Board
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-1">
+            <i data-lucide="kanban-square" class="w-3.5 h-3.5 text-emerald-600"></i> Jira Software Scrum Board
           </div>
           <h2 class="text-2xl font-bold text-slate-900 tracking-tight">SIG Sprint Board & Team Checkpoints</h2>
           <p class="text-slate-600 text-xs mt-1">Group 4 (5 Members) • Lead: Usman • Daily Checkpoints: Sat 11:30 PM, Sun, Mon, Final Tue</p>
         </div>
         <div class="flex items-center gap-2">
-          <a href="/jira" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition flex items-center gap-2 shadow-sm">
+          <a href="/jira" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-700 hover:bg-emerald-800 text-white transition flex items-center gap-2 shadow-sm">
             <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Open Fullscreen Board
           </a>
         </div>
@@ -825,10 +835,10 @@
 
       <div class="card-glass p-6 rounded-2xl space-y-4">
         <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-          <i data-lucide="terminal" class="w-4 h-4 text-indigo-600"></i> Step 1: Execute Training in Google Colab with MLflow Tracking
+          <i data-lucide="terminal" class="w-4 h-4 text-emerald-600"></i> Step 1: Execute Training in Google Colab with MLflow Tracking
         </h3>
         <p class="text-xs text-slate-600">
-          Upload <code class="text-indigo-600 font-mono font-semibold">notebooks/detection_training.ipynb</code> to Google Colab, select GPU (T4), and run the cells:
+          Upload <code class="text-emerald-700 font-mono font-semibold">notebooks/detection_training.ipynb</code> to Google Colab, select GPU (T4), and run the cells:
         </p>
         <pre class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-xs font-mono text-emerald-400 overflow-x-auto leading-relaxed shadow-sm">
 # Clone or pull latest code
@@ -850,7 +860,7 @@
         <p class="text-xs text-slate-600">
           Simulate a Hugging Face Dataset commit event using HMAC-SHA256 authentication:
         </p>
-        <pre class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-xs font-mono text-indigo-300 overflow-x-auto leading-relaxed shadow-sm">
+        <pre class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-xs font-mono text-emerald-300 overflow-x-auto leading-relaxed shadow-sm">
 curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
   -H "Content-Type: application/json" \
   -H "X-Webhook-Secret: default_hf_secret_change_in_production" \
@@ -872,7 +882,7 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
     <div class="relative max-w-5xl max-h-[92vh] bg-white border border-slate-200 rounded-2xl p-4 shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
         <span class="text-xs font-bold text-slate-900 flex items-center gap-2 font-mono">
-          <i data-lucide="zoom-in" class="w-4 h-4 text-indigo-600"></i> High-Resolution Inspection Lightbox
+          <i data-lucide="zoom-in" class="w-4 h-4 text-emerald-600"></i> High-Resolution Inspection Lightbox
         </span>
         <button onclick="closeZoom()" class="p-1 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -896,7 +906,7 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'border', 'border-slate-200/80', 'font-semibold');
+        btn.classList.remove('bg-white', 'text-emerald-700', 'text-slate-900', 'shadow-sm', 'border', 'border-emerald-200/80', 'border-slate-200/80', 'font-semibold');
         btn.classList.add('text-slate-600', 'font-medium');
       });
 
@@ -906,7 +916,7 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
       }
       const activeBtn = document.getElementById('tab-btn-' + tabId);
       if (activeBtn) {
-        activeBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'border', 'border-slate-200/80', 'font-semibold');
+        activeBtn.classList.add('bg-white', 'text-emerald-700', 'shadow-sm', 'border', 'border-emerald-200/80', 'font-semibold');
         activeBtn.classList.remove('text-slate-600', 'font-medium');
       }
 
@@ -926,15 +936,34 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
     function previewDoc(input) {
       if (input.files && input.files[0]) {
         selectedDocFile = input.files[0];
-        document.getElementById('doc-filename').innerText = selectedDocFile.name;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const img = document.getElementById('doc-preview');
-          img.src = e.target.result;
-          img.classList.remove('hidden');
-          document.getElementById('doc-placeholder').classList.add('hidden');
-        };
-        reader.readAsDataURL(selectedDocFile);
+        const isPdf = selectedDocFile.type === 'application/pdf' || selectedDocFile.name.toLowerCase().endsWith('.pdf');
+        document.getElementById('doc-filename').innerText = selectedDocFile.name + (isPdf ? ' (PDF Contract)' : '');
+        
+        const previewImg = document.getElementById('doc-preview');
+        const pdfBadge = document.getElementById('doc-pdf-preview');
+        const placeholder = document.getElementById('doc-placeholder');
+
+        if (isPdf) {
+          previewImg.classList.add('hidden');
+          if (pdfBadge) {
+            pdfBadge.classList.remove('hidden');
+            const pdfNameEl = document.getElementById('doc-pdf-name');
+            const pdfSizeEl = document.getElementById('doc-pdf-size');
+            if (pdfNameEl) pdfNameEl.innerText = selectedDocFile.name;
+            if (pdfSizeEl) pdfSizeEl.innerText = (selectedDocFile.size / 1024).toFixed(1) + ' KB • Digital PDF Contract';
+          }
+          placeholder.classList.add('hidden');
+        } else {
+          if (pdfBadge) pdfBadge.classList.add('hidden');
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            previewImg.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+          };
+          reader.readAsDataURL(selectedDocFile);
+        }
+        lucide.createIcons();
       }
     }
 
@@ -1081,9 +1110,9 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
         let lineWidth = Math.max(4, img.width / 220);
 
         if (isSelected) {
-          strokeColor = '#4f46e5'; // Highlight selected signature with rich indigo
+          strokeColor = '#059669'; // Highlight selected signature with vibrant emerald
           lineWidth = Math.max(6, img.width / 160);
-          ctx.fillStyle = 'rgba(79, 70, 229, 0.16)';
+          ctx.fillStyle = 'rgba(5, 150, 105, 0.18)';
           ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
         }
 
@@ -1327,7 +1356,7 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
 
           return `
             <tr class="hover:bg-slate-50/70 transition">
-              <td class="py-3 px-4 font-mono font-medium text-indigo-700">
+              <td class="py-3 px-4 font-mono font-medium text-emerald-700">
                 <span title="${job.job_id}">${shortId}...</span>
               </td>
               <td class="py-3 px-4 text-slate-500">${timeStr}</td>
@@ -1336,7 +1365,7 @@ curl -X POST "http://localhost:8000/api/v1/webhooks/huggingface" \
               <td class="py-3 px-4 text-slate-900 font-semibold">${score}</td>
               <td class="py-3 px-4">${verdictBadge}</td>
               <td class="py-3 px-4 text-right">
-                <button onclick="inspectJob('${job.job_id}')" class="px-2.5 py-1 rounded bg-white hover:bg-slate-50 text-indigo-700 border border-slate-200 shadow-sm text-xs font-semibold transition">
+                <button onclick="inspectJob('${job.job_id}')" class="px-2.5 py-1 rounded bg-white hover:bg-slate-50 text-emerald-700 border border-slate-200 shadow-sm text-xs font-semibold transition">
                   Inspect
                 </button>
               </td>

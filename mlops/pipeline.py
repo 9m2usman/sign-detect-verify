@@ -1,6 +1,8 @@
 """
 Unified End-to-End Signature Pipeline
 Connects Document Input -> Signature Detection -> Adaptive Cropping -> Metric Verification.
+Supports Raster Images (JPEG, PNG, WEBP) and Digital/Scanned PDFs.
+Zero Ultralytics, Zero AGPL.
 """
 
 import os
@@ -33,15 +35,27 @@ class UnifiedSignaturePipeline:
         Executes end-to-end detection and verification.
         """
         doc_img = load_document_image(document_path)
+        
+        # If document is a PDF, persist rendered page 1 as a JPG for web canvas inspection
+        rendered_document_path = document_path
+        if document_path.lower().endswith(".pdf"):
+            rendered_document_path = os.path.splitext(document_path)[0] + "_page1.jpg"
+            try:
+                doc_img.save(rendered_document_path, "JPEG", quality=95)
+            except Exception:
+                pass
+
+        # Stage 1: Signature Detection
         detections = self.detector.detect(doc_img)
 
-        # Prepare references once upfront (Mode 1: cropped, Mode 2: full document)
+        # Prepare references upfront:
+        # Keep isolated signature crops as-is. Only run detection if reference is a full scanned contract page.
         prepared_refs = []
         for ref_path in reference_paths:
             try:
                 ref_img = load_document_image(ref_path)
-                # If reference is large/full document, detect signature region
-                if ref_img.width >= 400 and ref_img.height >= 400:
+                # True full-page document check (A4 / Letter size resolution)
+                if min(ref_img.width, ref_img.height) >= 900 and max(ref_img.width, ref_img.height) >= 1200:
                     ref_dets = self.detector.detect(ref_img)
                     if ref_dets:
                         ref_crop = crop_signature(ref_img, ref_dets[0]["bbox"], padding_ratio=0.05, coord_format="xyxy")
@@ -66,11 +80,10 @@ class UnifiedSignaturePipeline:
             if save_crops_dir:
                 crop_filename = f"crop_sig_{idx}.jpg"
                 crop_path = os.path.join(save_crops_dir, crop_filename).replace("\\", "/")
-                cropped.save(crop_path, "JPEG")
+                cropped.save(crop_path, "JPEG", quality=95)
 
             # Stage 2: Biometric verification against references
             verif = self.verifier.verify_against_references(cropped, prepared_refs)
-
             best_ref = reference_paths[verif["best_reference_index"]] if reference_paths else "ref_0"
 
             results.append({
@@ -86,6 +99,7 @@ class UnifiedSignaturePipeline:
 
         return {
             "document_path": document_path,
+            "rendered_document_path": rendered_document_path,
             "detected_signatures_count": len(results),
             "results": results
         }
